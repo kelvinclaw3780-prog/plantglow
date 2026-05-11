@@ -18,6 +18,9 @@
       }
     }
   </script>
+  <script>
+    window.BASE_URL = 'https://plantglow-production.up.railway.app';
+  </script>
 </head>
 <body class="min-h-screen bg-forest-950" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif;">
   
@@ -144,7 +147,7 @@
 
     async function loadStats() {
       try {
-        const res = await fetch('/api/admin/stats', {
+        const res = await fetch(`${window.BASE_URL}/api/admin/stats`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (!res.ok) throw new Error('Failed to load stats');
@@ -192,7 +195,7 @@
       const msg = document.getElementById('create-msg');
       if (!email || !pass) { msg.textContent = 'Email and password required'; msg.className = 'text-red-400 text-sm'; return; }
       try {
-        const res = await fetch('/api/admin/create-admin', {
+        const res = await fetch(`${window.BASE_URL}/api/admin/create-admin`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify({ email, password: pass, name })
@@ -211,15 +214,15 @@
     }
 
     function exportUsers() {
-      window.location.href = '/api/admin/export/users';
+      window.location.href = `${window.BASE_URL}/api/admin/export/users`;
     }
 
     function exportEmails() {
-      window.location.href = '/api/admin/export/emails';
+      window.location.href = `${window.BASE_URL}/api/admin/export/emails`;
     }
 
     async function handleLogout() {
-      await fetch('/api/admin/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+      await fetch(`${window.BASE_URL}/api/admin/logout`, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
       localStorage.removeItem('admin_token');
       localStorage.removeItem('admin_user');
       window.location.href = '/admin.html';
