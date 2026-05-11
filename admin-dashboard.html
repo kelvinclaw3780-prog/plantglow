@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlantGlow Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            forest: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac', 400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d', 950: '#052e16' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-forest-950" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif;">
+  
+  <!-- Nav -->
+  <nav class="bg-forest-900 border-b border-forest-800 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🌿</span>
+        <span class="text-white font-bold text-lg">PlantGlow</span>
+        <span class="ml-2 px-2 py-0.5 bg-forest-700 text-forest-200 text-xs font-medium rounded">Admin</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span id="admin-name" class="text-forest-300 text-sm"></span>
+        <button onclick="handleLogout()" class="text-sm text-forest-400 hover:text-red-400 transition">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="bg-forest-900 rounded-xl p-6 border border-forest-800">
+        <p class="text-forest-400 text-sm font-medium">Total Registrations</p>
+        <p id="stat-total" class="mt-2 text-3xl font-extrabold text-white">—</p>
+      </div>
+      <div class="bg-forest-900 rounded-xl p-6 border border-forest-800">
+        <p class="text-forest-400 text-sm font-medium">Total Users</p>
+        <p id="stat-verified" class="mt-2 text-3xl font-extrabold text-white">—</p>
+      </div>
+      <div class="bg-forest-900 rounded-xl p-6 border border-forest-800">
+        <p class="text-forest-400 text-sm font-medium">Early Access Emails</p>
+        <p id="stat-early" class="mt-2 text-3xl font-extrabold text-forest-400">—</p>
+      </div>
+      <div class="bg-forest-900 rounded-xl p-6 border border-forest-800">
+        <p class="text-forest-400 text-sm font-medium">New Today</p>
+        <p id="stat-today" class="mt-2 text-3xl font-extrabold text-forest-400">—</p>
+      </div>
+    </div>
+
+    <!-- Register Admin -->
+    <div class="bg-forest-900 rounded-xl p-6 border border-forest-800 mb-8">
+      <h2 class="text-white font-semibold mb-4">Create Admin Account</h2>
+      <div class="flex flex-wrap gap-3 items-end">
+        <input type="text" id="new-admin-name" placeholder="Name (optional)" 
+          class="px-3 py-2 bg-forest-800 border border-forest-700 rounded-lg text-white placeholder-forest-500 text-sm focus:ring-2 focus:ring-forest-500 outline-none">
+        <input type="email" id="new-admin-email" placeholder="Email" required
+          class="px-3 py-2 bg-forest-800 border border-forest-700 rounded-lg text-white placeholder-forest-500 text-sm focus:ring-2 focus:ring-forest-500 outline-none">
+        <input type="password" id="new-admin-pass" placeholder="Password" required
+          class="px-3 py-2 bg-forest-800 border border-forest-700 rounded-lg text-white placeholder-forest-500 text-sm focus:ring-2 focus:ring-forest-500 outline-none">
+        <button onclick="createAdmin()" class="px-4 py-2 bg-forest-600 hover:bg-forest-700 text-white font-medium rounded-lg text-sm transition">
+          Create Admin
+        </button>
+        <span id="create-msg" class="text-sm"></span>
+      </div>
+    </div>
+
+    <!-- Export Buttons -->
+    <div class="flex flex-wrap gap-3 mb-8">
+      <button onclick="exportUsers()" class="flex items-center gap-2 px-4 py-2 bg-forest-800 hover:bg-forest-700 text-white font-medium rounded-lg text-sm transition border border-forest-700">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Export Users (CSV)
+      </button>
+      <button onclick="exportEmails()" class="flex items-center gap-2 px-4 py-2 bg-forest-800 hover:bg-forest-700 text-white font-medium rounded-lg text-sm transition border border-forest-700">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Export Early Access Emails (CSV)
+      </button>
+      <span id="export-msg" class="text-sm"></span>
+    </div>
+
+    <!-- User Table -->
+    <div class="bg-forest-900 rounded-xl border border-forest-800 overflow-hidden">
+      <div class="px-6 py-4 border-b border-forest-800 flex items-center justify-between">
+        <h2 class="text-white font-semibold">Registered Users</h2>
+        <button onclick="loadStats()" class="text-sm text-forest-400 hover:text-forest-300 transition">Refresh ↻</button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-forest-800 text-forest-300 uppercase text-xs">
+            <tr>
+              <th class="px-6 py-3 font-medium">Email</th>
+              <th class="px-6 py-3 font-medium">Name</th>
+              <th class="px-6 py-3 font-medium">Registered</th>
+              <th class="px-6 py-3 font-medium">Registered At</th>
+            </tr>
+          </thead>
+          <tbody id="user-table" class="text-forest-100">
+            <tr><td colspan="5" class="px-6 py-8 text-center text-forest-500">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    <!-- Early Access Emails Table -->
+    <div class="bg-forest-900 rounded-xl border border-forest-800 overflow-hidden mt-8">
+      <div class="px-6 py-4 border-b border-forest-800 flex items-center justify-between">
+        <h2 class="text-white font-semibold">Early Access Email List</h2>
+        <span id="stat-early-label" class="text-forest-400 text-sm">0 emails</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-forest-800 text-forest-300 uppercase text-xs">
+            <tr>
+              <th class="px-6 py-3 font-medium">Email</th>
+              <th class="px-6 py-3 font-medium">Signed Up</th>
+            </tr>
+          </thead>
+          <tbody id="email-table">
+            <tr><td colspan="2" class="px-6 py-8 text-center text-forest-500">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const token = localStorage.getItem('admin_token');
+    if (!token) { window.location.href = '/admin.html'; }
+
+    // Show admin name in nav
+    const adminUser = JSON.parse(localStorage.getItem('admin_user') || '{}');
+    if (adminUser.name) document.getElementById('admin-name').textContent = adminUser.name;
+    else if (adminUser.email) document.getElementById('admin-name').textContent = adminUser.email;
+
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/admin/stats', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Failed to load stats');
+        const data = await res.json();
+        document.getElementById('stat-total').textContent = data.total_registrations ?? 0;
+        document.getElementById('stat-verified').textContent = data.total_users ?? 0;
+        document.getElementById('stat-early').textContent = data.early_access_count ?? 0;
+        document.getElementById('stat-early-label').textContent = (data.early_access_count ?? 0) + ' emails';
+
+        const emailTable = document.getElementById('email-table');
+        if (!data.early_access_list || data.early_access_list.length === 0) {
+          emailTable.innerHTML = '<tr><td colspan="2" class="px-6 py-8 text-center text-forest-500">No emails yet</td></tr>';
+        } else {
+          emailTable.innerHTML = data.early_access_list.map(e => `
+            <tr class="border-t border-forest-800 hover:bg-forest-800/50 transition">
+              <td class="px-6 py-3 text-white">${e.email}</td>
+              <td class="px-6 py-3 text-forest-400">${formatDate(e.created_at)}</td>
+            </tr>
+          `).join('');
+        }
+        document.getElementById('stat-today').textContent = data.new_today ?? 0;
+
+        const tbody = document.getElementById('user-table');
+        if (!data.recent_users || data.recent_users.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-forest-500">No users yet</td></tr>';
+        } else {
+          tbody.innerHTML = data.recent_users.map(u => `
+            <tr class="border-t border-forest-800 hover:bg-forest-800/50 transition">
+              <td class="px-6 py-3 text-white">${u.email || '—'}</td>
+              <td class="px-6 py-3 text-forest-300">${u.name || '—'}</td>
+              <td class="px-6 py-3 text-forest-400">${formatDate(u.created_at)}</td>
+            </tr>
+          `).join('');
+        }
+      } catch (err) {
+        console.error(err);
+        if (err.message.includes('Unauthorized')) window.location.href = '/admin.html';
+      }
+    }
+
+    async function createAdmin() {
+      const name = document.getElementById('new-admin-name').value;
+      const email = document.getElementById('new-admin-email').value;
+      const pass = document.getElementById('new-admin-pass').value;
+      const msg = document.getElementById('create-msg');
+      if (!email || !pass) { msg.textContent = 'Email and password required'; msg.className = 'text-red-400 text-sm'; return; }
+      try {
+        const res = await fetch('/api/admin/create-admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ email, password: pass, name })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        msg.textContent = 'Admin created!';
+        msg.className = 'text-forest-400 text-sm';
+        document.getElementById('new-admin-name').value = '';
+        document.getElementById('new-admin-email').value = '';
+        document.getElementById('new-admin-pass').value = '';
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.className = 'text-red-400 text-sm';
+      }
+    }
+
+    function exportUsers() {
+      window.location.href = '/api/admin/export/users';
+    }
+
+    function exportEmails() {
+      window.location.href = '/api/admin/export/emails';
+    }
+
+    async function handleLogout() {
+      await fetch('/api/admin/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
+      window.location.href = '/admin.html';
+    }
+
+    function maskEmail(email) {
+      if (!email) return '—';
+      const [local, domain] = email.split('@');
+      if (!domain) return email;
+      const masked = local.slice(0, 2) + '***';
+      return masked + '@' + domain;
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '—';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+    }
+
+    loadStats();
+  </script>
+</body>
+</html>

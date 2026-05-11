@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — PlantGlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            forest: {
+              50:  '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              950: '#052e16',
+            },
+            lime: {
+              400: '#a3e635',
+              500: '#84cc16',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --glow: 0 0 40px rgba(74, 222, 128, 0.35);
+    }
+    .glow-leaf {
+      filter: drop-shadow(0 0 24px rgba(74, 222, 128, 0.4));
+    }
+  </style>
+</head>
+<body class="font-sans bg-gradient-to-b from-forest-50 to-white min-h-screen flex flex-col items-center justify-center px-4">
+
+  <!-- Logo -->
+  <a href="index.html" class="mb-8">
+    <img src="kelvin_logo_transparent.png" alt="PlantGlow" class="w-32 h-32 object-contain glow-leaf">
+  </a>
+
+  <!-- Login Card -->
+  <div class="bg-white rounded-3xl shadow-xl p-8 w-full max-w-sm">
+    <h1 id="card-title" class="text-2xl font-bold text-forest-900 text-center mb-2">Welcome Back</h1>
+    <p id="card-subtitle" class="text-gray-500 text-sm text-center mb-6">Enter your phone to login or register</p>
+
+    <!-- Phone Input -->
+    <div id="phone-section">
+      <label class="block text-sm font-medium text-gray-700 mb-2">WhatsApp Number</label>
+      <div class="flex gap-2">
+        <div class="flex items-center px-4 py-3 bg-gray-100 rounded-xl text-gray-600 text-sm font-medium">
+          +852
+        </div>
+        <input type="tel" id="phone-input" placeholder="1234 5678" maxlength="12"
+          class="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900"
+          onkeypress="if(event.key==='Enter')sendCode()">
+      </div>
+      <p id="phone-error" class="text-red-500 text-sm mt-2 hidden"></p>
+    </div>
+
+    <!-- Code Input (hidden initially) -->
+    <div id="code-section" class="hidden">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Verification Code</label>
+      <input type="text" id="code-input" placeholder="6-digit code" maxlength="6"
+        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900 text-center text-xl tracking-widest font-mono"
+        onkeypress="if(event.key==='Enter')verifyCode()">
+      <p class="text-gray-500 text-xs mt-2 text-center">Code sent to <span id="masked-phone"></span></p>
+      <p id="code-error" class="text-red-500 text-sm mt-2 hidden text-center"></p>
+    </div>
+
+    <!-- Submit Button -->
+    <button id="submit-btn" onclick="sendCode()" class="w-full mt-6 bg-forest-600 text-white font-semibold py-4 rounded-xl hover:bg-forest-700 transition shadow-lg shadow-forest-200/50">
+      <span id="btn-text">Send Code</span>
+      <span id="btn-loading" class="hidden">Sending...</span>
+    </button>
+
+    <!-- Toggle Login/Register -->
+    <p class="text-center text-sm text-gray-500 mt-4">
+      <span id="toggle-text">New to PlantGlow?</span>
+      <button id="toggle-btn" onclick="toggleMode()" class="text-forest-600 font-medium hover:underline ml-1">
+        <span id="toggle-link">Register here</span>
+      </button>
+    </p>
+
+    <!-- Back to site -->
+    <p class="text-center mt-4">
+      <a href="index.html" class="text-sm text-gray-400 hover:text-forest-600 transition">
+        ← Back to PlantGlow
+      </a>
+    </p>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl p-8 text-center max-w-sm w-full shadow-2xl">
+      <div class="text-6xl mb-4">🌿</div>
+      <h2 id="success-title" class="text-xl font-bold text-forest-900 mb-2">You're in!</h2>
+      <p id="success-msg" class="text-gray-500 mb-6">Redirecting to PlantGlow...</p>
+      <a href="index.html" class="inline-flex items-center gap-2 bg-forest-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-forest-700 transition">
+        Continue to Plants
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // ─── State ─────────────────────────────────────────────────────────────
+    let mode = 'login'; // 'login' or 'register'
+    let pendingPhone = '';
+    let token = localStorage.getItem('plantglow_token') || null;
+
+    // ─── Init ───────────────────────────────────────────────────────────────
+    if (token) {
+      // Already logged in — redirect to index
+      window.location.href = 'index.html';
+    }
+
+    // ─── Toggle Login / Register ────────────────────────────────────────────
+    function toggleMode() {
+      mode = mode === 'login' ? 'register' : 'login';
+      document.getElementById('card-title').textContent = 
+        mode === 'login' ? 'Welcome Back' : 'Create Account';
+      document.getElementById('card-subtitle').textContent = 
+        mode === 'login' ? 'Enter your phone to login' : 'Enter your phone to get started';
+      document.getElementById('toggle-text').textContent = 
+        mode === 'login' ? 'New to PlantGlow?' : 'Already have an account?';
+      document.getElementById('toggle-link').textContent = 
+        mode === 'login' ? 'Register here' : 'Login here';
+      document.getElementById('submit-btn').onclick = 
+        mode === 'login' ? sendCode : sendCode;
+      clearErrors();
+    }
+
+    // ─── Send Code ──────────────────────────────────────────────────────────
+    async function sendCode() {
+      const phoneInput = document.getElementById('phone-input').value.replace(/\s/g, '');
+      if (!phoneInput || phoneInput.length < 8) {
+        showError('phone', 'Please enter a valid phone number');
+        return;
+      }
+      pendingPhone = '+852' + phoneInput;
+
+      setLoading(true);
+
+      try {
+        const endpoint = mode === 'login' ? '/api/login' : '/api/register';
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: pendingPhone })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError('phone', data.error || 'Something went wrong');
+          setLoading(false);
+          return;
+        }
+
+        // Show code input
+        document.getElementById('phone-section').classList.add('hidden');
+        document.getElementById('code-section').classList.remove('hidden');
+        document.getElementById('masked-phone').textContent = pendingPhone.slice(-4).replace(/./g, 'X') + pendingPhone.slice(-4);
+        document.getElementById('submit-btn').onclick = verifyCode;
+        document.getElementById('submit-btn').querySelector('#btn-text').textContent = 'Verify Code';
+        setLoading(false);
+
+        // TEST MODE: Show code on screen
+        if (data.test_code) {
+          document.getElementById('code-input').value = data.test_code;
+          const codeSection = document.getElementById('code-section');
+          const testNotice = document.createElement('div');
+          testNotice.className = 'mt-3 p-3 bg-lime-100 text-forest-800 rounded-xl text-sm font-mono text-center';
+          testNotice.innerHTML = `<strong>🔧 TEST MODE</strong><br>Your code: <span class="font-bold text-xl">${data.test_code}</span>`;
+          codeSection.appendChild(testNotice);
+        }
+
+      } catch (err) {
+        showError('phone', 'Could not connect to server. Is the backend running?');
+        setLoading(false);
+      }
+    }
+
+    // ─── Verify Code ────────────────────────────────────────────────────────
+    async function verifyCode() {
+      const code = document.getElementById('code-input').value.trim();
+      if (!code || code.length !== 6) {
+        showError('code', 'Please enter the 6-digit code');
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const endpoint = mode === 'login' ? '/api/verify-login' : '/api/verify-register';
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: pendingPhone, code })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError('code', data.error || 'Incorrect code');
+          setLoading(false);
+          return;
+        }
+
+        // Success — save token
+        localStorage.setItem('plantglow_token', data.token);
+        localStorage.setItem('plantglow_subscribed', data.subscribed ? 'true' : 'false');
+
+        // Show success modal
+        document.getElementById('success-title').textContent = 
+          mode === 'login' ? 'Welcome back!' : 'Account created!';
+        document.getElementById('success-msg').textContent = 
+          data.subscribed 
+            ? 'You have Premium access. Enjoy!' 
+            : 'You can now browse plants. Upgrade to Premium for 500-char guides!';
+        document.getElementById('success-modal').classList.remove('hidden');
+        document.getElementById('success-modal').classList.add('flex');
+
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 2000);
+
+      } catch (err) {
+        showError('code', 'Could not connect to server.');
+        setLoading(false);
+      }
+    }
+
+    // ─── Helpers ────────────────────────────────────────────────────────────
+    function showError(field, msg) {
+      clearErrors();
+      const el = document.getElementById(field + '-error');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+    }
+
+    function clearErrors() {
+      document.getElementById('phone-error').classList.add('hidden');
+      document.getElementById('code-error').classList.add('hidden');
+    }
+
+    function setLoading(loading) {
+      document.getElementById('btn-text').classList.toggle('hidden', loading);
+      document.getElementById('btn-loading').classList.toggle('hidden', !loading);
+      document.getElementById('submit-btn').disabled = loading;
+    }
+
+    // ─── API Base ───────────────────────────────────────────────────────────
+    // For local dev, point to backend. In production, same origin or proxy.
+    const API_BASE = 'http://localhost:3000';
+  </script>
+</body>
+</html>

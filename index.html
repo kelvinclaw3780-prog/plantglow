@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlantGlow — Gardening Made Simple</title>
+  <meta name="description" content="All-in-one plant database with care guides and growing tips to help urban plant owners thrive.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif', 'Apple Symbols', 'Segoe UI Symbol'],
+          },
+          colors: {
+            forest: {
+              50:  '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              950: '#052e16',
+            },
+            lime: {
+              400: '#a3e635',
+              500: '#84cc16',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --glow: 0 0 40px rgba(74, 222, 128, 0.35);
+      --glow-strong: 0 0 60px rgba(74, 222, 128, 0.5);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    .glow-leaf {
+      filter: drop-shadow(0 0 24px rgba(74, 222, 128, 0.4));
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    .glow-tip {
+      text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(74, 222, 128, 0.3)); }
+      50% { filter: drop-shadow(0 0 40px rgba(74, 222, 128, 0.55)); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .float { animation: float 4s ease-in-out infinite; }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      animation: fade-up 0.5s ease-out forwards;
+      opacity: 0;
+    }
+
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+
+    .feature-card {
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-primary {
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+    .btn-primary:active { transform: scale(0.97); }
+
+    /* Hide scrollbar for modal content */
+    .modal-scroll::-webkit-scrollbar { display: none; }
+
+    .nav-blur {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  </style>
+  <!-- SEO Meta Tags -->
+  <meta name="keywords" content="plant care, plant database, house plants, indoor plants, plant guide, gardening, plant health, water plants, sunlight plants, plant reminders">
+  <meta name="author" content="PlantGlow">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://plantglow.com/">
+  
+  <!-- Open Graph (Facebook, WhatsApp, Instagram) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://plantglow.com/">
+  <meta property="og:title" content="PlantGlow — Your Personal Plant Advisor">
+  <meta property="og:description" content="Browse 30+ house plants, get care guides, and get personalized plant care reminders. Your all-in-one plant care companion.">
+  <meta property="og:image" content="https://plantglow.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="PlantGlow">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://plantglow.com/">
+  <meta name="twitter:title" content="PlantGlow — Your Personal Plant Advisor">
+  <meta name="twitter:description" content="Browse 30+ house plants, get care guides, and get personalized plant care reminders. Your all-in-one plant care companion.">
+  <meta name="twitter:image" content="https://plantglow.com/og-image.png">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "PlantGlow",
+    "url": "https://plantglow.com/",
+    "description": "Your all-in-one plant care companion with a database of 30+ house plants, personalized care guides, and WhatsApp reminders.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "PlantGlow",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://plantglow.com/kelvin_logo_transparent.png"
+      }
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://plantglow.com/?search={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "PlantGlow Plant Database",
+    "description": "Browse and discover 30+ house plants with detailed care guides including light, water, humidity, and temperature requirements.",
+    "url": "https://plantglow.com/#plants"
+  }
+  </script>
+
+</head>
+<body class="font-sans bg-white text-gray-900 antialiased">
+
+  <!-- NAV -->
+  <nav class="fixed top-0 left-0 right-0 z-50 nav-blur bg-white/80 border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-4 py-1 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2">
+        <img src="kelvin_logo_transparent.png" alt="PlantGlow" class="h-16 w-16 object-contain glow-leaf">
+        <span class="font-bold text-base text-forest-800">PlantGlow</span>
+      </a>
+      <div class="flex items-center gap-3">
+        <!-- Logged out state -->
+        <div id="nav-logged-out">
+          <a href="login.html" class="text-sm font-medium text-forest-600 hover:text-forest-700 transition">Login</a>
+        </div>
+        <!-- Logged in state -->
+        <div id="nav-logged-in" class="hidden items-center gap-1">
+          <div id="nav-user-badge" class="flex items-center gap-1 px-2 py-1 bg-forest-50 rounded-full text-sm">
+            <span class="text-xl text-forest-600">🌿</span>
+            <span id="nav-user-status" class="text-xs text-forest-600 font-medium"></span>
+          </div>
+          <button onclick="logout()" class="flex items-center gap-1 px-2 py-1 text-sm text-gray-600 hover:text-red-500 hover:bg-red-50 rounded-lg transition" title="Logout">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Logout</span>
+          </button>
+        </div>
+        <button onclick="toggleMenu()" class="p-2 rounded-lg hover:bg-gray-100 transition" aria-label="Menu">
+          <i data-lucide="menu" class="w-5 h-5 text-gray-700"></i>
+        </button>
+      </div>
+    </div>
+    
+  </nav>
+
+  <!-- Mobile Overlay -->
+  <div id="mobile-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);z-index:9998;"></div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" style="display:none;position:fixed;top:56px;left:0;right:0;background:white;z-index:9999;padding:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+      <button onclick="closeMobileMenu()" style="padding:8px 12px;border-radius:6px;background:#f3f4f6;font-weight:500;">Close</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      
+      <a href="#features" onclick="closeMobileMenu()" style="padding:12px 0;color:#374151;text-decoration:none;font-size:16px;">Features</a>
+      <a href="#plants" onclick="closeMobileMenu()" style="padding:12px 0;color:#374151;text-decoration:none;font-size:16px;">Popular Plants</a>
+      <a href="#how-it-works" onclick="closeMobileMenu()" style="padding:12px 0;color:#374151;text-decoration:none;font-size:16px;">How It Works</a>
+    </div>
+    <div id="mobile-nav-logged-out" style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;">
+      <a href="login.html" style="display:block;padding:12px 0;color:#16a34a;font-weight:500;font-size:16px;">Login / Register</a>
+    </div>
+    <div id="mobile-nav-logged-in" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;">
+      <button onclick="logout(); closeMobileMenu();" style="display:block;width:100%;padding:12px 0;color:#dc2626;font-weight:500;font-size:16px;text-align:left;">Logout</button>
+    </div>
+  </div></nav>
+
+  <!-- HERO -->
+  <section class="flex flex-col items-center justify-start text-center px-4 pt-[20px] pb-4 bg-gradient-to-b from-forest-50 to-white">
+    <div class="float">
+      <img src="kelvin_logo_transparent.png" alt="PlantGlow" class="w-[350px] h-[350px] object-contain glow-leaf mx-auto mt-[20px]">
+    </div>
+    <h1 class="fade-up -mt-8 text-4xl sm:text-5xl font-extrabold text-forest-900 leading-tight">
+      Gardening Made Simple
+    </h1>
+    <p class="fade-up delay-100 mt-4 text-lg text-gray-600 max-w-sm">
+      All-in-one plant database with care guides and growing tips — so you spend less time researching and more time enjoying your plants.
+    </p>
+    
+    
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="py-16 px-4">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-center text-2xl sm:text-3xl font-bold text-forest-900 mb-2">Everything you need to grow thriving plants</h2>
+      <p class="text-center text-gray-500 mb-12">All-in-one plant database — no more searching everywhere</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+
+        <!-- Card 1 -->
+        <div class="feature-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+          <div class="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center mb-4">
+            <i data-lucide="leaf" class="w-6 h-6 text-forest-600"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-1">Plant Database</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">20 plants with detailed care guides, all in one place. No more searching everywhere.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feature-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+          <div class="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center mb-4">
+            <i data-lucide="heart" class="w-6 h-6 text-forest-600"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-1">Save Favourites</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Save your favourite plants and access them anytime. Build your personal plant collection.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feature-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+          <div class="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center mb-4">
+            <i data-lucide="book-open" class="w-6 h-6 text-forest-600"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-1">Care Guides</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Clear, actionable tips for watering, light, humidity, and more — all in one place.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="feature-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+          <div class="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center mb-4">
+            <i data-lucide="sparkles" class="w-6 h-6 text-forest-600"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-1">Grow with Confidence</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Stop guessing. Get clear guidance on exactly what your plants need to thrive.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- POPULAR PLANTS -->
+  <section id="plants" class="py-16 px-4 bg-forest-50">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-center text-2xl sm:text-3xl font-bold text-forest-900 mb-2">Popular Plants</h2>
+      <p class="text-center text-gray-500 mb-8">Explore our database of plants with detailed care guides</p>
+
+      <!-- Dynamic plant grid -->
+      <div class="mb-6 p-4 bg-forest-50 border border-forest-200 rounded-xl">
+          <div class="flex items-center justify-center gap-3 flex-wrap">
+            <button onclick="showAllPlantsView()" id="btn-all-plants" class="inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm">
+              <i data-lucide="layout-grid" class="w-4 h-4"></i>
+              All Plants
+            </button>
+            <button onclick="showFavoritesView()" id="btn-favorites" class="inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+              My Favorites
+            </button>
+          </div>
+        </div>
+        <div class="mb-6">
+          <div class="relative max-w-md mx-auto">
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+            <input type="text" id="plant-search" placeholder="Search plants..." oninput="handlePlantSearch()"
+              class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900">
+          </div>
+        </div>
+      <div id="plant-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <!-- Plants rendered by JS -->
+      </div>
+
+      <!-- Browse All Button (hidden when logged in and all plants shown) -->
+      <div id="browse-all-section" class="text-center mt-10 flex justify-center gap-3 flex-wrap">
+        <button onclick="handleBrowseAll()" id="browse-btn" class="inline-flex items-center gap-2 bg-white border-2 border-forest-600 text-forest-600 font-semibold px-6 py-3 rounded-xl hover:bg-forest-50 transition shadow-sm">
+          <span id="browse-all-text">Browse all 20 plants</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+        <button onclick="handleShowLess()" id="show-less-btn" class="hidden items-center gap-2 bg-white border-2 border-gray-300 text-gray-600 font-semibold px-6 py-3 rounded-xl hover:bg-gray-50 transition shadow-sm">
+          <i data-lucide="chevron-up" class="w-4 h-4"></i>
+          <span>Show Less</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works" class="py-16 px-4 bg-forest-900 text-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-center text-2xl sm:text-3xl font-bold mb-12">How PlantGlow Works</h2>
+
+      <div class="space-y-8 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-8">
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center font-bold text-lime-400">1</div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">Browse plants</h3>
+            <p class="text-forest-200 text-sm">Explore 20 plants with detailed care guides. Search by name or filter to find what you need.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center font-bold text-lime-400">2</div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">Save favourites</h3>
+            <p class="text-forest-200 text-sm">Heart any plant to save it to your favourites. Build your personal plant collection.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center font-bold text-lime-400">3</div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">Follow care guides</h3>
+            <p class="text-forest-200 text-sm">Get clear tips on watering, light, humidity, and more — all in one place.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center font-bold text-lime-400">4</div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">Watch them thrive</h3>
+            <p class="text-forest-200 text-sm">Less time researching, more time enjoying. Your plants will thank you.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EMAIL CAPTURE -->
+  <section class="py-16 px-4 bg-forest-50">
+    <div class="max-w-md mx-auto text-center">
+      <h2 class="text-xl font-bold text-forest-900 mb-2">Be the first to know</h2>
+      <p class="text-gray-500 text-sm mb-6">Register for new features and get tips to help your plants thrive.</p>
+      <form class="flex flex-col gap-3" onsubmit="handleEmailSubmit(event)">
+        <input type="email" id="email-input" placeholder="your@email.com" required
+          class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900">
+        <button type="submit" class="btn-primary bg-forest-600 text-white font-semibold py-3 rounded-xl hover:bg-forest-700">
+          Register Now
+        </button>
+      </form>
+      <p id="email-success" class="hidden mt-4 text-sm text-forest-600 font-medium">Thanks! You're on the list ðŸŒ±</p>
+      <p class="mt-3 text-xs text-gray-400">No spam. Unsubscribe anytime.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="bg-forest-950 text-forest-300 py-12 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+        <div class="flex items-center gap-2">
+          <img src="kelvin_logo_transparent.png" alt="PlantGlow logo" class="h-8 w-8 object-contain opacity-80">
+          <span class="font-bold text-white">PlantGlow</span>
+        </div>
+        <div class="flex gap-6 text-sm">
+          <a href="#plants" class="hover:text-white transition">Plants</a>
+          <a href="#features" class="hover:text-white transition">Features</a>
+          <a href="mailto:hello@plantglow.com" class="hover:text-white transition">Contact</a>
+        </div>
+      </div>
+      <div class="mt-8 pt-6 border-t border-forest-800 text-xs text-forest-500 flex flex-col sm:flex-row sm:justify-between gap-2">
+        <p>PlantGlow by Tradex Dev. Co. 2026. All rights reserved.</p>
+        <div class="flex gap-4">
+          <a href="javascript:openPrivacyPopup()" class="hover:text-forest-300 transition">Privacy Policy</a>
+          <a href="javascript:openTermsPopup()" class="hover:text-forest-300 transition">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  
+<script>
+    // ============================================================
+    // INIT (wrapped in DOMContentLoaded to ensure plantData is defined first)
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check for fresh load flag (set by login page after redirect)
+      var urlParams = new URLSearchParams(window.location.search);
+      var fresh = urlParams.get('fresh');
+      if (fresh === '1') {
+        // Force reset showingAll and clear any stale state
+        showingAll = false;
+        // Also reset localStorage flags if any
+        localStorage.removeItem('plantglow_showingAll');
+        // Remove the ?fresh=1 from URL without reloading
+        window.history.replaceState({}, '', window.location.pathname);
+      } else {
+        // Normal load - also ensure showingAll is false
+        showingAll = false;
+      }
+      lucide.createIcons();
+      updateNav();
+      showLoginToast();
+      setTimeout(function() { renderPlants(); }, 100);
+    });
+    // ============================================================
+    
+    // LOGIN STATE
+    // ============================================================
+    function isLoggedIn() {
+      return !!localStorage.getItem('plantglow_token');
+    }
+
+    function isSubscribed() {
+      return localStorage.getItem('plantglow_subscribed') === 'true';
+    }
+
+    function logout() {
+      localStorage.removeItem('plantglow_token');
+      localStorage.removeItem('plantglow_subscribed');
+      showingAll = false;
+      updateNav();
+      showAllPlantsView();
+      renderPlants();
+      showToast('Logged out successfully', 'info');
+    }
+
+    function updateNav() {
+      var loggedIn = isLoggedIn();
+      var subscribed = isSubscribed();
+      document.getElementById('nav-logged-out').style.display = loggedIn ? 'none' : '';
+      document.getElementById('nav-logged-in').style.display = loggedIn ? 'flex' : 'none';
+      document.getElementById('mobile-nav-logged-out').style.display = loggedIn ? 'none' : '';
+      document.getElementById('mobile-nav-logged-in').style.display = loggedIn ? '' : 'none';
+      // Also update mobile menu nav items
+      var mobileLoggedOut = document.getElementById('mobile-nav-logged-out');
+      var mobileLoggedIn = document.getElementById('mobile-nav-logged-in');
+      if (mobileLoggedOut) mobileLoggedOut.style.display = loggedIn ? 'none' : '';
+      if (mobileLoggedIn) mobileLoggedIn.style.display = loggedIn ? '' : 'none';
+      if (loggedIn) {
+        document.getElementById('nav-user-status').textContent = 'Logged in';
+      }
+      lucide.createIcons();
+    }
+
+    function showLoginToast() {
+      if (!isLoggedIn()) return;
+      var subscribed = isSubscribed();
+      showToast('Welcome back!', 'success');
+    }
+
+    // ============================================================
+    
+
+    function handleShowLess() {
+      showingAll = false;
+      var browseSection = document.getElementById('browse-all-section');
+      var browseBtn = document.getElementById('browse-btn');
+      var showLessBtn = document.getElementById('show-less-btn');
+      var browseText = document.getElementById('browse-all-text');
+      // Show browse section and buttons
+      if (browseSection) browseSection.style.display = '';
+      if (browseBtn) {
+        browseBtn.classList.remove('hidden');
+        browseBtn.classList.add('inline-flex');
+        browseBtn.style.display = '';
+      }
+      if (showLessBtn) {
+        showLessBtn.classList.add('hidden');
+        showLessBtn.classList.remove('flex');
+        showLessBtn.style.display = 'none';
+      }
+      if (browseText) browseText.textContent = 'Browse all ' + Object.keys(plantData).length + ' plants';
+      renderPlants();
+    }
+
+    // PLANT GRID
+    // ============================================================
+    var VISIBLE_COUNT = 10;
+    var showingAll = false;
+    var currentModalPlantId = null;
+
+    function renderPlantCard(id, plant) {
+      var isLoggedIn = !!localStorage.getItem('plantglow_token');
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var isFavorite = favorites.includes(id);
+      var heartFill = (isLoggedIn && isFavorite) ? '#ef4444' : 'none';
+      var heartStroke = (isLoggedIn && isFavorite) ? '#ef4444' : '#d1d5db';
+      var heartSvg = (isLoggedIn && isFavorite)
+        ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2" class="w-5 h-5 cursor-pointer"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" class="w-5 h-5 cursor-pointer"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
+      var onclick = isLoggedIn ? 'toggleFavorite(\'' + id + '\', event)' : 'showToast(\'Please login to save favorites\', \'info\')';
+      return '<div class="plant-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="handlePlantClick(\'' + id + '\')" data-plant-id="' + id + '" data-name="' + plant.name.toLowerCase() + '" data-scientific="' + plant.scientific.toLowerCase() + '">' +
+        '<div class="relative">' +
+        '<img src="' + plant.img + '" alt="' + plant.name + '" class="w-full aspect-square object-cover" onerror="this.src=\'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=400&fit=crop\'">' +
+        '<button onclick="' + onclick + '" class="absolute top-2 right-2 p-1.5 bg-white/80 rounded-full hover:bg-white transition shadow-sm" title="' + (isLoggedIn ? (isFavorite ? 'Remove from favorites' : 'Add to favorites') : 'Login to save') + '">' +
+        heartSvg +
+        '</button>' +
+        '</div>' +
+        '<div class="p-3">' +
+        '<h3 class="font-semibold text-gray-900 text-sm">' + plant.name + '</h3>' +
+        '<p class="text-xs text-gray-500">' + plant.scientific + '</p>' +
+        '<div class="mt-2 flex items-center gap-1 flex-wrap">' +
+        '<span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full" title="Light level needed">☀️ ' + plant.light.split(' ')[0] + '</span>' +
+        '<span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full" title="How often to water">💧 ' + plant.water + '</span>' +
+        '</div></div></div>';
+    }
+
+    function renderPlants() {
+      var grid = document.getElementById('plant-grid');
+      if (!grid) { console.warn('No plant-grid found'); return; }
+      var browseSection = document.getElementById('browse-all-section');
+      var browseText = document.getElementById('browse-all-text');
+      var loggedIn = isLoggedIn();
+      var plantIds = Object.keys(plantData);
+      var showCount = showingAll ? plantIds.length : VISIBLE_COUNT;
+      var plantsToShow = plantIds.slice(0, showCount);
+      if (plantsToShow.length === 0) { plantsToShow = plantIds; showCount = plantIds.length; }
+      grid.innerHTML = plantsToShow.map(function(id) { return renderPlantCard(id, plantData[id]); }).join('');
+      browseSection.style.display = '';
+      browseText.textContent = 'Browse all ' + plantIds.length + ' plants';
+      var browseBtn = document.getElementById('browse-btn');
+      var showLessBtn = document.getElementById('show-less-btn');
+      if (browseBtn) { browseBtn.style.display = ''; }
+      if (showLessBtn) { showLessBtn.style.display = showingAll ? 'flex' : 'none'; }
+      lucide.createIcons();
+    }
+
+    function handlePlantSearch() {
+      var query = document.getElementById('plant-search').value.toLowerCase().trim();
+      var grid = document.getElementById('plant-grid');
+      var cards = grid.getElementsByClassName('plant-card');
+      var isFavoritesView = document.getElementById('btn-favorites') && document.getElementById('btn-favorites').classList.contains('bg-forest-600');
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      Array.from(cards).forEach(function(card) {
+        var name = card.getAttribute('data-name') || '';
+        var scientific = card.getAttribute('data-scientific') || '';
+        var cardId = card.getAttribute('data-plant-id') || '';
+        var isFavorite = favorites.includes(cardId);
+        var matchesQuery = query === '' || name.includes(query) || scientific.includes(query);
+        var isVisible = isFavoritesView ? (isFavorite && matchesQuery) : (matchesQuery || !isFavoritesView);
+        card.style.display = isVisible ? '' : 'none';
+      });
+      var browseSection = document.getElementById('browse-all-section');
+      if (browseSection) {
+        browseSection.style.display = query === '' ? '' : 'none';
+      }
+    }
+
+    
+
+    function toggleFavorite(plantId, event) {
+      event.stopPropagation();
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var idx = favorites.indexOf(plantId);
+      if (idx > -1) {
+        favorites.splice(idx, 1);
+        showToast('Removed from favorites', 'info');
+      } else {
+        favorites.push(plantId);
+        showToast('Added to favorites!', 'success');
+      }
+      localStorage.setItem('plantglow_favorites', JSON.stringify(favorites));
+      renderPlants();
+      // Re-apply current view after re-render so state isn't lost
+      var btnFav = document.getElementById('btn-favorites');
+      if (btnFav && btnFav.classList.contains('bg-forest-600')) {
+        showFavoritesView();
+      }
+    }
+
+    function showFavorites() {
+      showFavoritesView();
+    }
+
+    function showAllPlantsView() {
+      var grid = document.getElementById('plant-grid');
+      var cards = grid.getElementsByClassName('plant-card');
+      Array.from(cards).forEach(function(card) {
+        card.style.display = '';
+      });
+      var browseSection = document.getElementById('browse-all-section');
+      if (browseSection) browseSection.style.display = '';
+      var searchSection = document.getElementById('plant-search').parentElement.parentElement;
+      if (searchSection) searchSection.style.display = '';
+      // Update button styles
+      var btnAll = document.getElementById('btn-all-plants');
+      var btnFav = document.getElementById('btn-favorites');
+      if (btnAll) {
+        btnAll.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+      }
+      if (btnFav) {
+        btnFav.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+      }
+      lucide.createIcons();
+    }
+
+    function showFavoritesView() {
+      if (!isLoggedIn()) {
+        openLoginRequiredModal();
+        return;
+      }
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var grid = document.getElementById('plant-grid');
+      var cards = grid.getElementsByClassName('plant-card');
+      Array.from(cards).forEach(function(card) {
+        var cardId = card.getAttribute('data-plant-id');
+        card.style.display = favorites.includes(cardId) ? '' : 'none';
+      });
+      var browseSection = document.getElementById('browse-all-section');
+      if (browseSection) browseSection.style.display = 'none';
+      // Update button styles
+      var btnAll = document.getElementById('btn-all-plants');
+      var btnFav = document.getElementById('btn-favorites');
+      if (btnAll) {
+        btnAll.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+      }
+      if (btnFav) {
+        btnFav.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+      }
+      lucide.createIcons();
+    }
+
+    function showAllPlants() {
+      showAllPlantsView();
+    }
+
+function handleBrowseAll() {
+      if (!isLoggedIn()) {
+        openLoginRequiredModal();
+      } else {
+        showingAll = true;
+        var browseBtn = document.getElementById('browse-btn');
+        var showLessBtn = document.getElementById('show-less-btn');
+        if (browseBtn) {
+          browseBtn.classList.add('hidden');
+          browseBtn.classList.remove('inline-flex');
+        }
+        if (showLessBtn) {
+          showLessBtn.classList.remove('hidden');
+          showLessBtn.classList.add('flex');
+        }
+        renderPlants();
+      }
+    }
+
+    // ============================================================
+    // TOAST
+    // ============================================================
+    function showToast(message, type) {
+      var toast = document.createElement('div');
+      toast.id = 'toast-notification';
+      toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 z-[200] px-6 py-3 rounded-xl shadow-lg text-white font-medium text-sm flex items-center gap-2 transition-all duration-300 ';
+      toast.className += (type === 'success' ? 'bg-forest-600' : type === 'info' ? 'bg-blue-500' : 'bg-red-500');
+      toast.innerHTML = '<span>' + message + '</span>';
+      document.body.appendChild(toast);
+      setTimeout(function() {
+        toast.style.opacity = '0';
+        toast.style.marginTop = '-20px';
+        setTimeout(function() { toast.remove(); }, 300);
+      }, 3000);
+    }
+
+    // ============================================================
+    // MOBILE MENU
+    // ============================================================
+    function toggleMenu() {
+      var menu = document.getElementById('mobile-menu');
+      var overlay = document.getElementById('mobile-overlay');
+      if (menu.style.display === 'none' || menu.style.display === '') {
+        menu.style.display = 'block';
+        overlay.style.display = 'block';
+      } else {
+        menu.style.display = 'none';
+        overlay.style.display = 'none';
+      }
+    }
+
+    function closeMobileMenu() {
+      var menu = document.getElementById('mobile-menu');
+      var overlay = document.getElementById('mobile-overlay');
+      menu.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+
+    function handleEmailSubmit(e) {
+      e.preventDefault();
+      var email = document.getElementById('email-input').value;
+      fetch('/api/early-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      }).then(res => res.json()).then(data => {
+        showToast(data.message || 'Early access signed up!', 'success');
+        document.getElementById('email-input').value = '';
+      }).catch(() => {
+        showToast('Early access signed up: ' + email, 'success');
+        document.getElementById('email-input').value = '';
+      });
+      document.getElementById('email-input').value = '';
+    }
+
+    // ============================================================
+    // MODALS
+    // ============================================================
+    function openLoginRequiredModal() {
+      document.getElementById('login-required-modal').classList.remove('hidden');
+      document.getElementById('login-required-modal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLoginRequiredModal() {
+      document.getElementById('login-required-modal').classList.add('hidden');
+      document.getElementById('login-required-modal').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function openPlantModal(plantId) {
+      var plant = plantData[plantId];
+      if (!plant) return;
+      currentModalPlantId = plantId;
+      document.getElementById('plant-modal-img').src = plant.img;
+      document.getElementById('plant-modal-name').textContent = plant.name;
+      document.getElementById('plant-modal-scientific').textContent = plant.scientific;
+      document.getElementById('plant-modal-light').textContent = plant.light;
+      document.getElementById('plant-modal-water').textContent = plant.water;
+      document.getElementById('plant-modal-humidity').textContent = plant.humidity;
+      document.getElementById('plant-modal-temp').textContent = plant.temp;
+      var tipsEl = document.getElementById('plant-modal-tips');
+      tipsEl.innerHTML = '';
+      plant.tips.forEach(function(tip) {
+        var li = document.createElement('li');
+        li.textContent = tip;
+        tipsEl.appendChild(li);
+      });
+      var problemsEl = document.getElementById('plant-modal-problems');
+      problemsEl.innerHTML = '';
+      plant.problems.forEach(function(p) {
+        var li = document.createElement('li');
+        li.textContent = p;
+        problemsEl.appendChild(li);
+      });
+      // Update favorite button
+      updateModalFavoriteBtn();
+      document.getElementById('plant-modal').classList.remove('hidden');
+      document.getElementById('plant-modal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    
+    function updateModalFavoriteBtn() {
+      var btn = document.getElementById('modal-favorite-btn');
+      var icon = document.getElementById('modal-favorite-icon');
+      var text = document.getElementById('modal-favorite-text');
+      if (!currentModalPlantId) return;
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var isFavorite = favorites.includes(currentModalPlantId);
+      var isLoggedIn = !!localStorage.getItem('plantglow_token');
+      if (!isLoggedIn) {
+        btn.className = 'mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-gray-200 hover:border-forest-400 hover:bg-forest-50 transition text-sm font-medium text-gray-600';
+        icon.textContent = '♡';
+        text.textContent = 'Login to Save';
+        btn.onclick = function() { showToast('Please login to save favorites', 'info'); };
+      } else if (isFavorite) {
+        btn.className = 'mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-red-400 bg-red-50 transition text-sm font-medium text-red-500';
+        icon.textContent = '♥';
+        text.textContent = 'Saved';
+        btn.onclick = function() { toggleModalFavorite(); };
+      } else {
+        btn.className = 'mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-gray-200 hover:border-red-400 hover:bg-red-50 transition text-sm font-medium text-gray-600';
+        icon.textContent = '♡';
+        text.textContent = 'Save to Favorites';
+        btn.onclick = function() { toggleModalFavorite(); };
+      }
+    }
+
+    function toggleModalFavorite() {
+      if (!currentModalPlantId) return;
+      var isLoggedIn = !!localStorage.getItem('plantglow_token');
+      if (!isLoggedIn) {
+        showToast('Please login to save favorites', 'info');
+        return;
+      }
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var idx = favorites.indexOf(currentModalPlantId);
+      if (idx > -1) {
+        favorites.splice(idx, 1);
+        showToast('Removed from favorites', 'info');
+      } else {
+        favorites.push(currentModalPlantId);
+        showToast('Added to favorites!', 'success');
+      }
+      localStorage.setItem('plantglow_favorites', JSON.stringify(favorites));
+      updateModalFavoriteBtn();
+      renderPlants();
+    }
+
+    function closePlantModal() {
+      document.getElementById('plant-modal').classList.add('hidden');
+      document.getElementById('plant-modal').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function handlePlantClick(plantId) {
+      if (!isLoggedIn()) {
+        openLoginRequiredModal();
+        return;
+      }
+      openPlantModal(plantId);
+    }
+
+    // ============================================================
+    // PLANT DATA (19 plants, all clean ASCII)
+    // ============================================================
+    var plantData = {
+      monstera: {
+        name: 'Monstera Deliciosa', scientific: 'Monstera Deliciosa',
+        img: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=800&h=600&fit=crop',
+        light: 'Medium Light', water: 'Weekly', humidity: 'High (60-80%)', temp: '18-27C',
+        tips: ['Prefers bright, indirect light - direct sun burns leaves', 'Water when top 2-3cm of soil is dry', 'Loves humidity - mist leaves or use a pebble tray', 'Feed monthly during spring and summer', 'Aerial roots are normal, not a problem'],
+        problems: ['Yellow leaves = overwatering', 'No splits = needs more light', 'Brown edges = dry air or fluoride'],
+      },
+      snake: {
+        name: 'Snake Plant', scientific: 'Sansevieria Trifasciata',
+        img: 'plant_snake.jpg',
+        light: 'Low to Bright', water: 'Every 2-3 weeks', humidity: 'Low to Average', temp: '15-27C',
+        tips: ['Virtually indestructible - perfect for beginners', 'Let soil dry completely between waterings', 'Tolerates low light but grows faster in bright indirect light', 'Wipe leaves monthly to remove dust', 'Can survive months without watering'],
+        problems: ['Mushy leaves = overwatering / root rot', 'Drooping = needs water', 'Brown tips = fluoride in water'],
+      },
+      pothos: {
+        name: 'Pothos', scientific: 'Epipremnum Aureum',
+        img: 'https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?w=800&h=600&fit=crop',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average to High', temp: '18-27C',
+        tips: ['Heart-shaped leaves on trailing vines', 'Easy to propagate from stem cuttings', 'Tolerates low light better than most plants', 'Trim to encourage fuller, bushier growth', 'Great for hanging baskets or trained to climb'],
+        problems: ['Yellow leaves = overwatering', 'Leggy stems = needs more light', 'Brown tips = underwatering or low humidity'],
+      },
+      fiddle: {
+        name: 'Fiddle Leaf Fig', scientific: 'Ficus Lyrata',
+        img: 'plant_fiddle_leaf.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'High (50%+)', temp: '16-24C',
+        tips: ['One of the most popular statement plants', 'Large violin-shaped leaves up to 12 inches wide', 'Hates being moved - pick the right spot and leave it', 'Wipe leaves monthly to remove dust', 'Dropping leaves usually means stress from relocation'],
+        problems: ['Brown spots = overwatering or temperature changes', 'Dropping leaves = stress / drafty location', 'Red edges = too much direct sun'],
+      },
+      peace: {
+        name: 'Peace Lily', scientific: 'Spathiphyllum',
+        img: 'plant_peace_lily.jpg',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'High', temp: '18-26C',
+        tips: ['Will dramatically droop when thirsty', 'Keep soil consistently moist but not soggy', 'Thrives in low light', 'Wipe leaves to remove dust', 'Flowers turn green as they age - normal'],
+        problems: ['Brown edges = dry air or fluoride', 'Wilting despite moist soil = root rot', 'No flowers = needs more light'],
+      },
+      spider: {
+        name: 'Spider Plant', scientific: 'Chlorophytum Comosum',
+        img: 'https://images.unsplash.com/photo-1572688484438-313a6e50c333?w=800&h=600&fit=crop',
+        light: 'Medium to Bright', water: 'Weekly', humidity: 'Average', temp: '13-27C',
+        tips: ['Produces dangling babies', 'Easy to propagate - just pot the babies', 'Tolerates a range of conditions', 'Brown tips from fluoride - use filtered water', 'Great air purifier (NASA study)'],
+        problems: ['Brown tips = fluoride/chlorine', 'Pale leaves = needs more light', 'No babies = plant is too young'],
+      },
+      zz: {
+        name: 'ZZ Plant', scientific: 'Zamioculcas Zamiifolia',
+        img: 'https://images.unsplash.com/photo-1632207691143-643e2a9a9361?w=800&h=600&fit=crop',
+        light: 'Low to Medium', water: 'Monthly', humidity: 'Low', temp: '18-26C',
+        tips: ['Extremely drought tolerant - err on the side of underwatering', 'Wipe leaves monthly to keep them shiny', 'Slow growing but virtually indestructible', 'Toxic if ingested - keep away from pets and children', 'Yellow leaves usually mean overwatering'],
+        problems: ['Yellow leaves = overwatering', 'Drooping stems = root rot', 'Slow growth = normal, not a problem'],
+      },
+      aloe: {
+        name: 'Aloe Vera', scientific: 'Aloe Barbadensis',
+        img: 'https://images.unsplash.com/photo-1567331711402-509c12c41959?w=800&h=600&fit=crop',
+        light: 'Bright Direct', water: 'Every 2-3 weeks', humidity: 'Low', temp: '13-27C',
+        tips: ['Loves bright, direct sunlight - perfect for sunny windowsills', 'Let soil dry COMPLETELY between waterings', 'Gel inside leaves soothes burns and skin irritation', 'Produces pups (baby plants) that can be separated', 'Use terracotta pots for better drainage'],
+        problems: ['Brown tips = too much direct sun or fluoride', 'Mushy leaves = overwatered', 'Flat, curled leaves = needs water'],
+      },
+      jade: {
+        name: 'Jade Plant', scientific: 'Crassula Ovata',
+        img: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=800&h=600&fit=crop',
+        light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-24C',
+        tips: ['Symbol of good luck and prosperity in many cultures', 'Can live for decades with proper care', 'Prune to maintain compact shape', 'Leaves should be firm and plump when healthy', 'Red edges develop with bright light exposure'],
+        problems: ['Dropping leaves = overwatering or sudden cold', 'Soft mushy stem = root rot', 'Leggy growth = needs more light'],
+      },
+      calathea: {
+        name: 'Calathea', scientific: 'Calathea Ornata',
+        img: 'https://images.unsplash.com/photo-1637967886160-fd78dc3ce3f5?w=800&h=600&fit=crop',
+        light: 'Low to Medium', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-26C',
+        tips: ['Leaves move throughout the day following light', 'Use filtered or rainwater to avoid fluoride', 'Keep soil consistently moist but not soggy', 'Loves humidity - perfect for bathrooms', 'Leaves fold up at night'],
+        problems: ['Brown crispy edges = low humidity or fluoride', 'Curling leaves = too dry or too cold', 'Faded patterns = too much direct light'],
+      },
+      birdOfParadise: {
+        name: 'Bird of Paradise', scientific: 'Strelitzia Reginae',
+        img: 'https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?w=800&h=600&fit=crop',
+        light: 'Bright Direct', water: 'Weekly', humidity: 'Average', temp: '18-30C',
+        tips: ['Needs several years before producing flowers', 'Split leaves are normal, not a problem', 'Grows large - needs space to spread', 'Outdoor plants can reach 6-10 feet', 'Feed monthly during growing season'],
+        problems: ['No flowers = needs more light or is too young', 'Split leaves = natural, not preventable', 'Drooping = needs water'],
+      },
+      rubberPlant: {
+        name: 'Rubber Plant', scientific: 'Ficus Elastica',
+        img: 'plant_rubber.jpg',
+        light: 'Medium to Bright', water: 'Weekly', humidity: 'Average', temp: '16-27C',
+        tips: ['Wipe leaves regularly to keep them shiny', 'Start with dark green variety if new to plant care', 'Can grow 6-8 feet indoors with good care', 'Milky sap can irritate skin - wear gloves when pruning', 'Rotate quarterly for even growth'],
+        problems: ['Yellow leaves = overwatering', 'Dropping leaves = sudden temperature change', 'Leggy growth = needs more light'],
+      },
+      orchid: {
+        name: 'Orchid', scientific: 'Phalaenopsis',
+        img: 'https://images.unsplash.com/photo-1567748157439-651aca2ff064?w=800&h=600&fit=crop',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Medium (50%)', temp: '18-26C',
+        tips: ['Water with ice cubes for easy, measured watering', 'Roots turn silver when dry, green when moist', 'After flowers fall, cut stem above a node to rebloom', 'Transparent pots help you monitor root health', 'Never let water sit in the crown (center)'],
+        problems: ['Yellow leaves = too much water or direct sun', 'Bud blast = sudden temperature or humidity change', 'No rebloom = needs more light or a rest period'],
+      },
+      fern: {
+        name: 'Boston Fern', scientific: 'Nephrolepis Exaltata',
+        img: 'plant_fern.jpg',
+        light: 'Medium Indirect', water: 'Keep moist', humidity: 'High (60%+)', temp: '16-24C',
+        tips: ['Loves bathrooms where humidity is naturally high', 'Mist daily or use a pebble tray with water', 'Never let soil dry out completely', 'Dropping leaves usually means low humidity', 'Perfect for hanging baskets'],
+        problems: ['Brown crispy fronds = dry air or inconsistent watering', 'Yellow leaves = overwatering', 'Pale fronds = needs more light'],
+      },
+      philodendron: {
+        name: 'Philodendron', scientific: 'Philodendron Hederaceum',
+        img: 'plant_philodendron.jpg',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average', temp: '18-27C',
+        tips: ['Heart-shaped leaves on trailing vines', 'Easy to propagate from stem cuttings', 'Tolerates low light better than most plants', 'Trim to encourage fuller, bushier growth', 'Aerial roots are normal, not a problem'],
+        problems: ['Yellow leaves = overwatering', 'Leggy stems = needs more light', 'Brown tips = underwatering or low humidity'],
+      },
+      chineseEvergreen: {
+        name: 'Chinese Evergreen', scientific: 'Aglaonema',
+        img: 'plant_chinese_evergreen.jpg',
+        light: 'Low to Medium', water: 'Every 1-2 weeks', humidity: 'Average', temp: '18-26C',
+        tips: ['One of the best low-light plants available', 'Allow soil to dry between waterings', 'Variegated types need more light', 'Excellent air purifier (NASA study)', 'Slow growing but very long-lived'],
+        problems: ['Yellow leaves = overwatering', 'Brown tips = dry air or fluoride', 'Drooping = needs water'],
+      },
+      dracaena: {
+        name: 'Dracaena', scientific: 'Dracaena Marginata',
+        img: 'plant_dracaena.jpg',
+        light: 'Medium to Bright', water: 'Every 1-2 weeks', humidity: 'Average', temp: '18-26C',
+        tips: ['Tall, dramatic plant with spiky leaves', 'Sensitive to fluoride - use filtered water', 'Brown tips are common and usually harmless', 'Can grow 6 feet or more indoors', 'Leaves have red or pink margins on some varieties'],
+        problems: ['Brown tips = fluoride in tap water', 'Yellow leaves = overwatering', 'Soft lower stems = root rot'],
+      },
+      mint: {
+        name: 'Mint', scientific: 'Mentha',
+        img: 'https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?w=800&h=600&fit=crop',
+        light: 'Bright Indirect', water: 'Keep moist', humidity: 'Average', temp: '13-24C',
+        tips: ['Grows vigorously - great for beginners', 'Harvest regularly to prevent flowering', 'Loves moist soil but hates waterlogged roots', 'Can be grown in water alone indefinitely', 'Spearmint and peppermint are easiest varieties'],
+        problems: ['Flowering = harvest time, flavor changes', 'Leggy growth = needs more light', 'Yellow leaves = overwatering'],
+      },
+      basil: {
+        name: 'Basil', scientific: 'Ocimum Basilicum',
+        img: 'plant_basil.jpg',
+        light: 'Bright Direct', water: 'Daily', humidity: 'Average', temp: '20-30C',
+        tips: ['Needs at least 6 hours of direct sunlight', 'Pinch off flowers to keep leaves growing', 'Harvest from the top to encourage bushiness', 'Loves heat - wait until nights are warm to transplant', 'Genovese basil is best for pesto'],
+        problems: ['Wilting = needs water immediately', 'Flowering = leaves turn bitter', 'Black spots = cold damage or disease'],
+      },
+
+      lavender: {
+        name: 'Lavender', scientific: 'Lavandula Angustifolia',
+        img: 'https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=800&h=600&fit=crop',
+        light: 'Bright Direct', water: 'Weekly', humidity: 'Low', temp: '15-25C',
+        tips: ['Needs at least 6 hours of direct sunlight', 'Prefers well-drained soil', 'Prune after flowering to maintain shape', 'Rosemary thrives in similar conditions', 'Great for aromatic gardens'],
+        problems: ['Root rot = overwatering', 'Leggy growth = not enough light', 'No flowers = too much fertilizer'],
+      }
+    };
+
+
+</script>
+
+  <!-- PLANT DETAIL MODAL -->
+  <div id="plant-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closePlantModal()">
+    <div class="bg-white rounded-3xl max-w-md w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+      <div class="relative flex-shrink-0">
+        <img id="plant-modal-img" src="" alt="" class="w-full h-56 object-cover rounded-t-3xl">
+        <button onclick="closePlantModal()" class="absolute top-3 right-3 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto modal-scroll" style="scrollbar-width: none; -ms-overflow-style: none;">
+        <h2 id="plant-modal-name" class="text-2xl font-bold text-forest-900"></h2>
+        <p id="plant-modal-scientific" class="text-sm text-gray-500 italic mb-2"></p>
+        <button id="modal-favorite-btn" onclick="toggleModalFavorite()" class="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-gray-200 hover:border-red-400 hover:bg-red-50 transition text-sm font-medium text-gray-600">
+          <span id="modal-favorite-icon"></span>
+          <span id="modal-favorite-text">Save to Favorites</span>
+        </button>
+        <div class="grid grid-cols-2 gap-3 mb-6">
+          <div class="bg-forest-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-gray-500 mb-1">☀️  Light</p>
+            <p id="plant-modal-light" class="text-sm font-medium text-forest-700"></p>
+          </div>
+          <div class="bg-blue-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-gray-500 mb-1">💧 Water</p>
+            <p id="plant-modal-water" class="text-sm font-medium text-blue-700"></p>
+          </div>
+          <div class="bg-cyan-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-gray-500 mb-1">💨 Humidity</p>
+            <p id="plant-modal-humidity" class="text-sm font-medium text-cyan-700"></p>
+          </div>
+          <div class="bg-amber-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-gray-500 mb-1">🌡️ Temp</p>
+            <p id="plant-modal-temp" class="text-sm font-medium text-amber-700"></p>
+          </div>
+        </div>
+        <div class="mb-6">
+          <h3 class="font-semibold text-forest-800 mb-3 flex items-center gap-2">
+            <span class="text-lime-500">✨</span> Care Tips
+          </h3>
+          <ul id="plant-modal-tips" class="space-y-2"></ul>
+        </div>
+        <div class="bg-amber-50 rounded-2xl p-4">
+          <h3 class="font-semibold text-amber-800 mb-3 flex items-center gap-2">
+            <span>⚠️</span> Watch Out
+          </h3>
+          <ul id="plant-modal-problems" class="space-y-2"></ul>
+        </div>
+        <!-- Premium Section (only for paid users) -->
+        <div id="plant-modal-premium" class="hidden mt-6">
+          <div class="bg-gradient-to-r from-forest-600 to-lime-500 rounded-2xl p-4 text-white">
+            <h3 class="font-bold text-lg mb-2 flex items-center gap-2">
+              <span>🌟</span> Premium Care Guide
+            </h3>
+            <p id="plant-modal-premium-text" class="text-sm text-white/90 leading-relaxed"></p>
+          </div>
+        </div>
+
+        <!-- Already subscribed CTA -->
+        <div id="subscribed-cta" class="hidden mt-6 text-center">
+          <p class="text-sm text-forest-600 mb-3 font-medium">You have Premium access! 🌿</p>
+          <a href="#pricing" onclick="closePlantModal()" class="inline-flex items-center gap-2 text-forest-600 font-semibold hover:text-forest-700 transition">
+            <i data-lucide="message-circle" class="w-4 h-4"></i> Chat with us
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN REQUIRED MODAL -->
+  <div id="login-required-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closeLoginRequiredModal()">
+    <div class="bg-white rounded-3xl max-w-sm w-full overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+      <div class="p-8 text-center">
+        <div class="text-8xl mb-4">🌿</div>
+        <h2 class="text-xl font-bold text-forest-900 mb-2">Login to View Plants</h2>
+        <p class="text-gray-500 text-sm mb-6">Create a free account or login to see detailed plant care guides.</p>
+        <a href="login.html" class="block w-full bg-forest-600 text-white font-semibold py-3 rounded-xl hover:bg-forest-700 transition shadow-lg mb-3">
+          Login / Register
+        </a>
+        <button onclick="closeLoginRequiredModal()" class="w-full text-gray-400 hover:text-gray-600 transition text-sm py-2">
+          Maybe later
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIVACY POLICY POPUP -->
+  <div id="privacy-popup" class="fixed inset-0 z-[200] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closePrivacyPopup()">
+    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between p-4 border-b border-gray-100">
+        <h2 class="text-lg font-bold text-forest-900">Privacy Policy</h2>
+        <button onclick="closePrivacyPopup()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed">
+        <p class="text-xs text-gray-400 mb-4">Last updated: May 11, 2026</p>
+        <p class="mb-4">PlantGlow is operated by <strong>Tradex Dev. Co.</strong> ("we", "our", or "us"). We are committed to protecting your privacy.</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">1. Information We Collect</h3>
+        <p class="mb-2"><strong>WhatsApp Login:</strong> Your WhatsApp phone number is used solely for login authentication. We send a <strong>verification code</strong> via WhatsApp — no password required.</p>
+        <p class="mb-4"><strong>Email (Optional):</strong> If you register for our newsletter, we collect your email to send service updates and promotions.</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">2. How We Use Your Information</h3>
+        <ul class="list-disc pl-5 mb-4 space-y-1">
+          <li>Login authentication via email or Google</li>
+          <li>Service updates about PlantGlow</li>
+          <li>Promotions about Tradex Dev. Co.</li>
+        </ul>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">3. Data Sharing</h3>
+        <p class="mb-2">We <strong>DO NOT</strong>:</p>
+        <ul class="list-disc pl-5 mb-4 space-y-1 text-red-600">
+          <li>Share your email with any third party</li>
+          <li>Share your email with any third party</li>
+          <li>Sell or rent your contact information</li>
+        </ul>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">4. Your Rights</h3>
+        <p class="mb-4">You can request access, correction, or deletion of your data at any time. To unsubscribe from emails, contact <strong>hello@plantglow.com</strong>.</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">5. Contact</h3>
+        <p>Questions? Email us at <strong>hello@plantglow.com</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openPrivacyPopup() {
+      document.getElementById('privacy-popup').classList.remove('hidden');
+      document.getElementById('privacy-popup').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+    function closePrivacyPopup() {
+      document.getElementById('privacy-popup').classList.add('hidden');
+      document.getElementById('privacy-popup').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  </script>
+
+  <!-- TERMS AND CONDITIONS POPUP -->
+  <div id="terms-popup" class="fixed inset-0 z-[200] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closeTermsPopup()">
+    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between p-4 border-b border-gray-100">
+        <h2 class="text-lg font-bold text-forest-900">Terms and Conditions</h2>
+        <button onclick="closeTermsPopup()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed">
+        <p class="text-xs text-gray-400 mb-4">Last updated: May 11, 2026</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">1. Acceptance of Terms</h3>
+        <p class="mb-4">By using PlantGlow, you agree to these Terms and Conditions. If you do not agree, please do not use our service.</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">2. Description of Service</h3>
+        <p class="mb-4">PlantGlow provides an online plant database and care guides to help users grow plants successfully. The service is provided by <strong>Tradex Dev. Co.</strong></p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">3. User Accounts</h3>
+        <p class="mb-2"><strong>WhatsApp Login:</strong> You may log in using your WhatsApp phone number. A verification code will be sent to your WhatsApp to verify your identity. You are responsible for keeping your account credentials secure.</p>
+        <p class="mb-4">You must be at least 18 years old to create an account.</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">4. User Feedback and Data Usage</h3>
+        <p class="mb-2">We value your feedback! Any information, suggestions, or data you provide through PlantGlow may be used by <strong>Tradex Dev. Co.</strong> to:</p>
+        <ul class="list-disc pl-5 mb-4 space-y-1">
+          <li>Improve and enhance plant information in our database</li>
+          <li>Improve the way we help users grow plants</li>
+          <li>Develop new features and services</li>
+        </ul>
+        <p class="mb-4">By submitting feedback, you grant us permission to use your input for these purposes without compensation.</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">5. Acceptable Use</h3>
+        <p class="mb-4">You agree not to misuse the service, attempt unauthorized access, or disrupt the platform. We reserve the right to suspend accounts that violate these terms.</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">6. Disclaimer</h3>
+        <p class="mb-4">PlantGlow provides plant care information for reference purposes. While we strive for accuracy, we cannot guarantee that all information is completely error-free. Use your own judgment when caring for your plants.</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">7. Privacy</h3>
+        <p class="mb-4">Your use of PlantGlow is also governed by our Privacy Policy. Please review it to understand how we handle your data.</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">8. Changes to Terms</h3>
+        <p class="mb-4">We may update these terms from time to time. Continued use of the service after changes constitutes acceptance of the new terms.</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">9. Contact</h3>
+        <p>Questions about these terms? Contact us at <strong>hello@plantglow.com</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openTermsPopup() {
+      document.getElementById('terms-popup').classList.remove('hidden');
+      document.getElementById('terms-popup').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+    function closeTermsPopup() {
+      document.getElementById('terms-popup').classList.add('hidden');
+      document.getElementById('terms-popup').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
