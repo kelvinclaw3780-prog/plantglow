@@ -430,6 +430,7 @@
         showingAll = false;
       }
       lucide.createIcons();
+      window.BASE_URL = 'https://plantglow-production.up.railway.app';
       updateNav();
       showLoginToast();
       setTimeout(function() { renderPlants(); }, 100);
@@ -717,7 +718,7 @@ function handleBrowseAll() {
     function handleEmailSubmit(e) {
       e.preventDefault();
       var email = document.getElementById('email-input').value;
-      fetch('/api/early-access', {
+      fetch(`${window.BASE_URL}/api/early-access`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email })
