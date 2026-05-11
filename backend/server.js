@@ -1,5 +1,6 @@
 const express = require('express');
 const initSqlJs = require('sql.js');
+const cors = require('cors');
 const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
@@ -77,6 +78,7 @@ const resend = new Resend('re_YoKAhdaE_8mTNeqosuCo9PVTRVx4oWH1q');
 
 // ─── Middleware ─────────────────────────────────────────────────────────────
 app.use(express.json());
+app.use(cors());
 app.use(express.static(path.join(__dirname, '..')));
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
