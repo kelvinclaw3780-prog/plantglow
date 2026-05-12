@@ -11,7 +11,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script>
-    tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] }, colors: { forest: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac', 400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d', 950: '#052e16' } } } } };
+    tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] }, colors: { forest: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac', 400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d', 950: '#052e16' } } } };
     const BASE_URL = 'https://plantglow-production.up.railway.app';
     const firebaseConfig = { apiKey: "AIzaSyDsB72W2yZM", authDomain: "plantglow.firebaseapp.com", projectId: "plantglow", storageBucket: "plantglow.firebasestorage.app", messagingSenderId: "1055271049519", appId: "1:1055271049519:web:45b30de6eb0de24d3869da", measurementId: "G-D7TWQTTMWM" };
     if (firebaseConfig.apiKey !== "YOUR_API_KEY") { firebase.initializeApp(firebaseConfig); }
@@ -23,7 +23,7 @@
   <div class="bg-white rounded-3xl shadow-xl p-8 w-full max-w-sm">
     <h1 id="card-title" class="text-2xl font-bold text-forest-900 text-center mb-2">Welcome to PlantGlow</h1>
     <p id="card-subtitle" class="text-gray-500 text-sm text-center mb-6">Sign in to save plants and get care guides</p>
-    <button onclick="signInWithGoogle()" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-3 rounded-xl transition shadow-sm mb-4">
+    <button onclick="signInWithGoogle()" id="google-btn" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-3 rounded-xl transition shadow-sm mb-4">
       <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
       Continue with Google
     </button>
@@ -108,7 +108,9 @@
       <div class="flex items-center justify-between p-4 border-b"><div class="flex items-center gap-2"><img src="kelvin_logo_transparent.png" alt="PlantGlow" class="w-8 h-8 object-contain glow-leaf"><h2 class="text-lg font-bold text-forest-900">Privacy Policy</h2></div><button onclick="closePrivacyPopup()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 transition">✕</button></div>
       <div class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed">
         <p class="text-xs text-gray-400 mb-4">Last updated: May 11, 2026</p>
-        <p><strong>Email:</strong> We collect your email for account verification.<br><strong>Plant Data:</strong> Plants you save are stored locally on your device.</p>
+        <p><strong>Email:</strong> We collect your email for account verification and occasional product updates.</p>
+        <p class="mt-4"><strong>Plant Data:</strong> Plants you save are stored locally on your device.</p>
+        <p class="mt-4"><strong>Third Parties:</strong> We use Google (Firebase) for authentication and Resend for transactional emails.</p>
         <p class="mt-4">We do not sell or share your personal information with third parties.</p>
         <p class="mt-4"><strong>Contact:</strong> hello@plantglow.com</p>
       </div>
@@ -119,36 +121,352 @@
       <div class="flex items-center justify-between p-4 border-b"><div class="flex items-center gap-2"><img src="kelvin_logo_transparent.png" alt="PlantGlow" class="w-8 h-8 object-contain glow-leaf"><h2 class="text-lg font-bold text-forest-900">Terms & Conditions</h2></div><button onclick="closeTermsPopup()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 transition">✕</button></div>
       <div class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed">
         <p class="text-xs text-gray-400 mb-4">Last updated: May 11, 2026</p>
-        <p>By using PlantGlow, you agree to use the service responsibly. You must be at least 18 years old to create an account.</p>
+        <p>By using PlantGlow, you agree to use the service responsibly and not exploit it for illegal purposes.</p>
+        <p class="mt-4"><strong>Accounts:</strong> You must be at least 18 years old to create an account. You are responsible for keeping your credentials safe.</p>
+        <p class="mt-4"><strong>Plant Advice:</strong> PlantGlow provides general guidance only — not professional horticultural advice.</p>
         <p class="mt-4"><strong>Contact:</strong> hello@plantglow.com</p>
       </div>
     </div>
   </div>
   <script>
-    let isRegisterMode = false, isEmailEntered = false, pendingEmail = '';
-    async function signInWithGoogle() { try { const provider = new firebase.auth.GoogleAuthProvider(); const result = await firebase.auth().signInWithPopup(provider); const res = await fetch(BASE_URL + '/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' }, body: JSON.stringify({ idToken: result.credential.idToken, email: result.user.email, name: result.user.displayName }) }); const data = await res.json(); if (data.success) { localStorage.setItem('plantglow_token', data.token); localStorage.setItem('plantglow_user', JSON.stringify(data.user)); showSuccess('Welcome back!'); } else { showEmailError(data.error || 'Sign-in failed'); } } catch (err) { if (!err.message?.includes('popup_closed')) { showEmailError('Google sign-in failed. Please try again.'); } } }
-    async function handleEmailAction() { const email = document.getElementById('email-input').value.trim(); if (!email || !email.includes('@')) { showEmailError('Please enter a valid email address'); return; } hideEmailError(); if (isEmailEntered) { isRegisterMode ? handleEmailRegister() : handleEmailPasswordLogin(); } else { await checkEmailExists(email); } }
-    async function checkEmailExists(email) { setEmailBtnLoading(true); try { const res = await fetch(BASE_URL + '/api/auth/check-email', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' }, body: JSON.stringify({ email }) }); const data = await res.json(); isEmailEntered = true; pendingEmail = email; if (data.exists) { if (data.googleOnly) { showEmailError('This email uses Google sign-in. Please tap "Continue with Google" above.'); isEmailEntered = false; setEmailBtnLoading(false); return; } document.getElementById('password-login-section').classList.remove('hidden'); document.getElementById('email-input').disabled = true; document.getElementById('email-btn-text').textContent = 'Sign In'; document.getElementById('toggle-text').textContent = "Don't have an account?"; document.getElementById('toggle-link').textContent = 'Register'; } else { if (!isRegisterMode) toggleEmailMode(); document.getElementById('register-password-section').classList.remove('hidden'); document.getElementById('agreement-checkboxes').classList.remove('hidden'); document.getElementById('email-input').disabled = true; document.getElementById('email-btn-text').textContent = 'Create Account'; document.getElementById('toggle-text').textContent = 'Already have an account?'; document.getElementById('toggle-link').textContent = 'Sign in'; } } catch (err) { showEmailError('Connection error. Please try again.'); isEmailEntered = false; } setEmailBtnLoading(false); }
-    async function handleEmailPasswordLogin() { const password = document.getElementById('password-login-input').value; if (!password) { showPasswordLoginError('Please enter your password'); return; } setEmailBtnLoading(true); try { const res = await fetch(BASE_URL + '/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' }, body: JSON.stringify({ email: pendingEmail, password }) }); const data = await res.json(); if (data.success) { localStorage.setItem('plantglow_token', data.token); localStorage.setItem('plantglow_user', JSON.stringify(data.user)); showSuccess('Welcome back!'); } else { showPasswordLoginError(data.error || 'Invalid password'); setEmailBtnLoading(false); } } catch (err) { showPasswordLoginError('Connection error. Please try again.'); setEmailBtnLoading(false); } }
-    async function handleEmailRegister() { const password = document.getElementById('register-password-input').value; if (password.length < 6) { showRegisterPasswordError('Password must be at least 6 characters'); return; } if (!document.getElementById('agree-privacy').checked || !document.getElementById('agree-terms').checked) { showRegisterPasswordError('Please agree to Privacy Policy and Terms'); return; } setEmailBtnLoading(true); try { const res = await fetch(BASE_URL + '/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' }, body: JSON.stringify({ email: pendingEmail, password, name: pendingEmail.split('@')[0] }) }); const data = await res.json(); if (data.success) { localStorage.setItem('plantglow_token', data.token); localStorage.setItem('plantglow_user', JSON.stringify(data.user)); showSuccess('Account created! Welcome to PlantGlow!'); } else { showRegisterPasswordError(data.error || 'Registration failed'); setEmailBtnLoading(false); } } catch (err) { showRegisterPasswordError('Connection error. Please try again.'); setEmailBtnLoading(false); } }
-    function toggleEmailMode() { isRegisterMode = !isRegisterMode; if (isRegisterMode) { document.getElementById('card-title').textContent = 'Create Account'; document.getElementById('card-subtitle').textContent = 'Sign up to save plants and get care guides'; document.getElementById('email-btn-text').textContent = 'Continue with Email'; document.getElementById('toggle-text').textContent = 'Already have an account?'; document.getElementById('toggle-link').textContent = 'Sign in'; } else { document.getElementById('card-title').textContent = 'Welcome Back'; document.getElementById('card-subtitle').textContent = 'Sign in to your account'; document.getElementById('email-btn-text').textContent = 'Continue with Email'; document.getElementById('toggle-text').textContent = 'New to PlantGlow?'; document.getElementById('toggle-link').textContent = 'Register here'; } document.getElementById('password-login-section').classList.add('hidden'); document.getElementById('register-password-section').classList.add('hidden'); document.getElementById('agreement-checkboxes').classList.add('hidden'); }
-    async function handleVerifyCode() { const code = document.getElementById('verify-code-input').value.trim(); if (code.length !== 6) { showVerifyCodeError('Please enter the 6-digit code'); return; } setEmailBtnLoading(true); setEmailBtnLoading(false); }
-    async function resendCode() { const btn = document.getElementById('resend-btn'); btn.disabled = true; btn.textContent = 'Sent!'; setTimeout(() => { btn.disabled = false; btn.textContent = 'Resend code'; }, 3000); }
-    function showVerifyCodeError(msg) { const el = document.getElementById('verify-code-error'); el.textContent = msg; el.classList.remove('hidden'); }
+    // ─── State ─────────────────────────────────────────────────────────────
+    let isRegisterMode = false;
+    let isEmailEntered = false;   // email typed + checked
+    let pendingEmail = '';
+    let pendingPassword = '';
+    let isCodeSent = false;       // verification code sent
+
+    // ─── Google Sign-In ───────────────────────────────────────────────────
+    async function signInWithGoogle() {
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await firebase.auth().signInWithPopup(provider);
+        const idToken = result.credential.idToken;
+        const res = await fetch(BASE_URL + '/api/auth/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' },
+          body: JSON.stringify({ idToken, email: result.user.email, name: result.user.displayName })
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('plantglow_token', data.token);
+          localStorage.setItem('plantglow_user', JSON.stringify(data.user));
+          showSuccess('Welcome back!');
+        } else {
+          showEmailError(data.error || 'Sign-in failed. Please try again.');
+        }
+      } catch (err) {
+        if (!err.message?.includes('popup_closed_by_user') && !err.message?.includes('cancelled')) {
+          console.error('Google error:', err);
+          showEmailError('Google sign-in failed. Please try again.');
+        }
+      }
+    }
+
+    // ─── Main Email Action ────────────────────────────────────────────────
+    async function handleEmailAction() {
+      const email = document.getElementById('email-input').value.trim();
+      if (!email || !email.includes('@')) {
+        showEmailError('Please enter a valid email address');
+        return;
+      }
+      hideEmailError();
+
+      if (!isEmailEntered) {
+        // Step 1: Check email existence on server
+        await checkEmailExists(email);
+      } else if (!isCodeSent) {
+        // Step 2: Submit registration (sends verification code)
+        if (isRegisterMode) {
+          await handleEmailRegister();
+        } else {
+          // Login without password? No — user must enter password first
+          showPasswordLoginError('Please enter your password');
+        }
+      } else {
+        // Step 3: Verify the code
+        await handleVerifyCode();
+      }
+    }
+
+    // ─── Check email (Step 1) ────────────────────────────────────────────
+    async function checkEmailExists(email) {
+      setEmailBtnLoading(true);
+      try {
+        const res = await fetch(BASE_URL + '/api/auth/check-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        isEmailEntered = true;
+        pendingEmail = email;
+
+        if (data.exists) {
+          if (data.googleOnly) {
+            showEmailError('This email uses Google sign-in. Please tap "Continue with Google" above.');
+            isEmailEntered = false;
+            setEmailBtnLoading(false);
+            return;
+          }
+          // Existing email/password account → show password field
+          document.getElementById('password-login-section').classList.remove('hidden');
+          document.getElementById('email-input').disabled = true;
+          document.getElementById('email-btn-text').textContent = 'Sign In';
+          document.getElementById('toggle-text').textContent = "Don't have an account?";
+          document.getElementById('toggle-link').textContent = 'Register';
+          isRegisterMode = false;
+        } else {
+          // New email → go to register mode
+          if (!isRegisterMode) toggleEmailMode();
+          document.getElementById('register-password-section').classList.remove('hidden');
+          document.getElementById('agreement-checkboxes').classList.remove('hidden');
+          document.getElementById('email-input').disabled = true;
+          document.getElementById('email-btn-text').textContent = 'Create Account';
+          document.getElementById('toggle-text').textContent = 'Already have an account?';
+          document.getElementById('toggle-link').textContent = 'Sign in';
+          isRegisterMode = true;
+        }
+      } catch (err) {
+        showEmailError('Connection error. Please try again.');
+        isEmailEntered = false;
+      }
+      setEmailBtnLoading(false);
+    }
+
+    // ─── Email + Password Login ─────────────────────────────────────────
+    async function handleEmailPasswordLogin() {
+      const password = document.getElementById('password-login-input').value;
+      if (!password) {
+        showPasswordLoginError('Please enter your password');
+        return;
+      }
+      setEmailBtnLoading(true);
+      try {
+        const res = await fetch(BASE_URL + '/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' },
+          body: JSON.stringify({ email: pendingEmail, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('plantglow_token', data.token);
+          localStorage.setItem('plantglow_user', JSON.stringify(data.user));
+          showSuccess('Welcome back!');
+        } else {
+          showPasswordLoginError(data.error || 'Invalid email or password');
+          setEmailBtnLoading(false);
+        }
+      } catch (err) {
+        showPasswordLoginError('Connection error. Please try again.');
+        setEmailBtnLoading(false);
+      }
+    }
+
+    // ─── Email Registration (sends code) ────────────────────────────────
+    async function handleEmailRegister() {
+      const password = document.getElementById('register-password-input').value;
+      if (password.length < 6) {
+        showRegisterPasswordError('Password must be at least 6 characters');
+        return;
+      }
+      if (!document.getElementById('agree-privacy').checked || !document.getElementById('agree-terms').checked) {
+        showRegisterPasswordError('Please agree to Privacy Policy and Terms');
+        return;
+      }
+      pendingPassword = password;
+      setEmailBtnLoading(true);
+      try {
+        const res = await fetch(BASE_URL + '/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' },
+          body: JSON.stringify({ email: pendingEmail, password: pendingPassword })
+        });
+        const data = await res.json();
+        if (data.success) {
+          isCodeSent = true;
+          // Show verification code input
+          document.getElementById('register-password-section').classList.add('hidden');
+          document.getElementById('agreement-checkboxes').classList.add('hidden');
+          document.getElementById('verify-code-section').classList.remove('hidden');
+          document.getElementById('email-btn-text').textContent = 'Verify Code';
+          document.getElementById('toggle-text').textContent = '';
+          document.getElementById('toggle-link').textContent = '';
+          document.getElementById('toggle-btn').style.display = 'none';
+          showInfo('Verification code sent! Check your email.');
+        } else {
+          showRegisterPasswordError(data.error || 'Registration failed');
+        }
+      } catch (err) {
+        showRegisterPasswordError('Connection error. Please try again.');
+      }
+      setEmailBtnLoading(false);
+    }
+
+    // ─── Verify Code ─────────────────────────────────────────────────────
+    async function handleVerifyCode() {
+      const code = document.getElementById('verify-code-input').value.trim();
+      if (code.length !== 6) {
+        showVerifyCodeError('Please enter the 6-digit code');
+        return;
+      }
+      setEmailBtnLoading(true);
+      try {
+        const res = await fetch(BASE_URL + '/api/auth/verify-register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' },
+          body: JSON.stringify({ email: pendingEmail, password: pendingPassword, code })
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('plantglow_token', data.token);
+          localStorage.setItem('plantglow_user', JSON.stringify(data.user));
+          showSuccess('Account created! Welcome to PlantGlow!');
+        } else {
+          showVerifyCodeError(data.error || 'Invalid or expired code');
+          setEmailBtnLoading(false);
+        }
+      } catch (err) {
+        showVerifyCodeError('Connection error. Please try again.');
+        setEmailBtnLoading(false);
+      }
+    }
+
+    // ─── Resend Code ─────────────────────────────────────────────────────
+    async function resendCode() {
+      const btn = document.getElementById('resend-btn');
+      btn.disabled = true;
+      btn.textContent = 'Sent!';
+      try {
+        await fetch(BASE_URL + '/api/auth/resend-code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' },
+          body: JSON.stringify({ email: pendingEmail })
+        });
+      } catch (_) {}
+      setTimeout(() => { btn.disabled = false; btn.textContent = 'Resend code'; }, 30000);
+    }
+
+    // ─── Toggle Register/Login Mode ──────────────────────────────────────
+    function toggleEmailMode() {
+      isRegisterMode = !isRegisterMode;
+      document.getElementById('password-login-section').classList.add('hidden');
+      document.getElementById('register-password-section').classList.add('hidden');
+      document.getElementById('verify-code-section').classList.add('hidden');
+      document.getElementById('toggle-btn').style.display = '';
+      if (isRegisterMode) {
+        document.getElementById('card-title').textContent = 'Create Account';
+        document.getElementById('card-subtitle').textContent = 'Sign up to save plants and get care guides';
+        document.getElementById('toggle-text').textContent = 'Already have an account?';
+        document.getElementById('toggle-link').textContent = 'Sign in';
+      } else {
+        document.getElementById('card-title').textContent = 'Welcome Back';
+        document.getElementById('card-subtitle').textContent = 'Sign in to your account';
+        document.getElementById('toggle-text').textContent = 'New to PlantGlow?';
+        document.getElementById('toggle-link').textContent = 'Register here';
+      }
+      document.getElementById('email-input').disabled = false;
+      document.getElementById('email-btn-text').textContent = 'Continue with Email';
+      isCodeSent = false;
+      isEmailEntered = false;
+      pendingEmail = '';
+      pendingPassword = '';
+    }
+
+    // ─── Helpers ─────────────────────────────────────────────────────────
     function showEmailError(msg) { const el = document.getElementById('email-error'); el.textContent = msg; el.classList.remove('hidden'); }
     function hideEmailError() { document.getElementById('email-error').classList.add('hidden'); }
     function showPasswordLoginError(msg) { const el = document.getElementById('password-login-error'); el.textContent = msg; el.classList.remove('hidden'); }
     function showRegisterPasswordError(msg) { const el = document.getElementById('register-password-error'); el.textContent = msg; el.classList.remove('hidden'); }
-    function setEmailBtnLoading(loading) { const btn = document.getElementById('email-btn'); if (loading) { btn.classList.add('loading'); btn.disabled = true; } else { btn.classList.remove('loading'); btn.disabled = false; } }
-    function showSuccess(msg) { document.getElementById('success-title').textContent = msg; document.getElementById('success-modal').classList.remove('hidden'); document.getElementById('success-modal').classList.add('flex'); setTimeout(() => { window.location.href = 'index.html'; }, 1500); }
-    function openForgotPassword() { document.getElementById('forgot-pw-modal').classList.remove('hidden'); document.getElementById('forgot-pw-modal').classList.add('flex'); document.getElementById('forgot-email-input').value = document.getElementById('email-input').value || ''; document.getElementById('forgot-pw-step-1').classList.remove('hidden'); document.getElementById('forgot-pw-step-2').classList.add('hidden'); }
-    function closeForgotPassword() { document.getElementById('forgot-pw-modal').classList.add('hidden'); document.getElementById('forgot-pw-modal').classList.remove('flex'); }
-    async function handleForgotPassword() { const email = document.getElementById('forgot-email-input').value.trim(); if (!email || !email.includes('@')) { document.getElementById('forgot-email-error').textContent = 'Please enter a valid email'; document.getElementById('forgot-email-error').classList.remove('hidden'); return; } try { const res = await fetch(BASE_URL + '/api/auth/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' }, body: JSON.stringify({ email }) }); const data = await res.json(); if (data.success) { document.getElementById('forgot-email-success').textContent = data.message; document.getElementById('forgot-email-success').classList.remove('hidden'); document.getElementById('forgot-pw-step-1').classList.add('hidden'); document.getElementById('forgot-pw-step-2').classList.remove('hidden'); document.getElementById('forgot-reset-email').textContent = email; } else { document.getElementById('forgot-email-error').textContent = data.error || 'Failed to send code'; document.getElementById('forgot-email-error').classList.remove('hidden'); } } catch (err) { document.getElementById('forgot-email-error').textContent = 'Connection error'; document.getElementById('forgot-email-error').classList.remove('hidden'); } }
-    async function handleResetPassword() { const email = document.getElementById('forgot-email-input').value.trim(); const code = document.getElementById('forgot-code-input').value.trim(); const password = document.getElementById('forgot-new-password-input').value; if (!code || password.length < 6) return; try { const res = await fetch(BASE_URL + '/api/auth/reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' }, body: JSON.stringify({ email, code, password }) }); const data = await res.json(); if (data.success) { closeForgotPassword(); showSuccess('Password reset! Please sign in.'); } else { document.getElementById('forgot-code-error').textContent = data.error || 'Failed to reset'; document.getElementById('forgot-code-error').classList.remove('hidden'); } } catch (err) { document.getElementById('forgot-code-error').textContent = 'Connection error'; document.getElementById('forgot-code-error').classList.remove('hidden'); } }
+    function showVerifyCodeError(msg) { const el = document.getElementById('verify-code-error'); el.textContent = msg; el.classList.remove('hidden'); }
+    function showInfo(msg) { const el = document.getElementById('email-error'); el.textContent = msg; el.className = 'text-forest-600 text-sm mt-2'; el.classList.remove('hidden'); setTimeout(() => { hideEmailError(); el.className = 'text-red-500 text-sm mt-2 hidden'; }, 5000); }
+    function setEmailBtnLoading(loading) {
+      const btn = document.getElementById('email-btn');
+      if (loading) { btn.classList.add('loading'); btn.disabled = true; }
+      else { btn.classList.remove('loading'); btn.disabled = false; }
+    }
+    function showSuccess(msg) {
+      document.getElementById('success-title').textContent = msg;
+      document.getElementById('success-modal').classList.remove('hidden');
+      document.getElementById('success-modal').classList.add('flex');
+      setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+    }
+
+    // ─── Forgot Password ────────────────────────────────────────────────
+    function openForgotPassword() {
+      document.getElementById('forgot-pw-modal').classList.remove('hidden');
+      document.getElementById('forgot-pw-modal').classList.add('flex');
+      document.getElementById('forgot-email-input').value = document.getElementById('email-input').value || '';
+    }
+    function closeForgotPassword() {
+      document.getElementById('forgot-pw-modal').classList.add('hidden');
+      document.getElementById('forgot-pw-modal').classList.remove('flex');
+      document.getElementById('forgot-email-error').classList.add('hidden');
+      document.getElementById('forgot-email-success').classList.add('hidden');
+      document.getElementById('forgot-pw-step-1').classList.remove('hidden');
+      document.getElementById('forgot-pw-step-2').classList.add('hidden');
+    }
+    async function handleForgotPassword() {
+      const email = document.getElementById('forgot-email-input').value.trim();
+      if (!email || !email.includes('@')) {
+        document.getElementById('forgot-email-error').textContent = 'Please enter a valid email';
+        document.getElementById('forgot-email-error').classList.remove('hidden');
+        return;
+      }
+      try {
+        const res = await fetch(BASE_URL + '/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('forgot-email-success').textContent = data.message;
+          document.getElementById('forgot-email-success').classList.remove('hidden');
+          document.getElementById('forgot-pw-step-1').classList.add('hidden');
+          document.getElementById('forgot-pw-step-2').classList.remove('hidden');
+          document.getElementById('forgot-reset-email').textContent = email;
+        } else {
+          document.getElementById('forgot-email-error').textContent = data.error || 'Failed to send code';
+          document.getElementById('forgot-email-error').classList.remove('hidden');
+        }
+      } catch (err) {
+        document.getElementById('forgot-email-error').textContent = 'Connection error';
+        document.getElementById('forgot-email-error').classList.remove('hidden');
+      }
+    }
+    async function handleResetPassword() {
+      const email = document.getElementById('forgot-email-input').value.trim();
+      const code = document.getElementById('forgot-code-input').value.trim();
+      const password = document.getElementById('forgot-new-password-input').value;
+      if (!code || password.length < 6) return;
+      try {
+        const res = await fetch(BASE_URL + '/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Origin': 'https://plantglow.vercel.app' },
+          body: JSON.stringify({ email, code, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeForgotPassword();
+          showSuccess('Password reset! Please sign in.');
+        } else {
+          document.getElementById('forgot-code-error').textContent = data.error || 'Failed to reset';
+          document.getElementById('forgot-code-error').classList.remove('hidden');
+        }
+      } catch (err) {
+        document.getElementById('forgot-code-error').textContent = 'Connection error';
+        document.getElementById('forgot-code-error').classList.remove('hidden');
+      }
+    }
+
+    // ─── Popups ──────────────────────────────────────────────────────────
     function openPrivacyPopup() { document.getElementById('privacy-popup').classList.remove('hidden'); document.getElementById('privacy-popup').classList.add('flex'); }
     function closePrivacyPopup() { document.getElementById('privacy-popup').classList.add('hidden'); document.getElementById('privacy-popup').classList.remove('flex'); }
     function openTermsPopup() { document.getElementById('terms-popup').classList.remove('hidden'); document.getElementById('terms-popup').classList.add('flex'); }
     function closeTermsPopup() { document.getElementById('terms-popup').classList.add('hidden'); document.getElementById('terms-popup').classList.remove('flex'); }
+
+    // ─── Redirect if already logged in ────────────────────────────────────
     if (localStorage.getItem('plantglow_token')) { window.location.href = 'index.html'; }
   </script>
 </body>

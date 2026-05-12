@@ -5,6 +5,22 @@ const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 const { Resend } = require('resend');
+const admin = require('firebase-admin');
+
+// ─── Firebase Admin Setup ───────────────────────────────────────────────────
+let firebaseInitialized = false;
+try {
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+    firebaseInitialized = true;
+    console.log('🔥 Firebase Admin initialized');
+  } else {
+    console.log('⚠️ FIREBASE_SERVICE_ACCOUNT not set - Google sign-in will not work');
+  }
+} catch (err) {
+  console.error('Firebase Admin init failed:', err.message);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -140,11 +156,18 @@ app.post('/api/auth/check-email', async (req, res) => {
   res.json({ exists: true, googleOnly: !!row.google_id });
 });
 
-// POST /api/auth/register - Send verification code
+// POST /api/auth/register - Send verification code (step 1 of registration)
 app.post('/api/auth/register', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
   if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
+
+  // Check if email already registered (any method)
+  const existing = await dbGet('SELECT id, google_id FROM users WHERE email = ?', [email]);
+  if (existing) {
+    if (existing.google_id) return res.status(400).json({ error: 'This email uses Google sign-in. Please tap "Continue with Google" instead.' });
+    return res.status(400).json({ error: 'This email is already registered. Please sign in instead.' });
+  }
 
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
@@ -166,7 +189,7 @@ app.post('/api/auth/register', async (req, res) => {
         </div>
       `
     });
-    res.json({ success: true, message: 'Verification code sent!' });
+    res.json({ success: true, message: 'Verification code sent!', email });
   } catch (emailErr) {
     console.error('Email send error:', emailErr);
     res.status(500).json({ error: 'Failed to send verification email' });
@@ -244,20 +267,31 @@ app.post('/api/auth/google', async (req, res) => {
   const { idToken, name, email } = req.body;
   if (!idToken) return res.status(400).json({ error: 'No token provided' });
 
+  // Verify the Google idToken with Firebase Admin
+  let decodedToken;
+  try {
+    decodedToken = await admin.auth().verifyIdToken(idToken);
+  } catch (err) {
+    console.error('Google token verification failed:', err.message);
+    return res.status(401).json({ error: 'Invalid or expired Google token. Please try again.' });
+  }
+
+  const googleEmail = decodedToken.email;
+  const googleName = decodedToken.name || name || googleEmail.split('@')[0];
   const token = crypto.randomBytes(32).toString('hex');
-  const existingRow = await dbGet('SELECT * FROM users WHERE email = ? OR google_id = ?', [email, idToken]);
+
+  // Try to find existing user by google_id or email
+  const existingRow = await dbGet('SELECT * FROM users WHERE email = ? OR google_id = ?', [googleEmail, idToken]);
 
   if (existingRow) {
     await dbRun('UPDATE users SET google_id = ?, token = ?, name = ? WHERE id = ?',
-      [idToken, token, name || existingRow.name, existingRow.id]);
-    return res.json({ success: true, token, user: { id: existingRow.id, email: existingRow.email, name: name || existingRow.name } });
+      [idToken, token, googleName || existingRow.name, existingRow.id]);
+    return res.json({ success: true, token, user: { id: existingRow.id, email: existingRow.email, name: googleName || existingRow.name } });
   }
 
-  const userEmail = email || `google_${idToken.slice(0, 8)}@unknown.com`;
-  const userName = name || userEmail.split('@')[0];
   await dbRun('INSERT INTO users (email, google_id, name, token, created_at) VALUES (?, ?, ?, ?, ?)',
-    [userEmail, idToken, userName, token, new Date().toISOString()]);
-  const newUser = await dbGet('SELECT id, email, name FROM users WHERE email = ?', [userEmail]);
+    [googleEmail, idToken, googleName, token, new Date().toISOString()]);
+  const newUser = await dbGet('SELECT id, email, name FROM users WHERE email = ?', [googleEmail]);
   res.json({ success: true, token, user: { id: newUser.id, email: newUser.email, name: newUser.name } });
 });
 
