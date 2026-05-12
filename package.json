@@ -1,0 +1,8 @@
+{
+  "name": "plantglow",
+  "version": "1.0.0",
+  "description": "PlantGlow frontend + backend",
+  "scripts": {
+    "start": "cd backend && node server.js"
+  }
+}
