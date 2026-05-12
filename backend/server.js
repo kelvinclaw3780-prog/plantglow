@@ -278,8 +278,9 @@ app.post('/api/auth/google', async (req, res) => {
   try {
     decodedToken = await admin.auth().verifyIdToken(idToken);
   } catch (err) {
-    console.error('Google token verification failed:', err.message);
-    return res.status(401).json({ error: 'Invalid or expired Google token. Please try again.' });
+    console.error('Google token verification FAILED:', err.message);
+    console.error('Token prefix:', idToken ? idToken.substring(0, 50) : 'NULL');
+    return res.status(401).json({ error: 'Invalid or expired Google token. Please try again.', details: err.message });
   }
 
   const googleEmail = decodedToken.email;
