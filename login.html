@@ -308,6 +308,13 @@
         const data = await res.json();
         
         if (data.exists) {
+          if (data.googleOnly) {
+            // Email registered via Google - tell user to use Google sign in
+            showEmailError('This email is registered with Google. Please tap "Continue with Google" above to sign in.');
+            document.getElementById('email-input').disabled = false;
+            setEmailBtnLoading(false);
+            return;
+          }
           // Existing user - show password field
           isEmailEntered = true;
           document.getElementById('password-login-section').classList.remove('hidden');

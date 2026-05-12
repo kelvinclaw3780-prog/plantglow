@@ -146,8 +146,9 @@ function requireAdmin(req, res, next) {
 app.post('/api/auth/check-email', (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email required' });
-  const row = dbGet('SELECT id FROM users WHERE email = ?', [email]);
-  res.json({ exists: !!row });
+  const row = dbGet('SELECT id, google_id FROM users WHERE email = ?', [email]);
+  if (!row) return res.json({ exists: false });
+  res.json({ exists: true, googleOnly: !!row.google_id });
 });
 
 // POST /api/auth/register - Send verification code
