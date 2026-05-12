@@ -140,6 +140,12 @@ async function requireAdmin(req, res, next) {
 // ─── Email (Resend) Setup ───────────────────────────────────────────────────
 const resend = new Resend('re_YoKAhdaE_8mTNeqosuCo9PVTRVx4oWH1q');
 
+// ─── Security Headers ─────────────────────────────────────────────────────
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  next();
+});
+
 // ─── Middleware ─────────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(cors());
