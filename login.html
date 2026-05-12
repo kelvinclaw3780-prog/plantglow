@@ -193,6 +193,7 @@
   <script>
     // ─── Firebase Config (placeholder - add your config) ───
     // TODO: Replace with your Firebase config from Firebase Console
+    const BASE_URL = 'https://plantglow-production.up.railway.app';
     const firebaseConfig = {
       apiKey: "AIzaSyDsB72W7Oen46XPtk6p24hbMwDSrA_2yZM",
       authDomain: "plantglow.firebaseapp.com",
@@ -510,6 +511,11 @@
     }
 
     // ─── UI Helpers ───
+    function showError(msg) {
+      const el = document.getElementById('email-error');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+    }
     function showEmailError(msg) {
       const el = document.getElementById('email-error');
       el.textContent = msg;
