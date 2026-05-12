@@ -249,7 +249,7 @@
         const idToken = result.credential.idToken;
         
         // Send to backend
-        const res = await fetch('/api/auth/google', {
+        const res = await fetch(BASE_URL + '/api/auth/google', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -299,7 +299,7 @@
     async function checkEmailExists(email) {
       setEmailBtnLoading(true);
       try {
-        const res = await fetch('/api/auth/check-email', {
+        const res = await fetch(BASE_URL + '/api/auth/check-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
@@ -345,7 +345,7 @@
 
       setEmailBtnLoading(true);
       try {
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch(BASE_URL + '/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -380,7 +380,7 @@
 
       setEmailBtnLoading(true);
       try {
-        const res = await fetch('/api/auth/register', {
+        const res = await fetch(BASE_URL + '/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -424,7 +424,7 @@
 
       setEmailBtnLoading(true);
       try {
-        const res = await fetch('/api/auth/verify-register', {
+        const res = await fetch(BASE_URL + '/api/auth/verify-register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: pendingEmail, password: pendingPassword, code })
@@ -452,7 +452,7 @@
       btn.textContent = 'Sending...';
       
       try {
-        const res = await fetch('/api/auth/resend-code', {
+        const res = await fetch(BASE_URL + '/api/auth/resend-code', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
