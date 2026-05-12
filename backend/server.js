@@ -374,6 +374,8 @@ initDb().then(() => {
     if (secret !== 'plantglow-admin-2026') return res.status(403).json({ error: 'Invalid secret' });
     const hash = crypto.createHash('sha256').update('plantglow123').digest('hex');
     db.run('INSERT OR REPLACE INTO admin_users (email, password_hash, name) VALUES (?, ?, ?)', ['admin@plantglow.com', hash, 'Test Admin']);
+    const data = db.export();
+    fs.writeFileSync(path.join(__dirname, 'plantglow.db'), Buffer.from(data));
     res.json({ success: true, message: 'Admin created: admin@plantglow.com / plantglow123' });
   });
 
