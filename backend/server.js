@@ -283,6 +283,52 @@ app.post('/api/auth/logout', async (req, res) => {
   res.json({ success: true });
 });
 
+// ─── Forgot Password ───────────────────────────────────────────────────────
+const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_12345678';
+const FROM_EMAIL = 'PlantGlow <cs@plantglow.net>';
+
+function generateCode() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+function sendEmail(to, subject, html) {
+  // Uses Resend API - fails silently in test/dev
+  if (!RESEND_API_KEY || RESEND_API_KEY === 're_placeholder') return;
+  fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html })
+  }).catch(() => {});
+}
+
+app.post('/api/auth/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  if (!email || !email.includes('@')) return res.status(400).json({ error: 'Invalid email' });
+  const row = await dbGet('SELECT id FROM users WHERE email = ?', [email]);
+  if (!row) {
+    // Security: don't reveal if email exists
+    return res.json({ success: true, message: 'If that email exists, a reset code has been sent.' });
+  }
+  const code = generateCode();
+  const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+  await dbRun('DELETE FROM password_reset_codes WHERE email = ?', [email]);
+  await dbRun('INSERT INTO password_reset_codes (email, code, expires_at) VALUES (?, ?, ?)', [email, code, expiresAt]);
+  sendEmail(email, 'PlantGlow Password Reset Code', `<p>Your PlantGlow password reset code is: <b>${code}</b></p><p>This expires in 30 minutes.</p>`);
+  res.json({ success: true, message: 'If that email exists, a reset code has been sent.' });
+});
+
+app.post('/api/auth/reset-password', async (req, res) => {
+  const { email, code, password } = req.body;
+  if (!email || !code || !password) return res.status(400).json({ error: 'All fields required' });
+  if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  const row = await dbGet('SELECT * FROM password_reset_codes WHERE email = ? AND code = ? AND expires_at > datetime("now")', [email, code]);
+  if (!row) return res.status(400).json({ error: 'Invalid or expired reset code' });
+  const hash = hashPassword(password);
+  await dbRun('UPDATE users SET password_hash = ? WHERE email = ?', [hash, email]);
+  await dbRun('DELETE FROM password_reset_codes WHERE email = ?', [email]);
+  res.json({ success: true });
+});
+
 // ─── Early Access Email Capture ────────────────────────────────────────────
 app.post('/api/early-access', async (req, res) => {
   const { email } = req.body;
