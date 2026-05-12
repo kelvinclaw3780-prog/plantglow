@@ -368,15 +368,6 @@ app.get('/api/admin/export/emails', requireAdmin, (req, res) => {
 
 // ─── Start Server ───────────────────────────────────────────────────────────
 initDb().then(() => {
-  // TEMP: Create admin endpoint (remove after use)
-  app.get('/api/debug/create-admin', (req, res) => {
-    const secret = req.query.secret;
-    if (secret !== 'plantglow-admin-2026') return res.status(403).json({ error: 'Invalid secret' });
-    const hash = crypto.createHash('sha256').update('plantglow123').digest('hex');
-    db.run('INSERT OR REPLACE INTO admin_users (email, password_hash, name) VALUES (?, ?, ?)', ['admin@plantglow.com', hash, 'Test Admin']);
-    res.json({ success: true, message: 'Admin created: admin@plantglow.com / plantglow123' });
-  });
-
   app.listen(PORT, () => {
     console.log(`\n🚀 PlantGlow backend running at http://localhost:${PORT}`);
     console.log(`📱 Frontend at http://localhost:${PORT}/index.html`);
