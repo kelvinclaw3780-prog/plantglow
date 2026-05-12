@@ -430,7 +430,6 @@
         showingAll = false;
       }
       lucide.createIcons();
-      window.BASE_URL = 'https://plantglow-production.up.railway.app';
       updateNav();
       showLoginToast();
       setTimeout(function() { renderPlants(); }, 100);
@@ -470,7 +469,7 @@
       if (mobileLoggedOut) mobileLoggedOut.style.display = loggedIn ? 'none' : '';
       if (mobileLoggedIn) mobileLoggedIn.style.display = loggedIn ? '' : 'none';
       if (loggedIn) {
-        
+        document.getElementById('nav-user-status').textContent = 'Logged in';
       }
       lucide.createIcons();
     }
@@ -718,7 +717,7 @@ function handleBrowseAll() {
     function handleEmailSubmit(e) {
       e.preventDefault();
       var email = document.getElementById('email-input').value;
-      fetch(`${window.BASE_URL}/api/early-access`, {
+      fetch('/api/early-access', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email })
