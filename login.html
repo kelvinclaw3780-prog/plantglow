@@ -270,12 +270,25 @@
       }
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithRedirect(provider);
+        const result = await firebase.auth().signInWithPopup(provider);
+        const idToken = result.credential.idToken;
+        const res = await fetch(BASE_URL + '/api/auth/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            idToken,
+            email: result.user.email,
+            name: result.user.displayName
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('plantglow_token', data.token);
+          localStorage.setItem('plantglow_user', JSON.stringify(data.user));
+          showSuccess('Welcome!');
+        }
       } catch (err) {
-        console.error('Google sign-in error:', err);
-        if (err.message.includes('popup_closed_by_user')) {
-          // User closed popup - not an error
-        } else {
+        if (!err.message.includes('popup_closed_by_user') && !err.message.includes('cancelled')) {
           showError('Google sign-in failed. Please try again.');
         }
       }

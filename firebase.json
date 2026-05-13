@@ -5,6 +5,12 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/__/auth/{rest of path}",
+        "destination": "/login.html"
+      }
     ]
   }
 }
