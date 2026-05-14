@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 const { Resend } = require('resend');
+const { OAuth2Client } = require('google-auth-library');
 const admin = require('firebase-admin');
 
 // ─── Firebase Admin Setup ───────────────────────────────────────────────────
@@ -284,10 +285,21 @@ app.post('/api/auth/google', async (req, res) => {
   const { idToken, name, email } = req.body;
   if (!idToken) return res.status(400).json({ error: 'No token provided' });
 
-  // Verify the Google idToken with Firebase Admin
+  // Verify the Google idToken using google-auth-library (supports multiple client IDs)
   let decodedToken;
   try {
-    decodedToken = await admin.auth().verifyIdToken(idToken, true);
+    const CLIENT_IDS = [
+      '1055271049519-uk68595f4p2ttemeii7hgarvmt76o1id.apps.googleusercontent.com',
+      '1055271049519-gv4ep2kr5u6v9kf9qinhv4p6j1i2i4f1.apps.googleusercontent.com'
+    ];
+    const client = new OAuth2Client();
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: CLIENT_IDS,
+      // The issuer for Firebase-issued tokens
+      issuer: 'https://securetoken.google.com'
+    });
+    decodedToken = ticket.getPayload();
   } catch (err) {
     console.error('Google token verification FAILED:', err.message);
     console.error('Token prefix:', idToken ? idToken.substring(0, 50) : 'NULL');
@@ -297,23 +309,6 @@ app.post('/api/auth/google', async (req, res) => {
   const googleEmail = decodedToken.email;
   const googleName = decodedToken.name || name || googleEmail.split('@')[0];
   const token = crypto.randomBytes(32).toString('hex');
-
-  // Check if this Google account was previously deleted from Firebase Auth
-  // If so, we need to re-create them in Firebase Auth
-  let firebaseUid = null;
-  try {
-    const userRecord = await admin.auth().getUserByEmail(googleEmail).catch(() => null);
-    if (!userRecord) {
-      // User was deleted from Firebase Auth — recreate them
-      const newUser = await admin.auth().createUser({ email: googleEmail, displayName: googleName });
-      firebaseUid = newUser.uid;
-      console.log('Recreated Firebase user:', firebaseUid);
-    } else {
-      firebaseUid = userRecord.uid;
-    }
-  } catch (firebaseErr) {
-    console.error('Firebase user check/create error:', firebaseErr.message);
-  }
 
   // Try to find existing user by google_id or email
   const existingRow = await dbGet('SELECT * FROM users WHERE email = ? OR google_id = ?', [googleEmail, idToken]);
@@ -438,8 +433,8 @@ app.get('/api/admin/stats', requireAdmin, async (req, res) => {
   const totalUsers = await dbGet('SELECT COUNT(*) as total FROM users');
   const newToday = await dbGet("SELECT COUNT(*) as total FROM users WHERE date(created_at) = date('now')");
   const earlyAccessCount = await dbGet('SELECT COUNT(*) as total FROM early_access_emails');
-  const recentUsers = await dbAll("SELECT id, email, name, created_at FROM users ORDER BY created_at DESC LIMIT 50");
-  const earlyAccessList = await dbAll("SELECT id, email, created_at FROM early_access_emails ORDER BY created_at DESC");
+  const recentUsers = await dbAll("SELECT email, name, created_at FROM users ORDER BY created_at DESC LIMIT 50");
+  const earlyAccessList = await dbAll("SELECT email, created_at FROM early_access_emails ORDER BY created_at DESC");
   res.json({ total_users: totalUsers.total, new_today: newToday.total, early_access_count: earlyAccessCount.total, recent_users: recentUsers, early_access_list: earlyAccessList });
 });
 
@@ -467,39 +462,6 @@ app.get('/api/admin/export/emails', requireAdmin, async (req, res) => {
   res.setHeader('Content-Type', 'text/csv');
   res.setHeader('Content-Disposition', 'attachment; filename=plantglow-early-access.csv');
   res.send(csv);
-});
-
-// DELETE /api/admin/users/:id - Delete a user
-app.delete('/api/admin/users/:id', requireAdmin, async (req, res) => {
-  const { id } = req.params;
-  const user = await dbGet('SELECT * FROM users WHERE id = ?', [id]);
-  if (!user) return res.status(404).json({ error: 'User not found' });
-
-  // Delete from Firebase Auth if they have a google_id
-  if (user.google_id && firebaseInitialized) {
-    try {
-      const uid = user.google_id.split('/').pop(); // extract uid from google_id (it's the full token, so use email hash approach)
-      // Actually we can't get uid from google_id token directly — use Firebase Auth delete
-      // We need the Firebase UID - try to look it up
-      const userRecord = await admin.auth().getUserByEmail(user.email).catch(() => null);
-      if (userRecord) await admin.auth().deleteUser(userRecord.uid);
-    } catch (err) {
-      console.error('Firebase user deletion error:', err.message);
-      // Continue anyway — local DB delete is more important
-    }
-  }
-
-  await dbRun('DELETE FROM users WHERE id = ?', [id]);
-  res.json({ success: true, message: `User ${user.email} deleted` });
-});
-
-// DELETE /api/admin/emails/:id - Delete an early access email
-app.delete('/api/admin/emails/:id', requireAdmin, async (req, res) => {
-  const { id } = req.params;
-  const email = await dbGet('SELECT * FROM early_access_emails WHERE id = ?', [id]);
-  if (!email) return res.status(404).json({ error: 'Email not found' });
-  await dbRun('DELETE FROM early_access_emails WHERE id = ?', [id]);
-  res.json({ success: true, message: `Email ${email.email} deleted` });
 });
 
 // ─── Start Server ───────────────────────────────────────────────────────────

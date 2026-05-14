@@ -209,6 +209,31 @@
     if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
       firebase.initializeApp(firebaseConfig);
       firebaseInitialized = true;
+      // Handle redirect result on page load
+      firebase.auth().getRedirectResult().then((result) => {
+        if (result.user && result.credential) {
+          const idToken = result.credential.idToken;
+          fetch(BASE_URL + '/api/auth/google', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              idToken,
+              email: result.user.email,
+              name: result.user.displayName
+            })
+          }).then(res => res.json()).then(data => {
+            if (data.success) {
+              localStorage.setItem('plantglow_token', data.token);
+              localStorage.setItem('plantglow_user', JSON.stringify(data.user));
+              showSuccess('Welcome back!');
+            }
+          }).catch(err => console.error('Redirect login error:', err));
+        }
+      }).catch((err) => {
+        if (!err.message.includes('popup_closed_by_user') && !err.message.includes('redirect_cancelled')) {
+          console.error('Redirect result error:', err);
+        }
+      });
     }
 
     // ─── State ───
@@ -238,24 +263,23 @@
     }
 
     // ─── Google Sign In ───
-    let googleSignInInProgress = false;
     async function signInWithGoogle() {
       if (!firebaseInitialized) {
         showError('Google login not configured yet. Please use email login.');
         return;
       }
-      if (googleSignInInProgress) return; // Prevent double-clicks
-      googleSignInInProgress = true;
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
-        provider.addScope('email');
-        provider.addScope('profile');
         const result = await firebase.auth().signInWithPopup(provider);
         const idToken = result.credential.idToken;
         const res = await fetch(BASE_URL + '/api/auth/google', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ idToken, email: result.user.email, name: result.user.displayName })
+          body: JSON.stringify({
+            idToken,
+            email: result.user.email,
+            name: result.user.displayName
+          })
         });
         const data = await res.json();
         if (data.success) {
@@ -264,12 +288,9 @@
           showSuccess('Welcome!');
         }
       } catch (err) {
-        if (!err.message.includes('popup_closed_by_user') && !err.message.includes('cancelled') && !err.message.includes('canceled')) {
-          console.error('Google sign-in error:', err);
+        if (!err.message.includes('popup_closed_by_user') && !err.message.includes('cancelled')) {
           showError('Google sign-in failed. Please try again.');
         }
-      } finally {
-        googleSignInInProgress = false;
       }
     }
 
