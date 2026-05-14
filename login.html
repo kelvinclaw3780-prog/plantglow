@@ -68,6 +68,9 @@
         class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900"
         onkeypress="if(event.key==='Enter')handleEmailPasswordLogin()">
       <p id="password-login-error" class="text-red-500 text-sm mt-2 hidden"></p>
+      <div class="flex justify-end mt-2">
+        <button type="button" onclick="openForgotPassword()" class="text-xs text-forest-600 hover:underline">Forgot password?</button>
+      </div>
     </div>
 
     <!-- Register Password (shown when registering) -->
@@ -137,6 +140,27 @@
       <h2 id="success-title" class="text-xl font-bold text-forest-900 mb-2">Welcome!</h2>
       <p id="success-msg" class="text-gray-500 mb-6">Redirecting to PlantGlow...</p>
       <a href="index.html" class="inline-flex items-center gap-2 bg-forest-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-forest-700 transition">Continue to Plants</a>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgot-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl p-8 text-center max-w-sm w-full shadow-2xl">
+      <div class="text-5xl mb-4">🔑</div>
+      <h2 class="text-xl font-bold text-forest-900 mb-2">Reset Password</h2>
+      <p id="forgot-msg" class="text-gray-500 text-sm mb-6">Enter your email and we'll send you a reset code.</p>
+      <div id="forgot-step-1">
+        <input type="email" id="forgot-email-input" placeholder="Your email" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900 mb-3">
+        <button onclick="handleForgotPassword()" id="forgot-send-btn" class="w-full bg-forest-600 hover:bg-forest-700 text-white font-semibold py-3 rounded-xl transition mb-3">Send Reset Code</button>
+        <button onclick="closeForgotPassword()" class="w-full text-gray-500 hover:text-gray-700 py-2 text-sm transition">Back to Login</button>
+      </div>
+      <div id="forgot-step-2" class="hidden">
+        <p class="text-gray-600 text-sm mb-3">Enter the 6-digit code sent to <span id="forgot-email-display" class="font-medium"></span></p>
+        <input type="text" id="forgot-code-input" placeholder="000000" maxlength="6" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900 text-center text-lg tracking-widest mb-3">
+        <input type="password" id="forgot-new-pass" placeholder="New password (min 6 chars)" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900 mb-3">
+        <p id="forgot-error" class="text-red-500 text-sm mb-3 hidden"></p>
+        <button onclick="handleResetPassword()" id="forgot-reset-btn" class="w-full bg-forest-600 hover:bg-forest-700 text-white font-semibold py-3 rounded-xl transition">Reset Password</button>
+      </div>
     </div>
   </div>
 
@@ -255,6 +279,105 @@
       document.getElementById('terms-popup').classList.remove('hidden');
       document.getElementById('terms-popup').classList.add('flex');
       document.body.style.overflow = 'hidden';
+    }
+    function closeTermsPopup() {
+      document.getElementById('terms-popup').classList.add('hidden');
+      document.getElementById('terms-popup').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    // ─── Forgot Password ───
+    let pendingForgotEmail = '';
+    function openForgotPassword() {
+      document.getElementById('forgot-modal').classList.remove('hidden');
+      document.getElementById('forgot-modal').classList.add('flex');
+      document.getElementById('forgot-step-1').classList.remove('hidden');
+      document.getElementById('forgot-step-2').classList.add('hidden');
+      document.getElementById('forgot-email-input').value = '';
+      document.getElementById('forgot-code-input').value = '';
+      document.getElementById('forgot-new-pass').value = '';
+      document.getElementById('forgot-error').classList.add('hidden');
+      document.getElementById('forgot-msg').textContent = "Enter your email and we'll send you a reset code.";
+      document.body.style.overflow = 'hidden';
+    }
+    function closeForgotPassword() {
+      document.getElementById('forgot-modal').classList.add('hidden');
+      document.getElementById('forgot-modal').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+    async function handleForgotPassword() {
+      const email = document.getElementById('forgot-email-input').value.trim();
+      if (!email || !email.includes('@')) {
+        showForgotError('Please enter a valid email');
+        return;
+      }
+      pendingForgotEmail = email;
+      const btn = document.getElementById('forgot-send-btn');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      try {
+        const res = await fetch(BASE_URL + '/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('forgot-step-1').classList.add('hidden');
+          document.getElementById('forgot-step-2').classList.remove('hidden');
+          document.getElementById('forgot-email-display').textContent = email;
+          document.getElementById('forgot-msg').textContent = 'Check your email for the reset code.';
+        } else {
+          showForgotError(data.error || 'Failed to send reset code');
+        }
+      } catch {
+        showForgotError('Connection error. Please try again.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send Reset Code';
+      }
+    }
+    async function handleResetPassword() {
+      const code = document.getElementById('forgot-code-input').value.trim();
+      const newPass = document.getElementById('forgot-new-pass').value;
+      if (!code || code.length !== 6) {
+        showForgotError('Please enter the 6-digit code');
+        return;
+      }
+      if (!newPass || newPass.length < 6) {
+        showForgotError('Password must be at least 6 characters');
+        return;
+      }
+      const btn = document.getElementById('forgot-reset-btn');
+      btn.disabled = true;
+      btn.textContent = 'Resetting...';
+      try {
+        const res = await fetch(BASE_URL + '/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: pendingForgotEmail, code, password: newPass })
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeForgotPassword();
+          showSuccess('Password reset! Please log in.');
+          document.getElementById('email-input').value = pendingForgotEmail;
+          document.getElementById('password-login-section').classList.remove('hidden');
+          document.getElementById('password-login-input').focus();
+        } else {
+          showForgotError(data.error || 'Invalid or expired code');
+        }
+      } catch {
+        showForgotError('Connection error. Please try again.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Reset Password';
+      }
+    }
+    function showForgotError(msg) {
+      const el = document.getElementById('forgot-error');
+      el.textContent = msg;
+      el.classList.remove('hidden');
     }
     function closeTermsPopup() {
       document.getElementById('terms-popup').classList.add('hidden');
