@@ -209,23 +209,29 @@
     if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
       firebase.initializeApp(firebaseConfig);
       firebaseInitialized = true;
-      // Handle auth state change (only fires when NOT in a popup flow)
+      // Handle auth state change — only for page-refresh logins (not popup flow)
+      // Use a one-time check to avoid firing on the same user object the popup is handling
+      let authStateHandled = false;
       firebase.auth().onAuthStateChanged((user) => {
-        if (user && !localStorage.getItem('plantglow_token') && !googleSignInInProgress) {
-          user.getIdToken().then((idToken) => {
-            fetch(BASE_URL + '/api/auth/google', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ idToken, email: user.email, name: user.displayName })
-            }).then(res => res.json()).then(data => {
-              if (data.success) {
-                localStorage.setItem('plantglow_token', data.token);
-                localStorage.setItem('plantglow_user', JSON.stringify(data.user));
-                showSuccess('Welcome back!');
-              }
-            }).catch(err => console.error('Auth state login error:', err));
+        // Skip if: popup is active, already handled this user, or no user
+        if (googleSignInInProgress || authStateHandled || !user) return;
+        authStateHandled = true;
+        user.getIdToken().then((idToken) => {
+          fetch(BASE_URL + '/api/auth/google', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idToken, email: user.email, name: user.displayName })
+          }).then(res => res.json()).then(data => {
+            if (data.success) {
+              localStorage.setItem('plantglow_token', data.token);
+              localStorage.setItem('plantglow_user', JSON.stringify(data.user));
+              showSuccess('Welcome back!');
+            }
+          }).catch(err => {
+            authStateHandled = false; // allow retry on error
+            console.error('Auth state login error:', err);
           });
-        }
+        });
       });
     }
 
