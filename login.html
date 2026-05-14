@@ -209,44 +209,14 @@
     if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
       firebase.initializeApp(firebaseConfig);
       firebaseInitialized = true;
-      // Handle redirect result on page load
-      firebase.auth().getRedirectResult().then((result) => {
-        if (result.user && result.credential) {
-          const idToken = result.credential.idToken;
-          fetch(BASE_URL + '/api/auth/google', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              idToken,
-              email: result.user.email,
-              name: result.user.displayName
-            })
-          }).then(res => res.json()).then(data => {
-            if (data.success) {
-              localStorage.setItem('plantglow_token', data.token);
-              localStorage.setItem('plantglow_user', JSON.stringify(data.user));
-              showSuccess('Welcome back!');
-            }
-          }).catch(err => console.error('Redirect login error:', err));
-        }
-      }).catch((err) => {
-        if (!err.message.includes('popup_closed_by_user') && !err.message.includes('redirect_cancelled') && !err.message.includes('cancelled')) {
-          console.error('Redirect result error:', err);
-        }
-      });
-
-      // Backup: also listen for auth state changes (handles redirect completion)
+      // Handle auth state change (handles popup result)
       firebase.auth().onAuthStateChanged((user) => {
         if (user && !localStorage.getItem('plantglow_token')) {
           user.getIdToken().then((idToken) => {
             fetch(BASE_URL + '/api/auth/google', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                idToken,
-                email: user.email,
-                name: user.displayName
-              })
+              body: JSON.stringify({ idToken, email: user.email, name: user.displayName })
             }).then(res => res.json()).then(data => {
               if (data.success) {
                 localStorage.setItem('plantglow_token', data.token);
@@ -293,31 +263,25 @@
       }
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
-        await firebase.auth().signInWithRedirect(provider);
+        provider.addScope('email');
+        provider.addScope('profile');
+        const result = await firebase.auth().signInWithPopup(provider);
+        const idToken = result.credential.idToken;
+        const res = await fetch(BASE_URL + '/api/auth/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idToken, email: result.user.email, name: result.user.displayName })
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('plantglow_token', data.token);
+          localStorage.setItem('plantglow_user', JSON.stringify(data.user));
+          showSuccess('Welcome!');
+        }
       } catch (err) {
-        // Redirect failed — try popup as fallback
-        if (!err.message.includes('popup_closed_by_user') && !err.message.includes('redirect_cancelled') && !err.message.includes('cancelled')) {
-          console.error('Redirect failed, trying popup:', err.message);
-          try {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            const result = await firebase.auth().signInWithPopup(provider);
-            const idToken = result.credential.idToken;
-            const res = await fetch(BASE_URL + '/api/auth/google', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ idToken, email: result.user.email, name: result.user.displayName })
-            });
-            const data = await res.json();
-            if (data.success) {
-              localStorage.setItem('plantglow_token', data.token);
-              localStorage.setItem('plantglow_user', JSON.stringify(data.user));
-              showSuccess('Welcome!');
-            }
-          } catch (popupErr) {
-            if (!popupErr.message.includes('popup_closed_by_user') && !popupErr.message.includes('cancelled')) {
-              showError('Google sign-in failed. Please try again.');
-            }
-          }
+        if (!err.message.includes('popup_closed_by_user') && !err.message.includes('cancelled') && !err.message.includes('canceled')) {
+          console.error('Google sign-in error:', err);
+          showError('Google sign-in failed. Please try again.');
         }
       }
     }
