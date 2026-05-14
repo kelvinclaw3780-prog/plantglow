@@ -11,7 +11,15 @@ const admin = require('firebase-admin');
 let firebaseInitialized = false;
 try {
   if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    let serviceAccount;
+    const raw = process.env.FIREBASE_SERVICE_ACCOUNT.trim();
+    if (raw.startsWith('{')) {
+      // Plain JSON
+      serviceAccount = JSON.parse(raw);
+    } else {
+      // Base64 encoded
+      serviceAccount = JSON.parse(Buffer.from(raw, 'base64').toString('utf8'));
+    }
     admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
     firebaseInitialized = true;
     console.log('🔥 Firebase Admin initialized');
