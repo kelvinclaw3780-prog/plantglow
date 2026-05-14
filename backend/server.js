@@ -148,7 +148,10 @@ app.use((req, res, next) => {
 
 // ─── Middleware ─────────────────────────────────────────────────────────────
 app.use(express.json());
-app.use(cors({ origin: ["https://plantglow.web.app", "https://plantglow.firebaseapp.com", "https://plantglow.vercel.app"], credentials: true }));
+app.use(cors({
+  origin: ["https://plantglow.web.app", "https://plantglow.firebaseapp.com", "https://plantglow.vercel.app", "https://plantglow.net", "http://plantglow.net"],
+  credentials: true
+}));
 app.use(express.static(path.join(__dirname, '..')));
 
 // ─── User Auth Routes ────────────────────────────────────────────────────────
