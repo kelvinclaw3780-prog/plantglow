@@ -469,6 +469,21 @@ app.delete('/api/admin/users/:id', requireAdmin, async (req, res) => {
   const { id } = req.params;
   const user = await dbGet('SELECT * FROM users WHERE id = ?', [id]);
   if (!user) return res.status(404).json({ error: 'User not found' });
+
+  // Delete from Firebase Auth if they have a google_id
+  if (user.google_id && firebaseInitialized) {
+    try {
+      const uid = user.google_id.split('/').pop(); // extract uid from google_id (it's the full token, so use email hash approach)
+      // Actually we can't get uid from google_id token directly — use Firebase Auth delete
+      // We need the Firebase UID - try to look it up
+      const userRecord = await admin.auth().getUserByEmail(user.email).catch(() => null);
+      if (userRecord) await admin.auth().deleteUser(userRecord.uid);
+    } catch (err) {
+      console.error('Firebase user deletion error:', err.message);
+      // Continue anyway — local DB delete is more important
+    }
+  }
+
   await dbRun('DELETE FROM users WHERE id = ?', [id]);
   res.json({ success: true, message: `User ${user.email} deleted` });
 });
