@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 const { Resend } = require('resend');
+const { OAuth2Client } = require('google-auth-library');
 const admin = require('firebase-admin');
 
 // ─── Firebase Admin Setup ───────────────────────────────────────────────────
@@ -284,10 +285,21 @@ app.post('/api/auth/google', async (req, res) => {
   const { idToken, name, email } = req.body;
   if (!idToken) return res.status(400).json({ error: 'No token provided' });
 
-  // Verify the Google idToken with Firebase Admin
+  // Verify the Google idToken using google-auth-library (supports multiple client IDs)
   let decodedToken;
   try {
-    decodedToken = await admin.auth().verifyIdToken(idToken);
+    const CLIENT_IDS = [
+      '1055271049519-uk68595f4p2ttemeii7hgarvmt76o1id.apps.googleusercontent.com',
+      '1055271049519-gv4ep2kr5u6v9kf9qinhv4p6j1i2i4f1.apps.googleusercontent.com'
+    ];
+    const client = new OAuth2Client();
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: CLIENT_IDS,
+      // The issuer for Firebase-issued tokens
+      issuer: 'https://securetoken.google.com'
+    });
+    decodedToken = ticket.getPayload();
   } catch (err) {
     console.error('Google token verification FAILED:', err.message);
     console.error('Token prefix:', idToken ? idToken.substring(0, 50) : 'NULL');
