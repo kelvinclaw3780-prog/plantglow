@@ -448,7 +448,9 @@
 
     function logout() {
       localStorage.removeItem('plantglow_token');
+      localStorage.removeItem('plantglow_user');
       localStorage.removeItem('plantglow_subscribed');
+      firebase.auth().signOut().catch(() => {});
       showingAll = false;
       updateNav();
       showAllPlantsView();
