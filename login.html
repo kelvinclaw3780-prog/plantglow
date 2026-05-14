@@ -295,8 +295,29 @@
         const provider = new firebase.auth.GoogleAuthProvider();
         await firebase.auth().signInWithRedirect(provider);
       } catch (err) {
+        // Redirect failed — try popup as fallback
         if (!err.message.includes('popup_closed_by_user') && !err.message.includes('redirect_cancelled') && !err.message.includes('cancelled')) {
-          showError('Google sign-in failed. Please try again.');
+          console.error('Redirect failed, trying popup:', err.message);
+          try {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            const result = await firebase.auth().signInWithPopup(provider);
+            const idToken = result.credential.idToken;
+            const res = await fetch(BASE_URL + '/api/auth/google', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ idToken, email: result.user.email, name: result.user.displayName })
+            });
+            const data = await res.json();
+            if (data.success) {
+              localStorage.setItem('plantglow_token', data.token);
+              localStorage.setItem('plantglow_user', JSON.stringify(data.user));
+              showSuccess('Welcome!');
+            }
+          } catch (popupErr) {
+            if (!popupErr.message.includes('popup_closed_by_user') && !popupErr.message.includes('cancelled')) {
+              showError('Google sign-in failed. Please try again.');
+            }
+          }
         }
       }
     }
