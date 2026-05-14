@@ -433,8 +433,8 @@ app.get('/api/admin/stats', requireAdmin, async (req, res) => {
   const totalUsers = await dbGet('SELECT COUNT(*) as total FROM users');
   const newToday = await dbGet("SELECT COUNT(*) as total FROM users WHERE date(created_at) = date('now')");
   const earlyAccessCount = await dbGet('SELECT COUNT(*) as total FROM early_access_emails');
-  const recentUsers = await dbAll("SELECT email, name, created_at FROM users ORDER BY created_at DESC LIMIT 50");
-  const earlyAccessList = await dbAll("SELECT email, created_at FROM early_access_emails ORDER BY created_at DESC");
+  const recentUsers = await dbAll("SELECT id, email, name, created_at FROM users ORDER BY created_at DESC LIMIT 50");
+  const earlyAccessList = await dbAll("SELECT id, email, created_at FROM early_access_emails ORDER BY created_at DESC");
   res.json({ total_users: totalUsers.total, new_today: newToday.total, early_access_count: earlyAccessCount.total, recent_users: recentUsers, early_access_list: earlyAccessList });
 });
 
@@ -462,6 +462,24 @@ app.get('/api/admin/export/emails', requireAdmin, async (req, res) => {
   res.setHeader('Content-Type', 'text/csv');
   res.setHeader('Content-Disposition', 'attachment; filename=plantglow-early-access.csv');
   res.send(csv);
+});
+
+// DELETE /api/admin/users/:id - Delete a user
+app.delete('/api/admin/users/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const user = await dbGet('SELECT * FROM users WHERE id = ?', [id]);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  await dbRun('DELETE FROM users WHERE id = ?', [id]);
+  res.json({ success: true, message: `User ${user.email} deleted` });
+});
+
+// DELETE /api/admin/emails/:id - Delete an early access email
+app.delete('/api/admin/emails/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const email = await dbGet('SELECT * FROM early_access_emails WHERE id = ?', [id]);
+  if (!email) return res.status(404).json({ error: 'Email not found' });
+  await dbRun('DELETE FROM early_access_emails WHERE id = ?', [id]);
+  res.json({ success: true, message: `Email ${email.email} deleted` });
 });
 
 // ─── Start Server ───────────────────────────────────────────────────────────

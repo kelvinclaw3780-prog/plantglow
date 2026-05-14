@@ -105,7 +105,7 @@
               <th class="px-6 py-3 font-medium">Email</th>
               <th class="px-6 py-3 font-medium">Name</th>
               <th class="px-6 py-3 font-medium">Registered</th>
-              <th class="px-6 py-3 font-medium">Registered At</th>
+              <th class="px-6 py-3 font-medium">Action</th>
             </tr>
           </thead>
           <tbody id="user-table" class="text-forest-100">
@@ -125,6 +125,7 @@
             <tr>
               <th class="px-6 py-3 font-medium">Email</th>
               <th class="px-6 py-3 font-medium">Signed Up</th>
+              <th class="px-6 py-3 font-medium">Action</th>
             </tr>
           </thead>
           <tbody id="email-table">
@@ -165,6 +166,9 @@
             <tr class="border-t border-forest-800 hover:bg-forest-800/50 transition">
               <td class="px-6 py-3 text-white">${e.email}</td>
               <td class="px-6 py-3 text-forest-400">${formatDate(e.created_at)}</td>
+              <td class="px-6 py-3">
+                <button onclick="deleteEmail(${e.id}, '${e.email}')" class="text-red-400 hover:text-red-300 text-xs font-medium transition">Remove</button>
+              </td>
             </tr>
           `).join('');
         }
@@ -179,6 +183,9 @@
               <td class="px-6 py-3 text-white">${u.email || '—'}</td>
               <td class="px-6 py-3 text-forest-300">${u.name || '—'}</td>
               <td class="px-6 py-3 text-forest-400">${formatDate(u.created_at)}</td>
+              <td class="px-6 py-3">
+                <button onclick="deleteUser(${u.id}, '${u.email}')" class="text-red-400 hover:text-red-300 text-xs font-medium transition">Remove</button>
+              </td>
             </tr>
           `).join('');
         }
@@ -215,6 +222,34 @@
 
     function exportUsers() {
       window.location.href = `${window.BASE_URL}/api/admin/export/users`;
+    }
+
+    async function deleteUser(id, email) {
+      if (!confirm(`Delete user "${email}"? This cannot be undone.`)) return;
+      try {
+        const res = await fetch(`${window.BASE_URL}/api/admin/users/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Delete failed');
+        loadStats();
+      } catch (err) {
+        alert('Failed to delete: ' + err.message);
+      }
+    }
+
+    async function deleteEmail(id, email) {
+      if (!confirm(`Delete email "${email}" from early access list? This cannot be undone.`)) return;
+      try {
+        const res = await fetch(`${window.BASE_URL}/api/admin/emails/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Delete failed');
+        loadStats();
+      } catch (err) {
+        alert('Failed to delete: ' + err.message);
+      }
     }
 
     function exportEmails() {
