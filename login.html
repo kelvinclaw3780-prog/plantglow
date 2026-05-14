@@ -450,6 +450,13 @@
         const data = await res.json();
         
         if (data.exists) {
+          if (data.googleOnly) {
+            // Email registered via Google — redirect to Google sign-in
+            showEmailError('This email uses Google sign-in. Please tap "Continue with Google" below.');
+            document.getElementById('google-btn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setEmailBtnLoading(false);
+            return;
+          }
           // Existing user - show password field
           isEmailEntered = true;
           document.getElementById('password-login-section').classList.remove('hidden');
