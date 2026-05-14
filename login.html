@@ -154,6 +154,7 @@
       <p id="forgot-msg" class="text-gray-500 text-sm mb-6">Enter your email and we'll send you a reset code.</p>
       <div id="forgot-step-1">
         <input type="email" id="forgot-email-input" placeholder="Your email" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900 mb-3">
+        <p id="forgot-error-step1" class="text-red-500 text-sm mb-3 hidden"></p>
         <button onclick="handleForgotPassword()" id="forgot-send-btn" class="w-full bg-forest-600 hover:bg-forest-700 text-white font-semibold py-3 rounded-xl transition mb-3">Send Reset Code</button>
         <button onclick="closeForgotPassword()" class="w-full text-gray-500 hover:text-gray-700 py-2 text-sm transition">Back to Login</button>
       </div>
@@ -310,6 +311,7 @@
     }
     async function handleForgotPassword() {
       const email = document.getElementById('forgot-email-input').value.trim();
+      document.getElementById('forgot-error-step1').classList.add('hidden');
       if (!email || !email.includes('@')) {
         showForgotError('Please enter a valid email');
         return;
@@ -331,7 +333,9 @@
           document.getElementById('forgot-email-display').textContent = email;
           document.getElementById('forgot-msg').textContent = 'Check your email for the reset code.';
         } else {
-          showForgotError(data.error || 'Failed to send reset code');
+          const errEl = document.getElementById('forgot-error-step1');
+          errEl.textContent = data.error || 'Failed to send reset code';
+          errEl.classList.remove('hidden');
         }
       } catch {
         showForgotError('Connection error. Please try again.');
