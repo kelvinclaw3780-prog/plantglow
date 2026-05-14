@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "email": "kelvinclaw3780@gmail.com",
+    "password_hash": null,
+    "google_id": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImY4ZTY2MjBkMzk3MTFhYTIxY2U4YTJiZjJmM2VlMDFiOTI0Y2IyZDAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMTA1NTI3MTA0OTUxOS11azY4NTk1ZjRwMnR0ZW1laWk3aGdhcnZtdDc2bzFpZC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjEwNTUyNzEwNDk1MTktdWs2ODU5NWY0cDJ0dGVtZWlpN2hnYXJ2bXQ3Nm8xaWQuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDQ2NjAxMzU4NzgyMjE3OTY1NDIiLCJlbWFpbCI6ImtlbHZpbmNsYXczNzgwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiQmR6TUxGYW9aS2xvZXNoQzFzUVdNUSIsImlhdCI6MTc3ODczMTAyNiwiZXhwIjoxNzc4NzM0NjI2fQ.X7oBIbXaKTANg6L03_W5Teu21yh0Mu6KfYBt3pHp-Oh1dfI9ELMTpHjg7Ew5X1VC2SLqQ6Nq78V0hqZXKvn0GsGPf8eCYQkCb-NHeU-AizojLHqpq0uFOcm82lOBspD0yiuoGvscyShaQG22H88AzM-w_4Se7sTTVesu77bUcdCW05SYa35pCTJEQ1Xr_OYdEh1TJ3ubbz5U54uPwdVZXkUYyaFBHEX713QWBfxt1T0SSfIvC47p0E3G3NWNUnZkAk-C93GlizO8VvYOnhBz0TZVaWUp1oYDlXQj3NfK7wVeTmNIHklunLaW_Wu3GVh9edRFj78b2Fc6SRIQlL-9MQ",
+    "name": "Kelvin So",
+    "token": "0231134ef95fb5c5a1c36a05aacf4556f6a749b6c3cb058217882f5efa54eb61",
+    "created_at": "2026-05-12T04:28:26.281Z"
+  },
+  {
+    "id": 2,
+    "email": "kelvinsokk@gmail.com",
+    "password_hash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+    "google_id": null,
+    "name": null,
+    "token": "33c9beefaba9d15fc8f5c8018badc0000ed79e2441ca0aa093a34b8220ebade0",
+    "created_at": "2026-05-12T17:52:13.036Z"
+  }
+]

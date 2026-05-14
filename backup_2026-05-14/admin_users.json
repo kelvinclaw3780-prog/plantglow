@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "email": "admin@plantglow.com",
+    "password_hash": "c280aac52d6bc777cc993c1051fd49e447544cf24d6a3b1471c25168ccc9a164",
+    "name": "Test Admin",
+    "created_at": "2026-05-12 03:27:34"
+  },
+  {
+    "id": 2,
+    "email": "cs@plantglow.net",
+    "password_hash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+    "name": "Kelvin",
+    "created_at": "2026-05-12 04:28:51"
+  }
+]
