@@ -209,34 +209,7 @@
     if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
       firebase.initializeApp(firebaseConfig);
       firebaseInitialized = true;
-
-      // Clear any cached Firebase session on page load — prevents stale "Welcome back" popup
-      firebase.auth().signOut().catch(() => {});
-
-      // Handle auth state change — only for page-refresh logins (not popup flow)
-      // Use a one-time check to avoid firing on the same user object the popup is handling
-      let authStateHandled = false;
-      firebase.auth().onAuthStateChanged((user) => {
-        // Skip if: already handled, no user, or popup is in progress
-        if (authStateHandled || !user || googleSignInInProgress) return;
-        authStateHandled = true;
-        user.getIdToken().then((idToken) => {
-          fetch(BASE_URL + '/api/auth/google', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ idToken, email: user.email, name: user.displayName })
-          }).then(res => res.json()).then(data => {
-            if (data.success) {
-              localStorage.setItem('plantglow_token', data.token);
-              localStorage.setItem('plantglow_user', JSON.stringify(data.user));
-              showSuccess('Welcome back!');
-            }
-          }).catch(err => {
-            authStateHandled = false; // allow retry on error
-            console.error('Auth state login error:', err);
-          });
-        });
-      });
+    }
     }
 
     // ─── State ───

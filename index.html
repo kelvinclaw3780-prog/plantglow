@@ -450,7 +450,9 @@
       localStorage.removeItem('plantglow_token');
       localStorage.removeItem('plantglow_user');
       localStorage.removeItem('plantglow_subscribed');
-      firebase.auth().signOut().catch(() => {});
+      if (typeof firebase !== 'undefined' && firebase.auth) {
+        firebase.auth().signOut().catch(() => {});
+      }
       showingAll = false;
       updateNav();
       showAllPlantsView();
