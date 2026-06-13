@@ -85,6 +85,19 @@ function initDb() {
       expires_at TEXT NOT NULL,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
+    CREATE TABLE IF NOT EXISTS plant_votes (
+      plant_id TEXT PRIMARY KEY,
+      helpful_count INTEGER DEFAULT 0,
+      not_helpful_count INTEGER DEFAULT 0
+    );
+    CREATE TABLE IF NOT EXISTS plant_vote_records (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      plant_id TEXT NOT NULL,
+      user_id INTEGER NOT NULL,
+      vote TEXT NOT NULL,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(plant_id, user_id)
+    );
   `);
   console.log('📦 Turso connected:', dbUrl);
 }
@@ -228,7 +241,7 @@ app.post('/api/auth/verify-register', async (req, res) => {
 
   await dbRun('INSERT INTO users (email, password_hash, token, created_at) VALUES (?, ?, ?, ?)',
     [email, hash, token, new Date().toISOString()]);
-  
+
   const user = await dbGet('SELECT id, email FROM users WHERE email = ?', [email]);
   await dbRun('DELETE FROM verification_codes WHERE email = ?', [email]);
   res.json({ success: true, token, user: { id: user.id, email: user.email } });
@@ -280,6 +293,13 @@ app.post('/api/auth/login', async (req, res) => {
   res.json({ success: true, token, user: { id: row.id, email: row.email, name: row.name } });
 });
 
+// ─── Google Auth Client (reused) ───────────────────────────────────────────
+const CLIENT_IDS = [
+  '1055271049519-uk68595f4p2ttemeii7hgarvmt76o1id.apps.googleusercontent.com',
+  '1055271049519-gv4ep2kr5u6v9kf9qinhv4p6j1i2i4f1.apps.googleusercontent.com'
+];
+const googleClient = new OAuth2Client();
+
 // POST /api/auth/google - Google OAuth login/register
 app.post('/api/auth/google', async (req, res) => {
   const { idToken, name, email } = req.body;
@@ -288,12 +308,7 @@ app.post('/api/auth/google', async (req, res) => {
   // Verify the Google idToken using google-auth-library (supports multiple client IDs)
   let decodedToken;
   try {
-    const CLIENT_IDS = [
-      '1055271049519-uk68595f4p2ttemeii7hgarvmt76o1id.apps.googleusercontent.com',
-      '1055271049519-gv4ep2kr5u6v9kf9qinhv4p6j1i2i4f1.apps.googleusercontent.com'
-    ];
-    const client = new OAuth2Client();
-    const ticket = await client.verifyIdToken({
+    const ticket = await googleClient.verifyIdToken({
       idToken,
       audience: CLIENT_IDS,
       // The issuer for Firebase-issued tokens
@@ -357,34 +372,46 @@ function generateCode() {
 
 function sendEmail(to, subject, html) {
   // Uses Resend API - fails silently in test/dev
-  if (!RESEND_API_KEY || RESEND_API_KEY === 're_placeholder') return;
+  console.log('[sendEmail] Called with:', { to, subject, RESEND_API_KEY: RESEND_API_KEY ? RESEND_API_KEY.substring(0, 10) + '...' : 'MISSING' });
+  if (!RESEND_API_KEY || RESEND_API_KEY === 're_placeholder' || RESEND_API_KEY === 're_12345678') {
+    console.log('[sendEmail] Skipped: RESEND_API_KEY not configured');
+    return;
+  }
   fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html })
-  }).catch(() => {});
+  }).then(r => console.log('[sendEmail] Resend response:', r.status)).catch(err => console.error('[sendEmail] Error:', err.message));
 }
 
 app.post('/api/auth/forgot-password', async (req, res) => {
   const { email } = req.body;
   if (!email || !email.includes('@')) return res.status(400).json({ error: 'Invalid email' });
-  const row = await dbGet('SELECT id FROM users WHERE email = ?', [email]);
-  if (!row) {
-    // Security: don't reveal if email exists
-    return res.json({ success: true, message: 'If that email exists, a reset code has been sent.' });
+  const user = await dbGet('SELECT id, google_id FROM users WHERE email = ?', [email]);
+  if (!user) {
+    return res.json({ success: false, error: 'Email not found in our system. Please check or register first.' });
+  }
+  if (user.google_id) {
+    return res.json({ success: false, error: 'This email uses Google sign-in. Please use "Continue with Google" instead.' });
   }
   const code = generateCode();
   const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
   await dbRun('DELETE FROM password_reset_codes WHERE email = ?', [email]);
   await dbRun('INSERT INTO password_reset_codes (email, code, expires_at) VALUES (?, ?, ?)', [email, code, expiresAt]);
   sendEmail(email, 'PlantGlow Password Reset Code', `<p>Your PlantGlow password reset code is: <b>${code}</b></p><p>This expires in 30 minutes.</p>`);
-  res.json({ success: true, message: 'If that email exists, a reset code has been sent.' });
+  res.json({ success: true, message: 'Check your email for the reset code.' });
 });
 
 app.post('/api/auth/reset-password', async (req, res) => {
   const { email, code, password } = req.body;
   if (!email || !code || !password) return res.status(400).json({ error: 'All fields required' });
   if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
+
+  // Verify the user is not a Google sign-in user
+  const user = await dbGet('SELECT id, google_id FROM users WHERE email = ?', [email]);
+  if (!user) return res.status(400).json({ error: 'Email not registered' });
+  if (user.google_id) return res.status(400).json({ error: 'This email uses Google sign-in. Please use Google to sign in.' });
+
   const row = await dbGet('SELECT * FROM password_reset_codes WHERE email = ? AND code = ? AND expires_at > datetime("now")', [email, code]);
   if (!row) return res.status(400).json({ error: 'Invalid or expired reset code' });
   const hash = hashPassword(password);
@@ -407,6 +434,83 @@ app.post('/api/early-access', async (req, res) => {
       res.status(500).json({ error: 'Failed to subscribe' });
     }
   }
+});
+
+// ─── Plant Vote Routes ──────────────────────────────────────────────────────
+
+// GET /api/plants/:plantId/votes - Get vote counts for a plant (anyone can view)
+app.get('/api/plants/:plantId/votes', async (req, res) => {
+  const { plantId } = req.params;
+  if (!plantId) return res.status(400).json({ error: 'Plant ID required' });
+
+  const voteRow = await dbGet('SELECT helpful_count, not_helpful_count FROM plant_votes WHERE plant_id = ?', [plantId]);
+  const result = {
+    plant_id: plantId,
+    helpful: voteRow ? voteRow.helpful_count : 0,
+    not_helpful: voteRow ? voteRow.not_helpful_count : 0
+  };
+
+
+  // If user is logged in, also return their current vote
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.slice(7);
+    const user = await dbGet('SELECT id FROM users WHERE token = ?', [token]);
+    if (user) {
+      const userVote = await dbGet('SELECT vote FROM plant_vote_records WHERE plant_id = ? AND user_id = ?', [plantId, user.id]);
+      if (userVote) result.my_vote = userVote.vote;
+    }
+  }
+
+  res.json(result);
+});
+
+// POST /api/plants/:plantId/vote - Submit or switch a vote (logged-in users only)
+app.post('/api/plants/:plantId/vote', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Login to vote' });
+  }
+
+  const token = authHeader.slice(7);
+  const user = await dbGet('SELECT id FROM users WHERE token = ?', [token]);
+  if (!user) return res.status(401).json({ error: 'Invalid session' });
+
+  const { plantId } = req.params;
+  const { vote } = req.body;
+  if (!plantId) return res.status(400).json({ error: 'Plant ID required' });
+  if (!vote || !['helpful', 'not_helpful'].includes(vote)) {
+    return res.status(400).json({ error: 'Invalid vote value. Use "helpful" or "not_helpful"' });
+  }
+
+  // Check existing vote
+  const existingVote = await dbGet('SELECT vote FROM plant_vote_records WHERE plant_id = ? AND user_id = ?', [plantId, user.id]);
+
+
+  if (existingVote) {
+    if (existingVote.vote === vote) {
+      // Same vote — no change needed
+      return res.json({ success: true, message: 'Vote unchanged', vote });
+    }
+    // Switching vote: decrement old, increment new
+    const oldCol = existingVote.vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
+    const newCol = vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
+    await dbRun(`UPDATE plant_votes SET ${oldCol} = MAX(0, ${oldCol} - 1), ${newCol} = ${newCol} + 1 WHERE plant_id = ?`, [plantId]);
+    await dbRun(`UPDATE plant_vote_records SET vote = ? WHERE plant_id = ? AND user_id = ?`, [vote, plantId, user.id]);
+  } else {
+    // New vote
+    await dbRun(`INSERT INTO plant_votes (plant_id, ${vote === 'helpful' ? 'helpful_count' : 'not_helpful_count'}) VALUES (?, 1)`, [plantId]);
+    await dbRun(`INSERT OR IGNORE INTO plant_vote_records (plant_id, user_id, vote) VALUES (?, ?, ?)`, [plantId, user.id, vote]);
+  }
+
+  // Return updated counts
+  const updated = await dbGet('SELECT helpful_count, not_helpful_count FROM plant_votes WHERE plant_id = ?', [plantId]);
+  res.json({
+    success: true,
+    vote,
+    helpful: updated ? updated.helpful_count : 0,
+    not_helpful: updated ? updated.not_helpful_count : 0
+  });
 });
 
 // ─── Admin Routes ──────────────────────────────────────────────────────────
@@ -433,7 +537,7 @@ app.get('/api/admin/stats', requireAdmin, async (req, res) => {
   const totalUsers = await dbGet('SELECT COUNT(*) as total FROM users');
   const newToday = await dbGet("SELECT COUNT(*) as total FROM users WHERE date(created_at) = date('now')");
   const earlyAccessCount = await dbGet('SELECT COUNT(*) as total FROM early_access_emails');
-  const recentUsers = await dbAll("SELECT email, name, created_at FROM users ORDER BY created_at DESC LIMIT 50");
+  const recentUsers = await dbAll("SELECT id, email, name, created_at FROM users ORDER BY created_at DESC LIMIT 50");
   const earlyAccessList = await dbAll("SELECT email, created_at FROM early_access_emails ORDER BY created_at DESC");
   res.json({ total_users: totalUsers.total, new_today: newToday.total, early_access_count: earlyAccessCount.total, recent_users: recentUsers, early_access_list: earlyAccessList });
 });
@@ -447,7 +551,7 @@ app.post('/api/admin/create-admin', requireAdmin, async (req, res) => {
 });
 
 app.get('/api/admin/export/users', requireAdmin, async (req, res) => {
-  const rows = await dbAll("SELECT email, name, created_at FROM users ORDER BY created_at DESC");
+  const rows = await dbAll("SELECT id, email, name, created_at FROM users ORDER BY created_at DESC");
   let csv = 'Email,Name,Registered At\n';
   rows.forEach(r => { csv += `"${r.email || ''}","${r.name || ''}","${r.created_at}"\n`; });
   res.setHeader('Content-Type', 'text/csv');
@@ -462,6 +566,65 @@ app.get('/api/admin/export/emails', requireAdmin, async (req, res) => {
   res.setHeader('Content-Type', 'text/csv');
   res.setHeader('Content-Disposition', 'attachment; filename=plantglow-early-access.csv');
   res.send(csv);
+});
+
+// DELETE /api/admin/emails/:id - Delete early access email
+app.delete('/api/admin/emails/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const row = await dbGet('SELECT * FROM early_access_emails WHERE id = ?', [id]);
+  if (!row) return res.status(404).json({ error: 'Email not found' });
+  await dbRun('DELETE FROM early_access_emails WHERE id = ?', [id]);
+  res.json({ success: true });
+});
+
+// DELETE /api/admin/users/:id - Delete user (also removes Firebase Auth account for Google users)
+app.delete('/api/admin/users/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const numId = parseInt(id, 10);
+  if (isNaN(numId)) {
+    console.error('Delete user: invalid ID:', id);
+    return res.status(400).json({ error: 'Invalid user ID' });
+  }
+
+  let user;
+  try {
+    user = await dbGet('SELECT * FROM users WHERE id = ?', [numId]);
+  } catch (dbErr) {
+    console.error('Delete user: DB error:', dbErr.message);
+    return res.status(500).json({ error: 'Database error: ' + dbErr.message });
+  }
+
+  if (!user) {
+    console.error('Delete user: not found for id:', numId);
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  console.log(`Admin ${req.adminId} deleting user ${numId} (${user.email}, google_id: ${user.google_id ? 'yes' : 'no'})`);
+
+  // If user signed up with Google, also delete their Firebase Auth account
+  if (user.google_id && firebaseInitialized) {
+    try {
+      const userRecord = await admin.auth().getUserByEmail(user.email).catch(() => null);
+      if (userRecord) {
+        await admin.auth().deleteUser(userRecord.uid);
+        console.log('Deleted Firebase user:', userRecord.uid);
+      } else {
+        console.log('No Firebase user found for:', user.email);
+      }
+    } catch (firebaseErr) {
+      console.error('Failed to delete Firebase user:', firebaseErr.message);
+      // Continue anyway - don't block DB deletion if Firebase fails
+    }
+  }
+
+  try {
+    await dbRun('DELETE FROM users WHERE id = ?', [numId]);
+    console.log('Deleted user from DB:', numId);
+    res.json({ success: true });
+  } catch (deleteErr) {
+    console.error('Delete user: failed to delete from DB:', deleteErr.message);
+    res.status(500).json({ error: 'Failed to delete user: ' + deleteErr.message });
+  }
 });
 
 // ─── Start Server ───────────────────────────────────────────────────────────
