@@ -909,37 +909,17 @@
   </section>
 
   <!-- COMMUNITY CORNER -->
-  <section id="community" class="py-16 px-4 bg-white">
-    <div class="max-w-4xl mx-auto">
-      <div class="text-center mb-10">
-        <div class="inline-flex items-center gap-2 bg-lime-100 text-forest-700 px-3 py-1 rounded-full text-sm font-medium mb-3">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          Community
-        </div>
-        <h2 class="text-2xl sm:text-3xl font-bold text-forest-900 mb-2">Gardening Tips From Real Growers</h2>
-        <p class="text-gray-500 max-w-md mx-auto">Wisdom from plant lovers who've been there. Vote for the ones that help you most!</p>
+  <section id="community" class="py-16 px-4 bg-forest-50">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="w-14 h-14 bg-forest-600 rounded-full flex items-center justify-center mx-auto mb-5">
+        <svg class="w-7 h-7 text-lime-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       </div>
-
-      <!-- Tips Grid -->
-      <div id="community-tips" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-        <!-- Loading skeleton -->
-        <div class="bg-forest-50 rounded-2xl p-5 animate-pulse h-32"></div>
-        <div class="bg-forest-50 rounded-2xl p-5 animate-pulse h-32"></div>
-        <div class="bg-forest-50 rounded-2xl p-5 animate-pulse h-32"></div>
-      </div>
-
-      <!-- Share Experience -->
-      <div class="bg-gradient-to-r from-forest-600 to-forest-700 rounded-2xl p-8 text-center">
-        <div class="w-12 h-12 bg-lime-400 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg class="w-6 h-6 text-forest-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        </div>
-        <h3 class="text-xl font-bold text-white mb-2">Share Your Gardening Experience</h3>
-        <p class="text-forest-100 text-sm mb-5 max-w-sm mx-auto">Have a tip, trick, or story to share? We'd love to hear it from fellow plant parents!</p>
-        <a href="mailto:plantglownet@gmail.com?subject=My%20Plant%20Tip%20%E2%80%94%20PlantGlow&body=Hi%20PlantGlow%20team%2C%0A%0AI%27d%20like%20to%20share%20my%20gardening%20experience%3A%0A%0A%5BYour%20tip%20or%20story%20here%5D%0A%0ABest%2C%0A%5BYour%20name%5D" class="inline-flex items-center gap-2 bg-lime-400 text-forest-900 font-bold px-6 py-3 rounded-xl hover:bg-lime-300 transition text-sm">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Share Your Experience
-        </a>
-      </div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-forest-900 mb-3">Share Your Gardening Experience</h2>
+      <p class="text-gray-500 mb-8 max-w-sm mx-auto">Have a tip, trick, or story to share? We'd love to hear from fellow plant parents — email us anytime!</p>
+      <a href="mailto:plantglownet@gmail.com?subject=My%20Plant%20Tip%20%E2%80%94%20PlantGlow&body=Hi%20PlantGlow%20team%2C%0A%0AI%27d%20like%20to%20share%20my%20gardening%20experience%3A%0A%0A%5BYour%20tip%20or%20story%20here%5D%0A%0ABest%2C%0A%5BYour%20name%5D" class="inline-flex items-center gap-2 bg-forest-600 text-white font-bold px-8 py-3 rounded-xl hover:bg-forest-700 transition text-sm">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Share Your Experience
+      </a>
     </div>
   </section>
 
@@ -2255,99 +2235,6 @@ function handleBrowseAll() {
         });
     }
 
-    // ============================================================
-    // COMMUNITY TIPS
-    // ============================================================
-    var communityTipsLoaded = false;
-
-    function loadCommunityTips() {
-      var token = localStorage.getItem('plantglow_token');
-      var headers = { 'Content-Type': 'application/json' };
-      if (token) headers['Authorization'] = 'Bearer ' + token;
-
-      fetch('https://plantglow-production.up.railway.app/api/tips', { headers: headers })
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          if (!data.tips) return;
-          renderCommunityTips(data.tips, data.voted_tip_ids || []);
-          communityTipsLoaded = true;
-        })
-        .catch(function() {
-          document.getElementById('community-tips').innerHTML = '<p class="text-gray-400 text-sm col-span-3 text-center">Could not load tips right now.</p>';
-        });
-    }
-
-    function renderCommunityTips(tips, votedTipIds) {
-      var container = document.getElementById('community-tips');
-      if (!container) return;
-      container.innerHTML = '';
-
-      tips.forEach(function(tip) {
-        var hasVoted = votedTipIds.indexOf(tip.id) !== -1;
-        var card = document.createElement('div');
-        card.className = 'bg-forest-50 rounded-2xl p-5 flex flex-col justify-between gap-4';
-        card.innerHTML = [
-          '<div>',
-          '  <p class="text-forest-800 text-sm leading-relaxed mb-3">' + escapeHtml(tip.content) + '</p>',
-          '  <p class="text-forest-400 text-xs">— ' + escapeHtml(tip.author_name || 'Plant Lover') + '</p>',
-          '</div>',
-          '<div class="flex items-center justify-between">',
-          '  <div class="flex items-center gap-1.5 text-forest-500 text-sm">',
-          '    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>',
-          '    <span>' + tip.vote_count + ' helpful</span>',
-          '  </div>',
-          '  <button ' + (hasVoted ? 'disabled' : '') + ' onclick="voteTip(' + tip.id + ', this)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition ' + (hasVoted ? 'bg-forest-200 text-forest-400 cursor-default' : 'bg-forest-600 text-white hover:bg-forest-700') + '">',
-          '    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>',
-          hasVoted ? 'Voted' : 'Helpful',
-          '  </button>',
-          '</div>'
-        ].join('');
-        container.appendChild(card);
-      });
-    }
-
-    function voteTip(tipId, btn) {
-      var isLoggedIn = !!localStorage.getItem('plantglow_token');
-      if (!isLoggedIn) {
-        openLoginRequiredModal();
-        return;
-      }
-      var token = localStorage.getItem('plantglow_token');
-      btn.disabled = true;
-      fetch('https://plantglow-production.up.railway.app/api/tips/' + tipId + '/vote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
-      })
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          if (data.success) {
-            btn.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition bg-forest-200 text-forest-400 cursor-default';
-            btn.innerHTML = '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg> Voted';
-            // Update the vote count display
-            var countEl = btn.parentElement.querySelector('span');
-            if (countEl) countEl.textContent = (data.vote_count || 0) + ' helpful';
-            showToast('Thanks for voting!', 'success');
-          } else if (data.error === 'Already voted on this tip') {
-            showToast('You already voted on this tip', 'info');
-            btn.disabled = false;
-          }
-        })
-        .catch(function() {
-          btn.disabled = false;
-          showToast('Failed to submit vote', 'error');
-        });
-    }
-
-    function escapeHtml(text) {
-      var div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    // Load community tips on page init (after DOMContentLoaded)
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(loadCommunityTips, 300);
-    });
   </script>
 </body>
 </html>

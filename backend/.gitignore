@@ -1,0 +1,7 @@
+node_modules/
+*.log
+*.db
+firebase-debug.log
+.railwayignore
+.DS_Store
+*.local
