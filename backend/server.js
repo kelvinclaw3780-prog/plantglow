@@ -98,6 +98,13 @@ function initDb() {
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       UNIQUE(plant_id, user_id)
     );
+    CREATE TABLE IF NOT EXISTS favorites (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      plant_id TEXT NOT NULL,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(user_id, plant_id)
+    );
   `);
   console.log('📦 Turso connected:', dbUrl);
 }
@@ -511,6 +518,61 @@ app.post('/api/plants/:plantId/vote', async (req, res) => {
     helpful: updated ? updated.helpful_count : 0,
     not_helpful: updated ? updated.not_helpful_count : 0
   });
+});
+
+// ─── Favorites Routes ─────────────────────────────────────────────────────
+
+// GET /api/favorites - Get all favorites for the logged-in user
+app.get('/api/favorites', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Login required' });
+  }
+  const token = authHeader.slice(7);
+  const user = await dbGet('SELECT id FROM users WHERE token = ?', [token]);
+  if (!user) return res.status(401).json({ error: 'Invalid session' });
+
+  const rows = await dbAll('SELECT plant_id, created_at FROM favorites WHERE user_id = ? ORDER BY created_at DESC', [user.id]);
+  res.json({ favorites: rows.map(r => r.plant_id) });
+});
+
+// POST /api/favorites - Add a plant to favorites
+app.post('/api/favorites', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Login required' });
+  }
+  const token = authHeader.slice(7);
+  const user = await dbGet('SELECT id FROM users WHERE token = ?', [token]);
+  if (!user) return res.status(401).json({ error: 'Invalid session' });
+
+  const { plant_id } = req.body;
+  if (!plant_id) return res.status(400).json({ error: 'Plant ID required' });
+
+  // Check if plant exists in our plant list
+  const validPlants = ['monstera','snake','pothos','fiddle','peace','spider','zz','aloe','jade','calathea','birdOfParadise','rubberPlant','bostonFern','chineseMoney','dracaena','philodendron','englishIvy','castIron','jadePlant','orchid','stringOfHearts','pilea','africanViolet','majestyPalm','ponytailPalm','dieffenbachia','croton','prayerPlant','coffee','anthurium','arrowhead','barrelCactus','burroTail','christmasCactus','cyclamen','lavender','mint','moneyTree','nervePlant','parlorPalm','peperomia','polkaDot','schefflera','syngonium'];
+  if (!validPlants.includes(plant_id)) {
+    return res.status(400).json({ error: 'Unknown plant' });
+  }
+
+  await dbRun('INSERT OR IGNORE INTO favorites (user_id, plant_id) VALUES (?, ?)', [user.id, plant_id]);
+  res.json({ success: true, plant_id });
+});
+
+// DELETE /api/favorites/:plantId - Remove a plant from favorites
+app.delete('/api/favorites/:plantId', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Login required' });
+  }
+  const token = authHeader.slice(7);
+  const user = await dbGet('SELECT id FROM users WHERE token = ?', [token]);
+  if (!user) return res.status(401).json({ error: 'Invalid session' });
+
+
+  const { plantId } = req.params;
+  await dbRun('DELETE FROM favorites WHERE user_id = ? AND plant_id = ?', [user.id, plantId]);
+  res.json({ success: true });
 });
 
 // ─── Admin Routes ──────────────────────────────────────────────────────────
