@@ -4,7 +4,13 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "index-zh.html",
+      "translate_zh.js",
+      "add_zh_*.js",
+      "test_zh.txt",
+      "plant_chinese_evergreen.jpg",
+      "plant_chinese_money_plant.jpg"
     ],
     "rewrites": [
       {

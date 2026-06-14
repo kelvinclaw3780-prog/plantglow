@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlantGlow — 園藝變得更簡單</title>
+  <link rel="alternate" hreflang="en" href="https://plantglow.net/">
+  <link rel="alternate" hreflang="zh-Hant" href="https://plantglow.net/index-zh.html">
+  <meta name="description" content="All-in-one plant database with care guides and growing tips to help urban plant owners thrive.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D7TWQTTMWM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-D7TWQTTMWM');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif', 'Apple Symbols', 'Segoe UI Symbol'],
+          },
+          colors: {
+            forest: {
+              50:  '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              950: '#052e16',
+            },
+            lime: {
+              400: '#a3e635',
+              500: '#84cc16',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --glow: 0 0 40px rgba(74, 222, 128, 0.35);
+      --glow-strong: 0 0 60px rgba(74, 222, 128, 0.5);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    /* Cookie Consent Banner */
+    #cookie-consent {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+    }
+
+    .cookie-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 300ms ease;
+    }
+    .cookie-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    .glow-leaf {
+      filter: drop-shadow(0 0 24px rgba(74, 222, 128, 0.4));
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    .glow-tip {
+      text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(74, 222, 128, 0.3)); }
+      50% { filter: drop-shadow(0 0 40px rgba(74, 222, 128, 0.55)); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .float { animation: float 4s ease-in-out infinite; }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      animation: fade-up 0.5s ease-out forwards;
+      opacity: 0;
+    }
+
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+
+    .feature-card {
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-primary {
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+    .btn-primary:active { transform: scale(0.97); }
+
+    /* Hide scrollbar for modal content */
+    .modal-scroll::-webkit-scrollbar { display: none; }
+
+    .nav-blur {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  
+    @media (max-width: 360px) {
+      .hidden-xs { display: none !important; }
+    }
+  </style>
+  <!-- SEO Meta Tags -->
+  <meta name="keywords" content="plant care, plant database, house plants, indoor plants, plant guide, gardening, plant health, water plants, sunlight plants, plant reminders">
+  <meta name="author" content="PlantGlow">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://plantglow.net/">
+  
+  <!-- Open Graph (Facebook, WhatsApp, Instagram) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://plantglow.net/">
+  <meta property="og:title" content="PlantGlow — 您的個人植物顧問">
+  <meta property="og:description" content="瀏覽超過 30 種室內植物，取得護理指南，獲得個人化的植物護理提醒。您的一站式植物護理助手。">
+  <meta property="og:image" content="https://plantglow.net/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="PlantGlow">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://plantglow.net/">
+  <meta name="twitter:title" content="PlantGlow — 您的個人植物顧問">
+  <meta name="twitter:description" content="瀏覽超過 30 種室內植物，取得護理指南，獲得個人化的植物護理提醒。您的一站式植物護理助手。">
+  <meta name="twitter:image" content="https://plantglow.net/og-image.png">
+
+  <!-- JSON-LD Structured Data -->
+  
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "PlantGlow Plant Database",
+  "description": "Browse and discover 30+ house plants with detailed care guides including light, water, humidity, and temperature requirements.",
+  "numberOfItems": 36,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Monstera Deliciosa",
+        "alternateName": "Monstera Deliciosa",
+        "description": "喜歡明亮的散射光 — 直射陽光會燒傷葉子. 土壤表面乾燥時澆水. 喜歡濕度 — 可以在葉子上噴霧或使用鵝卵石托盤. 春夏季每月施肥一次. 氣生根是正常的，不是問題",
+        "url": "https://plantglow.net/#monstera"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Snake Plant",
+        "alternateName": "Sansevieria Trifasciata",
+        "description": "幾乎不死 — 非常適合新手. 澆水之間讓土壤完全乾燥. 耐低光但在明亮散射光下生長更快. 每月擦拭葉子去除灰塵. 可以數月不澆水",
+        "url": "https://plantglow.net/#snake"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Pothos",
+        "alternateName": "Epipremnum Aureum",
+        "description": "心形葉片，生長在蔓藤上. 容易透過莖插繁殖. 比其他大多數植物更耐低光. 修剪以促進更豐滿、更茂盛的生長. 非常適合吊籃 or trained to climb",
+        "url": "https://plantglow.net/#pothos"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Fiddle Leaf Fig",
+        "alternateName": "Ficus Lyrata",
+        "description": "最受歡迎的展示植物之一. 大提琴形葉片，寬達 30 公分. 討厭被移動 — 選擇正確的位置並保持不動. 每月擦拭葉子去除灰塵. 落葉通常表示移位壓力",
+        "url": "https://plantglow.net/#fiddle"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Peace Lily",
+        "alternateName": "Spathiphyllum",
+        "description": "缺水時會明顯下垂. 保持土壤持續濕潤但不積水. 在低光環境中生長良好. 擦拭葉子去除灰塵. 花朵老化時變綠色 — 這是正常的",
+        "url": "https://plantglow.net/#peace"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Spider Plant",
+        "alternateName": "Chlorophytum Comosum",
+        "description": "產生垂吊的小植株. 容易繁殖 — 只需將小植株盆栽. 耐受各種條件. 氟化物導致褐色尖端 — 使用過濾水. 出色的空氣淨化器（NASA 研究）",
+        "url": "https://plantglow.net/#spider"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "ZZ Plant",
+        "alternateName": "Zamioculcas Zamiifolia",
+        "description": "非常耐旱 - err on the side of underwatering. 每月擦拭葉子保持光亮. 生長緩慢但幾乎不死. 攝入有毒 — 遠離寵物 and children. 黃葉通常表示澆水過多",
+        "url": "https://plantglow.net/#zz"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Aloe Vera",
+        "alternateName": "Aloe Barbadensis",
+        "description": "喜歡明亮的直射光 — 非常適合朝南窗台. 澆水之間讓土壤完全乾燥. 葉子內的凝膠可以舒緩燒傷 and skin irritation. 產生可以分開的新芽. 使用陶罐更好的排水",
+        "url": "https://plantglow.net/#aloe"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Jade Plant",
+        "alternateName": "Crassula Ovata",
+        "description": "好運和繁榮的象徵 in many cultures. 適當護理可以活數十年. 修剪以保持緊湊形狀. 健康時葉子應該堅實飽滿. 明亮光線下葉緣變紅",
+        "url": "https://plantglow.net/#jade"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Calathea",
+        "alternateName": "Calathea Ornata",
+        "description": "葉子整天隨光線移動. 使用過濾水或雨水避免氟化物. 保持土壤持續濕潤但不積水. 喜歡濕度 — 非常適合浴室. 葉子在夜間折叠",
+        "url": "https://plantglow.net/#calathea"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Bird of Paradise",
+        "alternateName": "Strelitzia Reginae",
+        "description": "需要數年才能开花. 裂葉是正常的，不是問題. 生長大型 — 需要空間伸展. 户外植物可達 2-3 公尺. 生長季節每月施肥",
+        "url": "https://plantglow.net/#birdOfParadise"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Rubber Plant",
+        "alternateName": "Ficus Elastica",
+        "description": "定期擦拭葉子保持光亮. 如果新手照顧植物，從深綠色品種開始. 照顧得當室內可達 2-2.5 公尺. 乳白色汁液可能刺激皮膚 — 修剪時戴手套. 每季旋轉以均勻生長",
+        "url": "https://plantglow.net/#rubberPlant"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Orchid",
+        "alternateName": "Phalaenopsis",
+        "description": "用冰塊澆水，方便測量水量. 根乾燥時變銀色，濕潤時變綠色. 花落後，在節點上方切莖以再次开花. 透明盆幫助監測根系健康. 千萬別讓水積在冠部（中心）",
+        "url": "https://plantglow.net/#orchid"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Philodendron",
+        "alternateName": "Philodendron Hederaceum",
+        "description": "心形葉片，生長在蔓藤上. 容易透過莖插繁殖. 比其他大多數植物更耐低光. 修剪以促進更豐滿、更茂盛的生長. 氣生根是正常的，不是問題",
+        "url": "https://plantglow.net/#philodendron"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 15,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Chinese Evergreen",
+        "alternateName": "Aglaonema",
+        "description": "最好的低光植物之一. 澆水之間讓土壤乾燥. 斑葉品種需要更多光照. 出色的空氣淨化器（NASA 研究）. 生長緩慢但非常長壽",
+        "url": "https://plantglow.net/#chineseEvergreen"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 16,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Dracaena",
+        "alternateName": "Dracaena Marginata",
+        "description": "高大戲劇性的尖葉植物. 對氟化物敏感 — 使用過濾水. 褐色尖端常見，通常無害. 室內可達 2 公尺以上. 有些品種葉緣紅色或粉紅色",
+        "url": "https://plantglow.net/#dracaena"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 17,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Mint",
+        "alternateName": "Mentha",
+        "description": "生長旺盛 — 非常適合新手. 定期收穫以防止开花. 喜歡濕潤土壤但讨厌积水根. 可以只用水永久種植. 留蘭香和薄荷是最容易的品種",
+        "url": "https://plantglow.net/#mint"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 18,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Basil",
+        "alternateName": "Ocimum Basilicum",
+        "description": "需要至少 6 小時直射陽光. 摘掉花朵以保持葉子生長. 從頂部收穫以促進茂盛. 喜歡溫暖 — 等到晚間溫暖再移植. 熱那亞羅勒最適合做青醬",
+        "url": "https://plantglow.net/#basil"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 19,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Lavender",
+        "alternateName": "Lavandula Angustifolia",
+        "description": "需要至少 6 小時直射陽光. 喜歡排水良好的土壤. 开花後修剪保持形狀. 迷迭香在類似條件下生長良好. 非常適合香草花園",
+        "url": "https://plantglow.net/#lavender"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 20,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "String of Hearts",
+        "alternateName": "Ceropegia Woodii",
+        "description": "精緻的垂吊多肉，心形葉片. 澆水之間讓土壤完全乾燥. 美麗的吊籃植物. 容易從莖插繁殖. 冬季半休眠 — 少澆水",
+        "url": "https://plantglow.net/#stringOfHearts"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 21,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Chinese Money Plant",
+        "alternateName": "Pilea Peperomioides",
+        "description": "長葉柄上的煎餅形葉片. 定期旋轉均勻生長. 產生許多可以繁殖的小植株. 有趣古怪的植物，非常適合 Instagram. 喜歡潮濕環境但適應性強",
+        "url": "https://plantglow.net/#pilea"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 22,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Boston Fern",
+        "alternateName": "Nephrolepis Exaltata",
+        "description": "經典維多利亞時代室內植物. 每天噴霧或使用鵝卵石托盤. 非常適合高濕度浴室. 葉子可達 90 公分長. 底部褐色葉子正常 — 可以修剪",
+        "url": "https://plantglow.net/#bostonFern"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 23,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "English Ivy",
+        "alternateName": "Hedera Helix",
+        "description": "多功能的垂吊或攀爬植物. 非常適合造型植物和吊籃. 喜歡較涼的溫度. 保持土壤均勻濕潤. Excellent air purifier",
+        "url": "https://plantglow.net/#englishIvy"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 24,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "African Violet",
+        "alternateName": "Saintpaulia Ionantha",
+        "description": "適合小空間的緊湊开花植物. 澆水 from the bottom to avoid leaf spots. 摘除凋謝花朵促進更多开花. 比大多数开花植物更耐低光. 有紫色、粉紅色、白色和斑葉品種",
+        "url": "https://plantglow.net/#africanViolet"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 25,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Majesty Palm",
+        "alternateName": "Ravenea Rivularis",
+        "description": "優雅的棕櫚，適合角落位置. 喜歡濕度 — 每天噴霧或使用加濕器. Keep soil consistently moist. 困難但值得的室內棕櫚. 缺水時葉子變黃",
+        "url": "https://plantglow.net/#majestyPalm"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 26,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Ponytail Palm",
+        "alternateName": "Beaucarnea Recurvata",
+        "description": "不是真正的棕櫚 — 是與絲蘭相關的多肉植物. 球莖儲存水分. 澆水之間讓土壤完全乾燥. 需要盡可能多的光照. 適當護理可以活數十年",
+        "url": "https://plantglow.net/#ponytailPalm"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 27,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Dieffenbachia",
+        "alternateName": "Dieffenbachia Seguine",
+        "description": "也稱為啞藤 — 汁液刺激. 大圖案葉片增添熱帶風情. 容易的新手友好室內植物. 保持土壤適度濕潤. Wipe leaves to keep them dust-free",
+        "url": "https://plantglow.net/#dieffenbachia"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 28,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Croton",
+        "alternateName": "Codiaeum Variegatum",
+        "description": "鮮紅、橙色和黃色葉片. 需要大量光照保持顏色. Loves humidity - mist regularly. Keep soil consistently moist. 落葉通常表示溫度變化",
+        "url": "https://plantglow.net/#croton"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 29,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Prayer Plant",
+        "alternateName": "Maranta Leuconeura",
+        "description": "葉子在夜間折叠 like praying hands. 綠色和紅色的複雜圖案葉片. Use filtered water to avoid fluoride. 喜歡濕度 — 非常適合廚房和浴室. 無毒 — 寵物安全",
+        "url": "https://plantglow.net/#prayerPlant"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 30,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Snake Cactus",
+        "alternateName": "Gasteria Batesiana",
+        "description": "醒目的蛇形葉片帶白色突起. Easy to care for - great for beginners. 澆水之間讓土壤完全乾燥. 比大多數多肉植物更耐低光. 產生可以繁殖的側芽",
+        "url": "https://plantglow.net/#snakeCactus"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 31,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Cast Iron Plant",
+        "alternateName": "Aspidistra Elatior",
+        "description": "幾乎不可能死亡 — 名副其實. 耐受疏忽、低光照和不規律澆水. 深綠色帶狀葉片. 非常適合辦公室和低光位置. 生長非常緩慢但極其長壽",
+        "url": "https://plantglow.net/#castIronPlant"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 32,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Peperomia",
+        "alternateName": "Peperomia Obtusifolia",
+        "description": "緊湊的植物，肉質有光澤葉片. 非常適合小空間和桌面. 澆水前讓表土乾燥. Non-toxic and pet-safe. 品種包括全綠、斑葉和波紋",
+        "url": "https://plantglow.net/#peperomia"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 33,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Money Tree",
+        "alternateName": "Pachira Aquatica",
+        "description": "好運和繁榮的象徵. 莖通常編辮以增加裝飾感. 喜歡持續濕潤但不積水土壤. 室內可以長得相當高. 遠離冷風和暖氣出口",
+        "url": "https://plantglow.net/#moneyTree"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 34,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Umbrella Plant",
+        "alternateName": "Schefflera Arboricola",
+        "description": "掌狀葉片像傘一樣展開. 容易種植 — 非常適合新手. 可以訓練成樹或灌木叢. 修剪以控制高度並促進豐滿. 下垂通常表示需要水",
+        "url": "https://plantglow.net/#schefflera"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 35,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Anthurium",
+        "alternateName": "Anthurium Andraeanum",
+        "description": "紅色、粉紅色或白色的光澤心形花朵. 花朵持續數週. Loves humidity - mist regularly. 保持土壤均勻濕潤. Wipe leaves to keep them shiny and dust-free",
+        "url": "https://plantglow.net/#anthurium"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 36,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Christmas Cactus",
+        "alternateName": "Schlumbergera Bridgesii",
+        "description": "聖誕節前後開美麗的花. 分段莖美麗地垂下. 放在黑暗房間 6 週以觸發开花. 花蕾形成後避免移動 — 它們容易掉落. 容易從莖段繁殖",
+        "url": "https://plantglow.net/#christmasCactus"
+      }
+    }
+  ]
+}
+  </script>
+</head>
+<body class="font-sans bg-white text-gray-900 antialiased">
+
+  <!-- NAV -->
+  <nav class="fixed top-0 left-0 right-0 z-50 nav-blur bg-white/80 border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-4 py-1 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2">
+        <img src="kelvin_logo_transparent.png" alt="PlantGlow" class="h-16 w-16 object-contain glow-leaf">
+        <span class="font-bold text-base text-forest-800 hidden-xs">PlantGlow</span>
+      </a>
+      <!-- Search bar in nav -->
+    <div class="relative hidden md:block">
+      <input type="text" id="search-input" placeholder="Search plants..." oninput="handleSearch(this.value)" class="w-48 lg:w-64 pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-full bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-transparent transition">
+      <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Logged out state -->
+        <div id="nav-logged-out" class="flex items-center gap-3">
+          <a href="index.html" class="text-sm font-medium text-forest-600 hover:text-forest-700 transition">EN</a>
+          <a href="login.html" class="text-sm font-medium text-forest-600 hover:text-forest-700 transition">登入</a>
+        </div>
+        <!-- Logged in state -->
+        <div id="nav-logged-in" class="hidden items-center gap-1">
+          <div id="nav-user-badge" class="flex items-center gap-1 px-2 py-1 bg-forest-50 rounded-full text-sm">
+            <span class="text-xl text-forest-600">🌿</span>
+            <span id="nav-user-status" class="text-xs text-forest-600 font-medium"></span>
+          </div>
+          <button onclick="logout()" class="flex items-center gap-1 px-2 py-1 text-sm text-gray-600 hover:text-red-500 hover:bg-red-50 rounded-lg transition" title="Logout">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">登出</span>
+          </button>
+        </div>
+        <button onclick="toggleMenu()" class="p-2 rounded-lg hover:bg-gray-100 transition" aria-label="Menu">
+          <i data-lucide="menu" class="w-5 h-5 text-gray-700"></i>
+        </button>
+      </div>
+    </div>
+    
+  </nav>
+
+  <!-- Mobile Overlay -->
+  <div id="mobile-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);z-index:9998;"></div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" style="display:none;position:fixed;top:56px;left:0;right:0;background:white;z-index:9999;padding:20px;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+      <button onclick="closeMobileMenu()" style="padding:8px 12px;border-radius:6px;background:#f3f4f6;font-weight:500;">關閉</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      
+      <a href="#plants" onclick="closeMobileMenu()" style="padding:12px 0;color:#374151;text-decoration:none;font-size:16px;">熱門植物</a>
+      <a href="#blog" onclick="closeMobileMenu()" style="padding:12px 0;color:#374151;text-decoration:none;font-size:16px;">部落格</a>
+      <a href="#how-it-works" onclick="closeMobileMenu()" style="padding:12px 0;color:#374151;text-decoration:none;font-size:16px;">如何運作</a>
+    </div>
+    <div id="mobile-nav-logged-out" style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;">
+      <a href="login.html" style="display:block;padding:12px 0;color:#16a34a;font-weight:500;font-size:16px;">登入 / 註冊</a>
+    </div>
+    <div id="mobile-nav-logged-in" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;">
+      <button onclick="logout(); closeMobileMenu();" style="display:block;width:100%;padding:12px 0;color:#dc2626;font-weight:500;font-size:16px;text-align:left;">登出</button>
+    </div>
+  </div></nav>
+
+  <!-- HERO -->
+  <section class="flex flex-col items-center justify-start text-center px-4 pt-[20px] pb-4 bg-gradient-to-b from-forest-50 to-white">
+    <div class="float">
+      <img src="kelvin_logo_transparent.png" alt="PlantGlow" class="w-[350px] h-[350px] object-contain glow-leaf mx-auto mt-[20px]">
+    </div>
+    <h1 class="fade-up -mt-8 text-4xl sm:text-5xl font-extrabold text-forest-900 leading-tight">
+      園藝變得更簡單
+    </h1>
+    <p class="fade-up delay-100 mt-4 text-lg text-gray-600 max-w-sm">
+      一站式植物資料庫，收錄詳細護理指南和種植技巧，讓您減少研究時間，多點時間享受植物。
+    </p>
+    
+    
+  </section>
+
+  <!-- FEATURES REMOVED PER KELVIN REQUEST -->
+
+  <!-- POPULAR PLANTS -->
+  <section id="plants" class="py-16 px-4 bg-forest-50">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-center text-2xl sm:text-3xl font-bold text-forest-900 mb-2">熱門植物</h2>
+      <p class="text-center text-gray-500 mb-4">點擊任何植物，了解護理技巧、種植指南等 ✨</p>
+
+      <!-- Search Bar -->
+      <div class="mb-0 sticky z-10 bg-forest-50 py-2 px-4" style="display:none; top:64px;" id="mobile-search-container">
+        <div class="relative max-w-md mx-auto">
+          <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+          <input type="text" id="mobile-plant-search" placeholder="Search plants..." oninput="handleSearch(this.value)" class="w-full pl-12 pr-4 py-3 text-base border border-forest-200 rounded-2xl bg-white focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-transparent shadow-sm">
+        </div>
+      </div>
+      <script>
+        (function() {
+          var container = document.getElementById('mobile-search-container');
+          function update() {
+            if (window.innerWidth < 768) {
+              container.style.display = 'block';
+            } else {
+              container.style.display = 'none';
+            }
+          }
+          update();
+          window.addEventListener('resize', update);
+        })();
+      </script>
+
+      <!-- Dynamic plant grid -->
+      <div class="mb-6 p-4 bg-forest-50 border border-forest-200 rounded-xl">
+          <div class="flex items-center justify-center gap-3 flex-wrap">
+            <button onclick="console.log('All Plants clicked, showingAll=' + showingAll); showAllPlantsView();" id="btn-all-plants" class="inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm">
+              <i data-lucide="layout-grid" class="w-4 h-4"></i>
+              全部植物
+            </button>
+            <button onclick="console.log('Favorites clicked, showingAll=' + showingAll); showFavoritesView();" id="btn-favorites" class="inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+              我的最愛
+            </button>
+          </div>
+        </div>
+      <div id="plant-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <!-- Plants rendered by JS -->
+      </div>
+
+      <!-- Browse All Button (hidden when logged in and all plants shown) -->
+      <div id="browse-all-section" class="text-center mt-10 flex justify-center gap-3 flex-wrap">
+        <button onclick="handleBrowseAll()" id="browse-btn" class="inline-flex items-center gap-2 bg-white border-2 border-forest-600 text-forest-600 font-semibold px-6 py-3 rounded-xl hover:bg-forest-50 transition shadow-sm">
+          <span id="browse-all-text">瀏覽全部 50 種植物</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+        <button onclick="handleShowLess()" id="show-less-btn" class="hidden items-center gap-2 bg-white border-2 border-gray-300 text-gray-600 font-semibold px-6 py-3 rounded-xl hover:bg-gray-50 transition shadow-sm">
+          <i data-lucide="chevron-up" class="w-4 h-4"></i>
+          <span>顯示更少</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG SECTION -->
+  <section id="blog" class="py-16 px-4 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-2xl sm:text-3xl font-bold text-forest-900 mb-3">植物護理技巧與指南</h2>
+        <p class="text-forest-600">實用建議助您的植物茁壯成長</p>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-3">
+        <!-- Blog Post (Random 1) -->
+        <a href="blog/repot-monstera-step-by-step.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/repot-monstera-step-by-step.jpg" alt="如何為龜背芋換盆" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 5, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">為龜背芋換盆</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">龜背芋長太大需要換盆？透過簡單的步驟指南了解如何正確換盆。</p>
+          </div>
+        </a>
+
+        <!-- Blog Post (Random 2) -->
+        <a href="blog/propagate-pothos-from-cuttings.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/propagate-pothos-from-cuttings.jpg" alt="如何用扦插法繁殖黃金葛" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 6, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">用扦插法繁殖黃金葛</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">黃金葛是最容易繁殖的植物之一。了解如何免費用扦插種植新植株。</p>
+          </div>
+        </a>
+
+        <!-- Blog Post (Random 3) -->
+        <a href="blog/common-plant-problems-solutions.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/common-plant-problems-solutions.jpg" alt="常見植物問題及解決方法" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 6, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">常見植物問題及修復方法</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">黃葉、焦尖、病蟲害——每位植物愛好者都會遇到這些問題。了解原因及修復方法。</p>
+          </div>
+        </a>
+
+        <!-- Blog Post (Random 4) -->
+        <a href="blog/best-air-purifying-plants.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/best-air-purifying-plants.jpg" alt="最佳空氣淨化植物" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 6, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">最佳空氣淨化植物</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">NASA 研究顯示某些植物能去除室內空氣中的毒素。這些是最佳的空氣淨化室內植物。</p>
+          </div>
+        </a>
+
+        <!-- Blog Post (Random 5) -->
+        <a href="blog/why-plant-leaves-turning-yellow.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/why-plant-leaves-turning-yellow.jpg" alt="為什麼我的植物葉子變黃？" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 6, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">植物葉子變黃的原因</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">黃葉是最常見的植物問題。了解 8 個原因及具體修復方法。</p>
+          </div>
+        </a>
+
+        <!-- Blog Post (Random 6) -->
+        <a href="blog/5-signs-plant-needs-water.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/5-signs-plant-needs-water.jpg" alt="植物需要澆水的 5 個徵兆" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 1, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">植物需要澆水的 5 個徵兆</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">葉子枯萎？土壤乾燥？莖下垂？了解室內植物需要澆水的 5 個明顯徵兆。</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- View All Button -->
+      <div class="text-center mt-10">
+        <a href="blog/" class="inline-block bg-forest-600 text-white font-semibold px-8 py-3 rounded-xl hover:bg-forest-700 transition">查看所有文章 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works" class="py-16 px-4 bg-forest-900 text-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-center text-2xl sm:text-3xl font-bold mb-12">PlantGlow 如何運作</h2>
+
+      <div class="space-y-8 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-8">
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center font-bold text-lime-400">1</div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">瀏覽植物</h3>
+            <p class="text-forest-200 text-sm">探索 50 種植物的詳細護理指南。以名稱搜尋或篩選所需植物。</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center font-bold text-lime-400">2</div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">儲存最愛</h3>
+            <p class="text-forest-200 text-sm">為任何植物按下愛心以儲存至最愛。建立您的個人植物收藏。</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center font-bold text-lime-400">3</div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">遵循護理指南</h3>
+            <p class="text-forest-200 text-sm">在一處獲得關於澆水、光線、濕度等的清晰提示。</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center font-bold text-lime-400">4</div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">看它們茁壯成長</h3>
+            <p class="text-forest-200 text-sm">減少研究時間，多點時間享受。你的植物會感謝你。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EMAIL CAPTURE -->
+  <section class="py-16 px-4 bg-forest-50">
+    <div class="max-w-md mx-auto text-center">
+      <h2 class="text-xl font-bold text-forest-900 mb-2">搶先知道</h2>
+      <p class="text-gray-500 text-sm mb-6">註冊新功能並獲得護理技巧，助您的植物茁壯成長。</p>
+      <form class="flex flex-col gap-3" onsubmit="handleEmailSubmit(event)">
+        <input type="email" id="email-input" placeholder="your@email.com" required
+          class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900">
+        <button type="submit" class="btn-primary bg-forest-600 text-white font-semibold py-3 rounded-xl hover:bg-forest-700">
+          立即註冊
+        </button>
+      </form>
+      <p id="email-success" class="hidden mt-4 text-sm text-forest-600 font-medium">謝謝！您已加入名單 ðŸŒ±</p>
+      <p class="mt-3 text-xs text-gray-400">無垃圾郵件，可隨時取消訂閱。</p>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM SECTION -->
+  <section class="py-8 px-4 bg-gradient-to-b from-white to-forest-50">
+    <div class="max-w-4xl mx-auto text-center">
+      <a href="https://instagram.com/plantglownet" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white px-4 py-1.5 rounded-full text-sm font-medium mb-6 hover:scale-105 transition-transform">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        在 Instagram 上追蹤我們
+      </a>
+      <h2 class="text-2xl sm:text-3xl font-bold text-forest-900 mb-3">保持靈感</h2>
+      <p class="text-gray-500 mb-8 max-w-md mx-auto">追蹤 <strong>@plantglow</strong> 獲取每日植物技巧、護理妙招和綠色靈感。</p>
+      
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="bg-forest-950 text-forest-300 py-12 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+        <div class="flex items-center gap-2">
+          <img src="kelvin_logo_transparent.png" alt="PlantGlow logo" class="h-8 w-8 object-contain opacity-80">
+          <span class="font-bold text-white">PlantGlow</span>
+        </div>
+        <div class="flex gap-6 text-sm">
+          <a href="#plants" class="hover:text-white transition">植物</a>
+          <a href="#features" class="hover:text-white transition">功能</a>
+          <a href="mailto:hello@plantglow.com" class="hover:text-white transition">聯絡我們</a>
+        </div>
+      </div>
+      <div class="mt-8 pt-6 border-t border-forest-800 text-xs text-forest-500 flex flex-col sm:flex-row sm:justify-between gap-2">
+        <p>PlantGlow by Tradex Dev. Co. 2026. 版權所有。</p>
+        <div class="flex gap-4">
+          <a href="javascript:openPrivacyPopup()" class="hover:text-forest-300 transition">隱私權政策</a>
+          <a href="javascript:openTermsPopup()" class="hover:text-forest-300 transition">條款與條件</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  
+<script>
+    // ============================================================
+    // INIT (wrapped in DOMContentLoaded to ensure plantData is defined first)
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check for fresh load flag (set by login page after redirect)
+      var urlParams = new URLSearchParams(window.location.search);
+      var fresh = urlParams.get('fresh');
+      if (fresh === '1') {
+        // Force reset and clear any stale state
+        localStorage.removeItem('plantglow_showingAll');
+        // Remove the ?fresh=1 from URL without reloading
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+      lucide.createIcons();
+      updateNav();
+      showLoginToast();
+      // Sync button styles on page load based on current showingAll state
+      var btnAll = document.getElementById('btn-all-plants');
+      var btnFav = document.getElementById('btn-favorites');
+      if (showingAll) {
+        if (btnAll) btnAll.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+        if (btnFav) btnFav.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+      } else {
+        if (btnAll) btnAll.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+        if (btnFav) btnFav.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+      }
+      setTimeout(function() { renderPlants(); }, 100);
+    });
+    // ============================================================
+    
+    // LOGIN STATE
+    // ============================================================
+    function isLoggedIn() {
+      return !!localStorage.getItem('plantglow_token');
+    }
+
+    function isSubscribed() {
+      return localStorage.getItem('plantglow_subscribed') === 'true';
+    }
+
+    function logout() {
+      localStorage.removeItem('plantglow_token');
+      localStorage.removeItem('plantglow_user');
+      localStorage.removeItem('plantglow_subscribed');
+      if (typeof firebase !== 'undefined' && firebase.auth) {
+        firebase.auth().signOut().catch(() => {});
+      }
+      showingAll = true;
+      updateNav();
+      showAllPlantsView();
+      renderPlants();
+      showToast('已成功登出', 'info');
+    }
+
+    function updateNav() {
+      var loggedIn = isLoggedIn();
+      var subscribed = isSubscribed();
+      document.getElementById('nav-logged-out').style.display = loggedIn ? 'none' : '';
+      document.getElementById('nav-logged-in').style.display = loggedIn ? 'flex' : 'none';
+      document.getElementById('mobile-nav-logged-out').style.display = loggedIn ? 'none' : '';
+      document.getElementById('mobile-nav-logged-in').style.display = loggedIn ? '' : 'none';
+      // Also update mobile menu nav items
+      var mobileLoggedOut = document.getElementById('mobile-nav-logged-out');
+      var mobileLoggedIn = document.getElementById('mobile-nav-logged-in');
+      if (mobileLoggedOut) mobileLoggedOut.style.display = loggedIn ? 'none' : '';
+      if (mobileLoggedIn) mobileLoggedIn.style.display = loggedIn ? '' : 'none';
+      if (loggedIn) {
+        // Keep leaf icon, no text label
+      }
+      lucide.createIcons();
+    }
+
+    function showLoginToast() {
+      if (!isLoggedIn()) return;
+      var subscribed = isSubscribed();
+      showToast('歡迎回來！', 'success');
+    }
+
+    // ============================================================
+    
+
+    function handleShowLess() {
+      showingAll = false;
+      var browseSection = document.getElementById('browse-all-section');
+      var browseBtn = document.getElementById('browse-btn');
+      var showLessBtn = document.getElementById('show-less-btn');
+      var browseText = document.getElementById('browse-all-text');
+      // Show browse section and buttons
+      if (browseSection) browseSection.style.display = '';
+      if (browseBtn) {
+        browseBtn.classList.remove('hidden');
+        browseBtn.classList.add('inline-flex');
+        browseBtn.style.display = '';
+      }
+      if (showLessBtn) {
+        showLessBtn.classList.add('hidden');
+        showLessBtn.classList.remove('flex');
+        showLessBtn.style.display = 'none';
+      }
+      if (browseText) browseText.textContent = '瀏覽全部 ' + Object.keys(plantData).length + ' plants';
+      renderPlants();
+    }
+
+    // PLANT GRID
+    // ============================================================
+    var VISIBLE_COUNT = 10;
+    var showingAll = true;
+    var currentModalPlantId = null;
+
+    function renderPlantCard(id, plant) {
+      var isLoggedIn = !!localStorage.getItem('plantglow_token');
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var isFavorite = favorites.includes(id);
+      var heartFill = (isLoggedIn && isFavorite) ? '#ef4444' : 'none';
+      var heartStroke = (isLoggedIn && isFavorite) ? '#ef4444' : '#d1d5db';
+      var heartSvg = (isLoggedIn && isFavorite)
+        ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2" class="w-5 h-5 cursor-pointer"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" class="w-5 h-5 cursor-pointer"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
+      var onclick = isLoggedIn ? 'toggleFavorite(\'' + id + '\', event)' : 'openLoginRequiredModal()';
+      return '<div class="plant-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="handlePlantCardClick(\'' + id + '\')" data-plant-id="' + id + '" data-name="' + plant.name.toLowerCase() + '" data-scientific="' + plant.scientific.toLowerCase() + '">' +
+        '<div class="relative">' +
+        '<img src="' + plant.img + '" alt="' + (plant.nameZh || plant.name) + '" class="w-full aspect-square object-cover" onerror="this.src=\'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=400&fit=crop\'">' +
+        '<button onclick="' + onclick + '; event.stopPropagation();" class="absolute top-2 right-2 p-1.5 bg-white/80 rounded-full hover:bg-white transition shadow-sm" title="' + (isLoggedIn ? (isFavorite ? 'Remove from favorites' : 'Add to favorites') : '登入以儲存') + '">' +
+        heartSvg +
+        '</button>' +
+        '</div>' +
+        '<div class="p-3">' +
+        '<h3 class="font-semibold text-gray-900 text-sm">' + (plant.nameZh || plant.name) + '</h3>' +
+        '<p class="text-xs text-gray-500">' + plant.scientific + '</p>' +
+        '<div class="mt-2 flex items-center gap-1 flex-wrap">' +
+        '<span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full" title="光線 level needed">☀️ ' + plant.light.split(' ')[0] + '</span>' +
+'<span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full" title="How often to water">💧 ' + plant.water + '</span>' +
+'</div>' +
+'<a href="/plants/' + plant.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.html" class="text-xs text-forest-600 mt-2 font-medium hover:text-forest-800 transition">點擊圖片查看護理技巧</a>' +
+'</div></div></div>';
+    }
+
+    function renderPlants() {
+      var grid = document.getElementById('plant-grid');
+      if (!grid) { console.warn('No plant-grid found'); return; }
+      var browseSection = document.getElementById('browse-all-section');
+      var browseText = document.getElementById('browse-all-text');
+      var loggedIn = isLoggedIn();
+      var plantIds = Object.keys(plantData);
+      var showCount = showingAll ? plantIds.length : VISIBLE_COUNT;
+      var plantsToShow = plantIds.slice(0, showCount);
+      if (plantsToShow.length === 0) { plantsToShow = plantIds; showCount = plantIds.length; }
+      grid.innerHTML = plantsToShow.map(function(id) { return renderPlantCard(id, plantData[id]); }).join('');
+      browseSection.style.display = 'none';
+      browseText.textContent = '瀏覽全部 ' + plantIds.length + ' plants';
+      var browseBtn = document.getElementById('browse-btn');
+      var showLessBtn = document.getElementById('show-less-btn');
+      if (browseBtn) { browseBtn.style.display = ''; }
+      if (showLessBtn) { showLessBtn.style.display = showingAll ? 'flex' : 'none'; }
+      lucide.createIcons();
+    }
+
+    function handlePlantSearch() {
+      var query = document.getElementById('plant-search').value.toLowerCase().trim();
+      var grid = document.getElementById('plant-grid');
+      var cards = grid.getElementsByClassName('plant-card');
+      var isFavoritesView = document.getElementById('btn-favorites') && document.getElementById('btn-favorites').classList.contains('bg-forest-600');
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      Array.from(cards).forEach(function(card) {
+        var name = card.getAttribute('data-name') || '';
+        var scientific = card.getAttribute('data-scientific') || '';
+        var cardId = card.getAttribute('data-plant-id') || '';
+        var isFavorite = favorites.includes(cardId);
+        var matchesQuery = query === '' || name.includes(query) || scientific.includes(query);
+        var isVisible = isFavoritesView ? (isFavorite && matchesQuery) : matchesQuery;
+        card.style.display = isVisible ? '' : 'none';
+      });
+      var browseSection = document.getElementById('browse-all-section');
+      if (browseSection) {
+        browseSection.style.display = query === '' ? '' : 'none';
+      }
+    }
+
+    
+
+    function toggleFavorite(plantId, event) {
+      event.stopPropagation();
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var idx = favorites.indexOf(plantId);
+      if (idx > -1) {
+        favorites.splice(idx, 1);
+        showToast('已從最愛移除', 'info');
+      } else {
+        favorites.push(plantId);
+        showToast('已加入最愛！', 'success');
+      }
+      localStorage.setItem('plantglow_favorites', JSON.stringify(favorites));
+      renderPlants();
+      // Restore button active states based on showingAll flag, not button DOM state
+      var btnAll = document.getElementById('btn-all-plants');
+      var btnFav = document.getElementById('btn-favorites');
+      if (showingAll) {
+        if (btnAll) btnAll.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+        if (btnFav) btnFav.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+      } else {
+        if (btnAll) btnAll.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+        if (btnFav) btnFav.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+      }
+      lucide.createIcons();
+    }
+
+    function showFavorites() {
+      showFavoritesView();
+    }
+
+    function showAllPlantsView() {
+      showingAll = true;
+      console.log('[DEBUG] showAllPlantsView called, showingAll=' + showingAll);
+      var grid = document.getElementById('plant-grid');
+      var cards = grid.getElementsByClassName('plant-card');
+      Array.from(cards).forEach(function(card) {
+        card.style.display = '';
+      });
+      var browseSection = document.getElementById('browse-all-section');
+      if (browseSection) browseSection.style.display = 'none';
+      var searchSectionEl = document.getElementById('plant-search');
+      if (searchSectionEl && searchSectionEl.parentElement) {
+        searchSectionEl.parentElement.parentElement.style.display = 'none';
+      }
+      // Update button styles
+      var btnAll = document.getElementById('btn-all-plants');
+      var btnFav = document.getElementById('btn-favorites');
+      console.log('[DEBUG] Before: btn-all-plants class=' + (btnAll ? btnAll.className : 'null'));
+      console.log('[DEBUG] Before: btn-favorites class=' + (btnFav ? btnFav.className : 'null'));
+      if (btnAll) {
+        btnAll.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+      }
+      if (btnFav) {
+        btnFav.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+      }
+      console.log('[DEBUG] After: btn-all-plants class=' + (btnAll ? btnAll.className : 'null'));
+      console.log('[DEBUG] After: btn-favorites class=' + (btnFav ? btnFav.className : 'null'));
+      renderPlants();
+      lucide.createIcons();
+    }
+
+    function showFavoritesView() {
+      showingAll = false;
+      if (!isLoggedIn()) {
+        openLoginRequiredModal();
+        return;
+      }
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var grid = document.getElementById('plant-grid');
+      var cards = grid.getElementsByClassName('plant-card');
+      Array.from(cards).forEach(function(card) {
+        var cardId = card.getAttribute('data-plant-id');
+        card.style.display = favorites.includes(cardId) ? '' : 'none';
+      });
+      var browseSection = document.getElementById('browse-all-section');
+      if (browseSection) browseSection.style.display = 'none';
+      // Update button styles
+      var btnAll = document.getElementById('btn-all-plants');
+      var btnFav = document.getElementById('btn-favorites');
+      if (btnAll) {
+        btnAll.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+      }
+      if (btnFav) {
+        btnFav.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+      }
+      lucide.createIcons();
+    }
+
+    function showAllPlants() {
+      showAllPlantsView();
+    }
+
+    function handleSearch(query) {
+      query = query.toLowerCase().trim();
+      var cards = document.getElementsByClassName('plant-card');
+      for (var i = 0; i < cards.length; i++) {
+        var card = cards[i];
+        var name = card.getAttribute('data-name') || '';
+        var scientific = card.getAttribute('data-scientific') || '';
+        if (name.includes(query) || scientific.includes(query)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      }
+    }
+
+function handleBrowseAll() {
+      if (!isLoggedIn()) {
+        openLoginRequiredModal();
+      } else {
+        showingAll = true;
+        var browseBtn = document.getElementById('browse-btn');
+        var showLessBtn = document.getElementById('show-less-btn');
+        if (browseBtn) {
+          browseBtn.classList.add('hidden');
+          browseBtn.classList.remove('inline-flex');
+        }
+        if (showLessBtn) {
+          showLessBtn.classList.remove('hidden');
+          showLessBtn.classList.add('flex');
+        }
+        renderPlants();
+      }
+    }
+
+    // ============================================================
+    // TOAST
+    // ============================================================
+    function showToast(message, type) {
+      var toast = document.createElement('div');
+      toast.id = 'toast-notification';
+      toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 z-[200] px-6 py-3 rounded-xl shadow-lg text-white font-medium text-sm flex items-center gap-2 transition-all duration-300 ';
+      toast.className += (type === 'success' ? 'bg-forest-600' : type === 'info' ? 'bg-blue-500' : 'bg-red-500');
+      toast.innerHTML = '<span>' + message + '</span>';
+      document.body.appendChild(toast);
+      setTimeout(function() {
+        toast.style.opacity = '0';
+        toast.style.marginTop = '-20px';
+        setTimeout(function() { toast.remove(); }, 300);
+      }, 3000);
+    }
+
+    // ============================================================
+    // MOBILE MENU
+    // ============================================================
+    function toggleMenu() {
+      var menu = document.getElementById('mobile-menu');
+      var overlay = document.getElementById('mobile-overlay');
+      if (menu.style.display === 'none' || menu.style.display === '') {
+        menu.style.display = 'block';
+        overlay.style.display = 'block';
+      } else {
+        menu.style.display = 'none';
+        overlay.style.display = 'none';
+      }
+    }
+
+    function closeMobileMenu() {
+      var menu = document.getElementById('mobile-menu');
+      var overlay = document.getElementById('mobile-overlay');
+      menu.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+
+    function handleEmailSubmit(e) {
+      e.preventDefault();
+      var email = document.getElementById('email-input').value;
+      fetch('/api/early-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      }).then(res => res.json()).then(data => {
+        showToast(data.message || 'Early access signed up!', 'success');
+        document.getElementById('email-input').value = '';
+      }).catch(() => {
+        showToast('Early access signed up: ' + email, 'success');
+        document.getElementById('email-input').value = '';
+      });
+      document.getElementById('email-input').value = '';
+    }
+
+    // ============================================================
+    // MODALS
+    // ============================================================
+    function openLoginRequiredModal() {
+      document.getElementById('login-required-modal').classList.remove('hidden');
+      document.getElementById('login-required-modal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLoginRequiredModal() {
+      document.getElementById('login-required-modal').classList.add('hidden');
+      document.getElementById('login-required-modal').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function openPlantModal(plantId) {
+      var plant = plantData[plantId];
+      if (!plant) return;
+      currentModalPlantId = plantId;
+      document.getElementById('plant-modal-img').src = plant.img;
+      document.getElementById('plant-modal-name').textContent = plant.nameZh || plant.name;
+      // Scientific name stays in English (botanical name)
+      document.getElementById('plant-modal-light').textContent = plant.light;
+      document.getElementById('plant-modal-water').textContent = plant.water;
+      document.getElementById('plant-modal-humidity').textContent = plant.humidity;
+      document.getElementById('plant-modal-temp').textContent = plant.temp;
+      var tipsEl = document.getElementById('plant-modal-tips');
+      tipsEl.innerHTML = '';
+      plant.tips.forEach(function(tip) {
+        var li = document.createElement('li');
+        li.textContent = tip;
+        tipsEl.appendChild(li);
+      });
+      var problemsEl = document.getElementById('plant-modal-problems');
+      problemsEl.innerHTML = '';
+      plant.problems.forEach(function(p) {
+        var li = document.createElement('li');
+        li.textContent = p;
+        problemsEl.appendChild(li);
+      });
+      // Update favorite button
+      updateModalFavoriteBtn();
+      document.getElementById('plant-modal').classList.remove('hidden');
+      document.getElementById('plant-modal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    
+    function updateModalFavoriteBtn() {
+      var btn = document.getElementById('modal-favorite-btn');
+      var icon = document.getElementById('modal-favorite-icon');
+      var text = document.getElementById('modal-favorite-text');
+      if (!currentModalPlantId) return;
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var isFavorite = favorites.includes(currentModalPlantId);
+      var isLoggedIn = !!localStorage.getItem('plantglow_token');
+      if (!isLoggedIn) {
+        btn.className = 'mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-gray-200 hover:border-forest-400 hover:bg-forest-50 transition text-sm font-medium text-gray-600';
+        icon.textContent = '♡';
+        text.textContent = '登入以儲存';
+        btn.onclick = function() { openLoginRequiredModal(); };
+      } else if (isFavorite) {
+        btn.className = 'mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-red-400 bg-red-50 transition text-sm font-medium text-red-500';
+        icon.textContent = '♥';
+        text.textContent = '已儲存';
+        btn.onclick = function() { toggleModalFavorite(); };
+      } else {
+        btn.className = 'mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-gray-200 hover:border-red-400 hover:bg-red-50 transition text-sm font-medium text-gray-600';
+        icon.textContent = '♡';
+        text.textContent = '儲存至最愛';
+        btn.onclick = function() { toggleModalFavorite(); };
+      }
+    }
+
+    function toggleModalFavorite() {
+      if (!currentModalPlantId) return;
+      var isLoggedIn = !!localStorage.getItem('plantglow_token');
+      if (!isLoggedIn) {
+        showToast('請登入以儲存最愛', 'info');
+        return;
+      }
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var idx = favorites.indexOf(currentModalPlantId);
+      if (idx > -1) {
+        favorites.splice(idx, 1);
+        showToast('已從最愛移除', 'info');
+      } else {
+        favorites.push(currentModalPlantId);
+        showToast('已加入最愛！', 'success');
+      }
+      localStorage.setItem('plantglow_favorites', JSON.stringify(favorites));
+      updateModalFavoriteBtn();
+      renderPlants();
+    }
+
+    function closePlantModal() {
+      document.getElementById('plant-modal').classList.add('hidden');
+      document.getElementById('plant-modal').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function handlePlantCardClick(plantId) {
+      openPlantModal(plantId);
+    }
+
+    function handlePlantClick(plantId) {
+      openPlantModal(plantId);
+    }
+
+    // ============================================================
+    // PLANT DATA (19 plants, all clean ASCII)
+    // ============================================================
+    var plantData = {
+      monstera: {
+        name: 'Monstera Deliciosa', nameZh: '龜背竹', scientific: 'Monstera Deliciosa',
+        img: 'plant_monstera.jpg',
+        light: 'Medium 光線', water: 'Weekly', humidity: 'High (60-80%)', temp: '18-27C',
+        tips: ['喜歡明亮的散射光 — 直射陽光會燒傷葉子', '土壤表面乾燥時澆水', '喜歡濕度 — 可以在葉子上噴霧或使用鵝卵石托盤', '春夏季每月施肥一次', '氣生根是正常的，不是問題'],
+        problems: ['Yellow leaves = overwatering', 'No splits = needs more light', 'Brown edges = dry air or fluoride'],
+      },
+      snake: {
+        name: 'Snake Plant', nameZh: '虎皮蘭', scientific: 'Sansevieria Trifasciata',
+        img: 'plant_snake.jpg',
+        light: 'Low to Bright', water: 'Every 2-3 weeks', humidity: 'Low to Average', temp: '15-27C',
+        tips: ['幾乎不死 — 非常適合新手', '澆水之間讓土壤完全乾燥', '耐低光但在明亮散射光下生長更快', '每月擦拭葉子去除灰塵', '可以數月不澆水'],
+        problems: ['Mushy leaves = overwatering / root rot', 'Drooping = needs water', 'Brown tips = fluoride in water'],
+      },
+      pothos: {
+        name: 'Pothos', nameZh: '黃金葛', scientific: 'Epipremnum Aureum',
+        img: 'plant_pothos.jpg',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average to High', temp: '18-27C',
+        tips: ['心形葉片，生長在蔓藤上', '容易透過莖插繁殖', '比其他大多數植物更耐低光', '修剪以促進更豐滿、更茂盛的生長', '非常適合吊籃 or trained to climb'],
+        problems: ['Yellow leaves = overwatering', 'Leggy stems = needs more light', 'Brown tips = underwatering or low humidity'],
+      },
+      fiddle: {
+        name: 'Fiddle Leaf Fig', nameZh: '琴葉榕', scientific: 'Ficus Lyrata',
+        img: 'plant_fiddle_leaf.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'High (50%+)', temp: '16-24C',
+        tips: ['最受歡迎的展示植物之一', '大提琴形葉片，寬達 30 公分', '討厭被移動 — 選擇正確的位置並保持不動', '每月擦拭葉子去除灰塵', '落葉通常表示移位壓力'],
+        problems: ['Brown spots = overwatering or temperature changes', 'Dropping leaves = stress / drafty location', 'Red edges = too much direct sun'],
+      },
+      peace: {
+        name: 'Peace Lily', nameZh: '白掌', scientific: 'Spathiphyllum',
+        img: 'plant_peace_lily.jpg',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'High', temp: '18-26C',
+        tips: ['缺水時會明顯下垂', '保持土壤持續濕潤但不積水', '在低光環境中生長良好', '擦拭葉子去除灰塵', '花朵老化時變綠色 — 這是正常的'],
+        problems: ['Brown edges = dry air or fluoride', 'Wilting despite moist soil = root rot', 'No flowers = needs more light'],
+      },
+      spider: {
+        name: 'Spider Plant', nameZh: '吊蘭', scientific: 'Chlorophytum Comosum',
+        img: 'plant_spider.jpg',
+        light: 'Medium to Bright', water: 'Weekly', humidity: 'Average', temp: '13-27C',
+        tips: ['產生垂吊的小植株', '容易繁殖 — 只需將小植株盆栽', '耐受各種條件', '氟化物導致褐色尖端 — 使用過濾水', '出色的空氣淨化器（NASA 研究）'],
+        problems: ['Brown tips = fluoride/chlorine', 'Pale leaves = needs more light', 'No babies = plant is too young'],
+      },
+      zz: {
+        name: 'ZZ Plant', nameZh: '綠蘿', scientific: 'Zamioculcas Zamiifolia',
+        img: 'plant_zz.jpg',
+        light: 'Low to Medium', water: 'Monthly', humidity: 'Low', temp: '18-26C',
+        tips: ['非常耐旱 - err on the side of underwatering', '每月擦拭葉子保持光亮', '生長緩慢但幾乎不死', '攝入有毒 — 遠離寵物 and children', '黃葉通常表示澆水過多'],
+        problems: ['Yellow leaves = overwatering', 'Drooping stems = root rot', 'Slow growth = normal, not a problem'],
+      },
+      aloe: {
+        name: 'Aloe Vera', nameZh: '蘆薈', scientific: 'Aloe Barbadensis',
+        img: 'https://images.unsplash.com/photo-1567331711402-509c12c41959?w=800&h=600&fit=crop',
+        light: 'Bright Direct', water: 'Every 2-3 weeks', humidity: 'Low', temp: '13-27C',
+        tips: ['喜歡明亮的直射光 — 非常適合朝南窗台', '澆水之間讓土壤完全乾燥', '葉子內的凝膠可以舒緩燒傷 and skin irritation', '產生可以分開的新芽', '使用陶罐更好的排水'],
+        problems: ['Brown tips = too much direct sun or fluoride', 'Mushy leaves = overwatered', 'Flat, curled leaves = needs water'],
+      },
+      jade: {
+        name: 'Jade Plant', nameZh: '玉樹', scientific: 'Crassula Ovata',
+        img: 'plant_jade.jpg',
+        light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-24C',
+        tips: ['好運和繁榮的象徵 in many cultures', '適當護理可以活數十年', '修剪以保持緊湊形狀', '健康時葉子應該堅實飽滿', '明亮光線下葉緣變紅'],
+        problems: ['Dropping leaves = overwatering or sudden cold', 'Soft mushy stem = root rot', 'Leggy growth = needs more light'],
+      },
+      calathea: {
+        name: 'Calathea', nameZh: '彩虹竹芋', scientific: 'Calathea Ornata',
+        img: 'plant_calathea.jpg',
+        light: 'Low to Medium', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-26C',
+        tips: ['葉子整天隨光線移動', '使用過濾水或雨水避免氟化物', '保持土壤持續濕潤但不積水', '喜歡濕度 — 非常適合浴室', '葉子在夜間折叠'],
+        problems: ['Brown crispy edges = low humidity or fluoride', 'Curling leaves = too dry or too cold', 'Faded patterns = too much direct light'],
+      },
+      birdOfParadise: {
+        name: 'Bird of Paradise', nameZh: '鶴望蘭', scientific: 'Strelitzia Reginae',
+        img: 'plant_bird_of_paradise.jpg',
+        light: 'Bright Direct', water: 'Weekly', humidity: 'Average', temp: '18-30C',
+        tips: ['需要數年才能开花', '裂葉是正常的，不是問題', '生長大型 — 需要空間伸展', '户外植物可達 2-3 公尺', '生長季節每月施肥'],
+        problems: ['No flowers = needs more light or is too young', 'Split leaves = natural, not preventable', 'Drooping = needs water'],
+      },
+      rubberPlant: {
+        name: 'Rubber Plant', nameZh: '橡皮樹', scientific: 'Ficus Elastica',
+        img: 'plant_rubber.jpg',
+        light: 'Medium to Bright', water: 'Weekly', humidity: 'Average', temp: '16-27C',
+        tips: ['定期擦拭葉子保持光亮', '如果新手照顧植物，從深綠色品種開始', '照顧得當室內可達 2-2.5 公尺', '乳白色汁液可能刺激皮膚 — 修剪時戴手套', '每季旋轉以均勻生長'],
+        problems: ['Yellow leaves = overwatering', 'Dropping leaves = sudden temperature change', 'Leggy growth = needs more light'],
+      },
+      orchid: {
+        name: 'Orchid', nameZh: '蘭花', scientific: 'Phalaenopsis',
+        img: 'plant_orchid.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Medium (50%)', temp: '18-26C',
+        tips: ['用冰塊澆水，方便測量水量', '根乾燥時變銀色，濕潤時變綠色', '花落後，在節點上方切莖以再次开花', '透明盆幫助監測根系健康', '千萬別讓水積在冠部（中心）'],
+        problems: ['Yellow leaves = too much water or direct sun', 'Bud blast = sudden temperature or humidity change', 'No rebloom = needs more light or a rest period'],
+      },
+      philodendron: {
+        name: 'Philodendron', nameZh: '蔓綠絨', scientific: 'Philodendron Hederaceum',
+        img: 'plant_philodendron.jpg',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average', temp: '18-27C',
+        tips: ['心形葉片，生長在蔓藤上', '容易透過莖插繁殖', '比其他大多數植物更耐低光', '修剪以促進更豐滿、更茂盛的生長', '氣生根是正常的，不是問題'],
+        problems: ['Yellow leaves = overwatering', 'Leggy stems = needs more light', 'Brown tips = underwatering or low humidity'],
+      },
+      chineseEvergreen: {
+        name: 'Chinese Evergreen', nameZh: '龍血樹', scientific: 'Aglaonema',
+        img: 'plant_chinese_evergreen.jpg',
+        light: 'Low to Medium', water: 'Every 1-2 weeks', humidity: 'Average', temp: '18-26C',
+        tips: ['最好的低光植物之一', '澆水之間讓土壤乾燥', '斑葉品種需要更多光照', '出色的空氣淨化器（NASA 研究）', '生長緩慢但非常長壽'],
+        problems: ['Yellow leaves = overwatering', 'Brown tips = dry air or fluoride', 'Drooping = needs water'],
+      },
+      dracaena: {
+        name: 'Dracaena', nameZh: '巴西木', scientific: 'Dracaena Marginata',
+        img: 'plant_dracaena.jpg',
+        light: 'Medium to Bright', water: 'Every 1-2 weeks', humidity: 'Average', temp: '18-26C',
+        tips: ['高大戲劇性的尖葉植物', '對氟化物敏感 — 使用過濾水', '褐色尖端常見，通常無害', '室內可達 2 公尺以上', '有些品種葉緣紅色或粉紅色'],
+        problems: ['Brown tips = fluoride in tap water', 'Yellow leaves = overwatering', 'Soft lower stems = root rot'],
+      },
+      mint: {
+        name: 'Mint', nameZh: '薄荷', scientific: 'Mentha',
+        img: 'https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?w=800&h=600&fit=crop',
+        light: 'Bright Indirect', water: 'Keep moist', humidity: 'Average', temp: '13-24C',
+        tips: ['生長旺盛 — 非常適合新手', '定期收穫以防止开花', '喜歡濕潤土壤但讨厌积水根', '可以只用水永久種植', '留蘭香和薄荷是最容易的品種'],
+        problems: ['Flowering = harvest time, flavor changes', 'Leggy growth = needs more light', 'Yellow leaves = overwatering'],
+      },
+      basil: {
+        name: 'Basil', nameZh: '羅勒', scientific: 'Ocimum Basilicum',
+        img: 'plant_basil.jpg',
+        light: 'Bright Direct', water: 'Daily', humidity: 'Average', temp: '20-30C',
+        tips: ['需要至少 6 小時直射陽光', '摘掉花朵以保持葉子生長', '從頂部收穫以促進茂盛', '喜歡溫暖 — 等到晚間溫暖再移植', '熱那亞羅勒最適合做青醬'],
+        problems: ['Wilting = needs water immediately', 'Flowering = leaves turn bitter', 'Black spots = cold damage or disease'],
+      },
+
+      lavender: {
+        name: 'Lavender', nameZh: '薰衣草', scientific: 'Lavandula Angustifolia',
+        img: 'plant_lavender.jpg',
+        light: 'Bright Direct', water: 'Weekly', humidity: 'Low', temp: '15-25C',
+        tips: ['需要至少 6 小時直射陽光', '喜歡排水良好的土壤', '开花後修剪保持形狀', '迷迭香在類似條件下生長良好', '非常適合香草花園'],
+        problems: ['Root rot = overwatering', 'Leggy growth = not enough light', 'No flowers = too much fertilizer'],
+      },
+
+      stringOfHearts: {
+        name: 'String of Hearts', nameZh: '愛之蔓', scientific: 'Ceropegia Woodii',
+        img: 'plant_string_of_hearts.jpg',
+        light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-26C',
+        tips: ['精緻的垂吊多肉，心形葉片', '澆水之間讓土壤完全乾燥', '美麗的吊籃植物', '容易從莖插繁殖', '冬季半休眠 — 少澆水'],
+        problems: ['Mushy stems = overwatering', 'Dull color = needs more light', 'Leggy growth = not enough brightness'],
+      },
+
+      pilea: {
+        name: 'Chinese Money Plant', nameZh: '銅錢草', scientific: 'Pilea Peperomioides',
+        img: 'plant_pilea.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Average', temp: '16-26C',
+        tips: ['長葉柄上的煎餅形葉片', '定期旋轉均勻生長', '產生許多可以繁殖的小植株', '有趣古怪的植物，非常適合 Instagram', '喜歡潮濕環境但適應性強'],
+        problems: ['Drooping leaves = needs water', 'Pale leaves = not enough light', 'No babies = plant is mature enough'],
+      },
+
+      bostonFern: {
+        name: 'Boston Fern', nameZh: '波士頓蕨', scientific: 'Nephrolepis Exaltata',
+        img: 'plant_fern.jpg',
+        light: 'Medium Indirect', water: 'Keep moist', humidity: 'High (60%+)', temp: '16-24C',
+        tips: ['經典維多利亞時代室內植物', '每天噴霧或使用鵝卵石托盤', '非常適合高濕度浴室', '葉子可達 90 公分長', '底部褐色葉子正常 — 可以修剪'],
+        problems: ['Dropping fronds = too dry or cold', 'Yellow fronds = overwatering', 'Crispy edges = low humidity'],
+      },
+
+      englishIvy: {
+        name: 'English Ivy', nameZh: '常春藤', scientific: 'Hedera Helix',
+        img: 'plant_english_ivy.jpg',
+        light: 'Medium to Bright', water: 'Weekly', humidity: 'Average to High', temp: '10-20C',
+        tips: ['多功能的垂吊或攀爬植物', '非常適合造型植物和吊籃', '喜歡較涼的溫度', '保持土壤均勻濕潤', 'Excellent air purifier'],
+        problems: ['Yellow leaves = overwatering', 'Leggy growth = needs more light', 'Spider mites = too dry'],
+      },
+
+      africanViolet: {
+        name: 'African Violet', nameZh: '非洲紫羅蘭', scientific: 'Saintpaulia Ionantha',
+        img: 'plant_african_violet.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Average', temp: '18-24C',
+        tips: ['適合小空間的緊湊开花植物', '澆水 from the bottom to avoid leaf spots', '摘除凋謝花朵促進更多开花', '比大多数开花植物更耐低光', '有紫色、粉紅色、白色和斑葉品種'],
+        problems: ['Hairy leaves = water on foliage', 'No blooms = not enough light', 'Soft leaves = overwatering'],
+      },
+
+      majestyPalm: {
+        name: 'Majesty Palm', nameZh: '發財樹', scientific: 'Ravenea Rivularis',
+        img: 'plant_majesty_palm.jpg',
+        light: 'Bright Indirect', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-30C',
+        tips: ['優雅的棕櫚，適合角落位置', '喜歡濕度 — 每天噴霧或使用加濕器', 'Keep soil consistently moist', '困難但值得的室內棕櫚', '缺水時葉子變黃'],
+        problems: ['Yellow fronds = needs more water or fertilizer', 'Brown tips = dry air or underwatering', 'Slow growth = normal for this species'],
+      },
+
+      ponytailPalm: {
+        name: 'Ponytail Palm', nameZh: '馬尾蘭', scientific: 'Beaucarnea Recurvata',
+        img: 'plant_ponytail_palm.jpg',
+        light: 'Bright Direct', water: 'Monthly', humidity: 'Low', temp: '18-26C',
+        tips: ['不是真正的棕櫚 — 是與絲蘭相關的多肉植物', '球莖儲存水分', '澆水之間讓土壤完全乾燥', '需要盡可能多的光照', '適當護理可以活數十年'],
+        problems: ['Soft trunk = overwatering', 'Brown tips = underwatering or low humidity', 'Leggy growth = not enough light'],
+      },
+
+      dieffenbachia: {
+        name: 'Dieffenbachia', nameZh: '黛粉葉', scientific: 'Dieffenbachia Seguine',
+        img: 'plant_dieffenbachia.jpg',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average to High', temp: '18-27C',
+        tips: ['也稱為啞藤 — 汁液刺激', '大圖案葉片增添熱帶風情', '容易的新手友好室內植物', '保持土壤適度濕潤', 'Wipe leaves to keep them dust-free'],
+        problems: ['Yellow leaves = overwatering', 'Drooping = needs water', 'Brown edges = dry air or cold drafts'],
+      },
+
+      croton: {
+        name: 'Croton', nameZh: '變葉木', scientific: 'Codiaeum Variegatum',
+        img: 'plant_croton.jpg',
+        light: 'Bright Direct', water: 'Weekly', humidity: 'High (60%+)', temp: '18-27C',
+        tips: ['鮮紅、橙色和黃色葉片', '需要大量光照保持顏色', 'Loves humidity - mist regularly', 'Keep soil consistently moist', '落葉通常表示溫度變化'],
+        problems: ['Faded leaves = not enough light', 'Dropping leaves = cold drafts or sudden change', 'Brown tips = dry air or underwatering'],
+      },
+
+      prayerPlant: {
+        name: 'Prayer Plant', nameZh: '祈禱草', scientific: 'Maranta Leuconeura',
+        img: 'plant_prayer_plant.jpg',
+        light: 'Low to Medium', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-26C',
+        tips: ['葉子在夜間折叠 like praying hands', '綠色和紅色的複雜圖案葉片', 'Use filtered water to avoid fluoride', '喜歡濕度 — 非常適合廚房和浴室', '無毒 — 寵物安全'],
+        problems: ['Brown crispy edges = low humidity or fluoride', 'Faded patterns = too much light', 'Curling leaves = underwatering or dry air'],
+      },
+
+      snakeCactus: {
+        name: 'Snake Cactus', nameZh: '蛇鞭球', scientific: 'Gasteria Batesiana',
+        img: 'plant_snake_cactus.jpg',
+        light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-26C',
+        tips: ['醒目的蛇形葉片帶白色突起', 'Easy to care for - great for beginners', '澆水之間讓土壤完全乾燥', '比大多數多肉植物更耐低光', '產生可以繁殖的側芽'],
+        problems: ['Mushy leaves = overwatering', 'Dull color = not enough light', 'Brown tips = underwatering'],
+      },
+
+      castIronPlant: {
+        name: 'Cast Iron Plant', nameZh: '一葉蘭', scientific: 'Aspidistra Elatior',
+        img: 'plant_cast_iron.jpg',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average', temp: '15-26C',
+        tips: ['幾乎不可能死亡 — 名副其實', '耐受疏忽、低光照和不規律澆水', '深綠色帶狀葉片', '非常適合辦公室和低光位置', '生長非常緩慢但極其長壽'],
+        problems: ['Yellow leaves = overwatering', 'Drooping = needs water', 'Crispy tips = too much direct light'],
+      },
+
+      peperomia: {
+        name: 'Peperomia', nameZh: '西瓜皮椒草', scientific: 'Peperomia Obtusifolia',
+        img: 'plant_peperomia.jpg',
+        light: 'Medium Indirect', water: 'Weekly', humidity: 'Average', temp: '18-26C',
+        tips: ['緊湊的植物，肉質有光澤葉片', '非常適合小空間和桌面', '澆水前讓表土乾燥', 'Non-toxic and pet-safe', '品種包括全綠、斑葉和波紋'],
+        problems: ['Yellow leaves = overwatering', 'Wilting = needs water', 'Dropping leaves = cold drafts'],
+      },
+
+      moneyTree: {
+        name: 'Money Tree', nameZh: '金錢樹', scientific: 'Pachira Aquatica',
+        img: 'plant_money_tree.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Average to High', temp: '18-26C',
+        tips: ['好運和繁榮的象徵', '莖通常編辮以增加裝飾感', '喜歡持續濕潤但不積水土壤', '室內可以長得相當高', '遠離冷風和暖氣出口'],
+        problems: ['Yellow leaves = overwatering', 'Dropping leaves = sudden temperature change', 'Brown tips = dry air or inconsistent watering'],
+      },
+
+      schefflera: {
+        name: 'Umbrella Plant', nameZh: '鵝掌柴', scientific: 'Schefflera Arboricola',
+        img: 'plant_schefflera.jpg',
+        light: 'Medium to Bright', water: 'Weekly', humidity: 'Average', temp: '18-26C',
+        tips: ['掌狀葉片像傘一樣展開', '容易種植 — 非常適合新手', '可以訓練成樹或灌木叢', '修剪以控制高度並促進豐滿', '下垂通常表示需要水'],
+        problems: ['Drooping leaves = needs water', 'Yellow leaves = overwatering', 'Leggy growth = not enough light'],
+      },
+
+      anthurium: {
+        name: 'Anthurium', nameZh: '火鶴花', scientific: 'Anthurium Andraeanum',
+        img: 'plant_anthurium.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'High (60%+)', temp: '18-27C',
+        tips: ['紅色、粉紅色或白色的光澤心形花朵', '花朵持續數週', 'Loves humidity - mist regularly', '保持土壤均勻濕潤', 'Wipe leaves to keep them shiny and dust-free'],
+        problems: ['Brown edges = low humidity or fluoride', 'No blooms = not enough light', 'Yellow leaves = overwatering'],
+      },
+
+      christmasCactus: {
+        name: 'Christmas Cactus', nameZh: '聖誕仙人掌', scientific: 'Schlumbergera Bridgesii',
+        img: 'plant_christmas_cactus.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Average to High', temp: '18-24C',
+        tips: ['聖誕節前後開美麗的花', '分段莖美麗地垂下', '放在黑暗房間 6 週以觸發开花', '花蕾形成後避免移動 — 它們容易掉落', '容易從莖段繁殖'],
+        problems: ['Bud drop = moved too much or dry air', 'Wilting = needs water', 'No blooms = needs dark period or cooler temps'],
+      },
+
+      coffee: {
+        name: 'Coffee Plant', nameZh: '咖啡樹', scientific: 'Coffea Arabica',
+        img: 'plant_coffee.jpg',
+        light: 'Bright Indirect', water: 'Keep Moist', humidity: 'High (60%+)', temp: '18-27C',
+        tips: ['喜歡明亮散射光 — 直射光會燒傷葉子', '保持土壤持續濕潤但不積水', '喜歡濕度 — 定期噴霧或使用鵝卵石托盤', '春夏季每月施肥一次 growing season', '每月擦拭葉子保持光亮無灰塵'],
+        problems: ['Brown leaf edges = low humidity or fluoride in water', 'Yellow leaves = overwatering or too much direct sun', 'Leaf drop = sudden temperature change or draft'],
+      },
+
+      stringOfPearls: {
+        name: 'String of Pearls', nameZh: '珍珠串', scientific: 'Senecio Rowleyanus',
+        img: 'plant_string_of_pearls.jpg',
+        light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-26C',
+        tips: ['独特的垂吊多肉，豌豆形葉片', '澆水之間讓土壤完全乾燥', '美麗的吊籃植物', '避免下午直射陽光', '冬季半休眠 — 少量澆水'],
+        problems: ['Mushy pearls = overwatering', 'Shriveling = needs water', 'Leggy growth = not enough light'],
+      },
+
+      hoya: {
+        name: 'Hoya', nameZh: '毬蘭', scientific: 'Hoya Carnosa',
+        img: 'plant_hoya.jpg',
+        light: 'Bright Indirect', water: 'Every 1-2 weeks', humidity: 'Average', temp: '18-27C',
+        tips: ['也因蠟質葉片稱為蠟植物', '產生驚人的球形花簇', '澆水之間讓土壤乾燥', '容易透過莖插繁殖', '適當護理可以活數十年'],
+        problems: ['Yellow leaves = overwatering', 'No flowers = needs more light or maturity', 'Dropping leaves = sudden temperature change'],
+      },
+
+      hypestes: {
+        name: 'Polka Dot Plant', nameZh: '斑葉槓竹', scientific: 'Hypoestes Phyllostachya',
+        img: 'plant_polka_dot.jpg',
+        light: 'Bright Indirect', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-27C',
+        tips: ['充滿活力的粉紅色、紅色或白色斑點葉片', '喜歡濕度 — 非常適合玻璃缸', '摘心促進更茂盛的生長', '可以在户外陰涼處種植', '摘除花朵有助於葉子保持色彩'],
+        problems: ['Fade = not enough light', 'Leggy growth = needs more light', 'Wilting = needs water'],
+      },
+
+      chamaedorea: {
+        name: 'Parlor Palm', nameZh: '袖珍椰子', scientific: 'Chamaedorea Elegans',
+        img: 'plant_parlor_palm.jpg',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average', temp: '18-27C',
+        tips: ['維多利亞時代的最愛，自 1800 年代流行', '比大多數棕櫚更耐低光', '保持土壤適度濕潤', 'Non-toxic and pet-safe', '葉子從基部叢生'],
+        problems: ['Brown tips = dry air or underwatering', 'Yellow fronds = overwatering', 'Slow growth = normal for this species'],
+      },
+
+      tradescantia: {
+        name: 'Tradescantia', nameZh: '紫露草', scientific: 'Tradescantia Zebrina',
+        img: 'plant_tradescantia.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Average', temp: '18-26C',
+        tips: ['銀色和紫色條紋葉片', '生長快速且容易繁殖', '摘除莖尖促進更豐滿的生長', '非常適合吊籃 or as ground cover', '夏天可以移到户外'],
+        problems: ['Leggy growth = needs more light', 'Dull color = not enough light', 'Yellow leaves = overwatering'],
+      },
+
+      fittonia: {
+        name: 'Nerve Plant', nameZh: '網紋草', scientific: 'Fittonia Albivenis',
+        img: 'plant_nerve_plant.jpg',
+        light: 'Low to Medium', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-26C',
+        tips: ['粉紅色、白色或紅色的驚人脈紋葉片', '缺水戲劇性枯萎 — 澆水後恢復', '非常適合封閉玻璃缸', 'Loves humidity - mist regularly', '緊湊尺寸非常適合桌面和架子'],
+        problems: ['Dramatic wilting = too dry', 'Brown edges = low humidity', 'Crispy leaves = too much direct light'],
+      },
+
+      syngonium: {
+        name: 'Arrowhead Plant', nameZh: '箭葉藤', scientific: 'Syngonium Podophyllum',
+        img: 'plant_arrowhead.jpg',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average to High', temp: '16-26C',
+        tips: ['隨時間成熟的箭形葉片', '容易種植且非常適應', '可以垂吊或攀爬', '摘心促進更茂盛的生長', '有許多斑葉品種可供選擇'],
+        problems: ['Yellow leaves = overwatering', 'Leggy growth = needs more light', 'Brown tips = dry air or underwatering'],
+      },
+
+      sedum: {
+        name: "Burro's Tail", scientific: 'Sedum Morganianum',
+        img: 'plant_burro_tail.jpg',
+        light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-26C',
+        tips: ['垂吊多肉，豐滿藍綠色葉片', '澆水之間讓土壤完全乾燥', '輕柔處理 — 葉子容易掉落', '美麗的吊籃植物', '需要明亮光照保持緊湊形狀'],
+        problems: ['Leaf drop = handling too roughly', 'Mushy leaves = overwatering', 'Leggy growth = not enough light'],
+      },
+
+      dizygotheca: {
+        name: 'Spider Aralia', nameZh: '孔雀木', scientific: 'Dizygotheca Elegantissima',
+        img: 'plant_spider_aralia.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'High (60%+)', temp: '18-26C',
+        tips: ['精緻的深酒紅色鋸齒葉片', '優雅的建築植物', 'Keep away from cold drafts', 'Loves humidity - mist regularly', '生長緩慢但令人驚艷的標本植物'],
+        problems: ['Dropping leaves = cold drafts or dry air', 'Faded leaves = too much direct light', 'Brown edges = low humidity'],
+      },
+
+      cyclamen: {
+        name: 'Cyclamen', nameZh: '仙客來', scientific: 'Cyclamen Persicum',
+        img: 'plant_cyclamen.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Average', temp: '10-20C',
+        tips: ['美麗的冬季开花植物', '涼爽溫度延長开花期', '澆水 from the bottom to avoid crown rot', '夏季休眠 — 減少澆水', '粉紅色、紅色、白色和紫色开花'],
+        problems: ['Yellow leaves = too warm', 'Bud blast = dry air or temperature stress', 'Mushy stems = overwatering'],
+      },
+
+      monsteraAdansonii: {
+        name: 'Swiss Cheese Plant', nameZh: '小龜背竹', scientific: 'Monstera Adansonii',
+        img: 'plant_swiss_cheese.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'High (60%+)', temp: '18-27C',
+        tips: ['葉子上的孔洞給它瑞士起司的綽號', '比龜背竹更嬌嫩', 'Trailing or climbing habit', 'Loves humidity - mist regularly', '葉窗隨時間和光照發育'],
+        problems: ['No holes = needs more light', 'Yellow leaves = overwatering', 'Brown edges = low humidity'],
+      },
+
+      cactus: {
+        name: 'Barrel Cactus', nameZh: '金琥', scientific: 'Ferocactus',
+        img: 'plant_barrel_cactus.jpg',
+        light: 'Bright Direct', water: 'Monthly', humidity: 'Low', temp: '18-35C',
+        tips: ['經典圓形仙人掌，帶尖刺', '澆水之間讓土壤完全乾燥', '需要盡可能多的陽光', '可以活超過 100 年', '黃色或橙色花在頂部开放'],
+        problems: ['Mushy base = overwatering/root rot', 'Etiolation = not enough light', 'Shriveling = needs water'],
+      },
+
+      aralia: {
+        name: 'Japanese Aralia', nameZh: '八角金盤', scientific: 'Fatsia Japonica',
+        img: 'plant_japanese_aralia.jpg',
+        light: 'Medium to Bright', water: 'Weekly', humidity: 'High (60%+)', temp: '10-24C',
+        tips: ['大型戲劇性的掌狀葉片', '非常適合為室內增添熱帶風情', '比大多數熱帶植物更耐低光', 'Keep soil consistently moist', '可以在溫和氣候的户外種植'],
+        problems: ['Yellow leaves = overwatering', 'Brown edges = dry air', 'Drooping = needs water'],
+      }
+    };
+
+
+</script>
+
+  <!-- PLANT DETAIL MODAL -->
+  <div id="plant-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closePlantModal()">
+    <div class="bg-white rounded-3xl max-w-md w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+      <div class="relative flex-shrink-0">
+        <img id="plant-modal-img" src="" alt="" class="w-full h-56 object-cover rounded-t-3xl">
+        <button onclick="closePlantModal()" class="absolute top-3 right-3 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto modal-scroll" style="scrollbar-width: none; -ms-overflow-style: none;">
+        <h2 id="plant-modal-name" class="text-2xl font-bold text-forest-900"></h2>
+        <p id="plant-modal-scientific" class="text-sm text-gray-500 italic mb-2"></p>
+        <button id="modal-favorite-btn" onclick="toggleModalFavorite()" class="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-gray-200 hover:border-red-400 hover:bg-red-50 transition text-sm font-medium text-gray-600">
+          <span id="modal-favorite-icon"></span>
+          <span id="modal-favorite-text">儲存至最愛</span>
+        </button>
+        <div class="grid grid-cols-2 gap-3 mb-6">
+          <div class="bg-forest-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-gray-500 mb-1">☀️  光線</p>
+            <p id="plant-modal-light" class="text-sm font-medium text-forest-700"></p>
+          </div>
+          <div class="bg-blue-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-gray-500 mb-1">💧 澆水</p>
+            <p id="plant-modal-water" class="text-sm font-medium text-blue-700"></p>
+          </div>
+          <div class="bg-cyan-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-gray-500 mb-1">💨 濕度</p>
+            <p id="plant-modal-humidity" class="text-sm font-medium text-cyan-700"></p>
+          </div>
+          <div class="bg-amber-50 rounded-xl p-3 text-center">
+            <p class="text-xs text-gray-500 mb-1">🌡️ 溫度</p>
+            <p id="plant-modal-temp" class="text-sm font-medium text-amber-700"></p>
+          </div>
+        </div>
+        <div class="mb-6">
+          <h3 class="font-semibold text-forest-800 mb-3 flex items-center gap-2">
+            <span class="text-lime-500">✨</span> 護理技巧
+          </h3>
+          <ul id="plant-modal-tips" class="space-y-2"></ul>
+        </div>
+        <div class="bg-amber-50 rounded-2xl p-4">
+          <h3 class="font-semibold text-amber-800 mb-3 flex items-center gap-2">
+            <span>⚠️</span> 注意事項
+          </h3>
+          <ul id="plant-modal-problems" class="space-y-2"></ul>
+        </div>
+        <!-- Premium Section (only for paid users) -->
+        <div id="plant-modal-premium" class="hidden mt-6">
+          <div class="bg-gradient-to-r from-forest-600 to-lime-500 rounded-2xl p-4 text-white">
+            <h3 class="font-bold text-lg mb-2 flex items-center gap-2">
+              <span>🌟</span> 高級護理指南
+            </h3>
+            <p id="plant-modal-premium-text" class="text-sm text-white/90 leading-relaxed"></p>
+          </div>
+        </div>
+
+        <!-- Already subscribed CTA -->
+        <div id="subscribed-cta" class="hidden mt-6 text-center">
+          <p class="text-sm text-forest-600 mb-3 font-medium">您已擁有高級訪問權限！🌿</p>
+          <a href="#pricing" onclick="closePlantModal()" class="inline-flex items-center gap-2 text-forest-600 font-semibold hover:text-forest-700 transition">
+            <i data-lucide="message-circle" class="w-4 h-4"></i> 透過 WhatsApp 聊天
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN REQUIRED MODAL -->
+  <div id="login-required-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closeLoginRequiredModal()">
+    <div class="bg-white rounded-3xl max-w-sm w-full overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+      <div class="p-8 text-center">
+        <div class="text-8xl mb-4">🌿</div>
+        <h2 class="text-xl font-bold text-forest-900 mb-2">登入以儲存最愛</h2>
+        <p class="text-gray-500 text-sm mb-6">建立免費帳戶或登入以儲存您喜愛的植物。</p>
+        <a href="login.html" class="block w-full bg-forest-600 text-white font-semibold py-3 rounded-xl hover:bg-forest-700 transition shadow-lg mb-3">
+          登入 / 註冊
+        </a>
+        <button onclick="closeLoginRequiredModal()" class="w-full text-gray-400 hover:text-gray-600 transition text-sm py-2">
+          稍後再說
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIVACY POLICY POPUP -->
+  <div id="privacy-popup" class="fixed inset-0 z-[200] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closePrivacyPopup()">
+    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between p-4 border-b border-gray-100">
+        <h2 class="text-lg font-bold text-forest-900">隱私權政策</h2>
+        <button onclick="closePrivacyPopup()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed">
+        <p class="text-xs text-gray-400 mb-4">Last updated: May 11, 2026</p>
+        <p class="mb-4">PlantGlow 由 <strong>Tradex Dev. Co.</strong>（「我們」或「本公司」）營運。我們致力於保護您的隱私。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">1. 我們收集的資訊</h3>
+        <p class="mb-2"><strong>WhatsApp 登入：</strong>您的 WhatsApp 電話號碼僅用於登入驗證。我們透過 WhatsApp 發送<strong>驗證碼</strong>，無需密碼。</p>
+        <p class="mb-4"><strong>電子郵件（選填）：</strong>如果您訂閱電子報，我們會收集您的電子郵件以發送服務更新和促銷資訊。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">2. 我們如何使用您的資訊</h3>
+        <ul class="list-disc pl-5 mb-4 space-y-1">
+          <li>透過電子郵件或 Google 登入驗證</li>
+          <li>有關 PlantGlow 的服務更新</li>
+          <li>有關 Tradex Dev. Co. 的促銷資訊</li>
+        </ul>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">3. 資料分享</h3>
+        <p class="mb-2">我們<strong>不會</strong>：</p>
+        <ul class="list-disc pl-5 mb-4 space-y-1 text-red-600">
+          <li>與任何第三方分享您的電子郵件</li>
+          <li>分享您的電話號碼給第三方</li>
+          <li>出售或出租您的聯絡資訊</li>
+        </ul>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">4. 您的權利</h3>
+        <p class="mb-4">您可以隨時要求存取、更正或刪除您的資料。如要取消訂閱電子報，請聯絡 <strong>hello@plantglow.com</strong>。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">5. 聯絡我們</h3>
+        <p>問題？請寄電子郵件至 <strong>hello@plantglow.com</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openPrivacyPopup() {
+      document.getElementById('privacy-popup').classList.remove('hidden');
+      document.getElementById('privacy-popup').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+    function closePrivacyPopup() {
+      document.getElementById('privacy-popup').classList.add('hidden');
+      document.getElementById('privacy-popup').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  </script>
+
+  <!-- TERMS AND CONDITIONS POPUP -->
+  <div id="terms-popup" class="fixed inset-0 z-[200] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closeTermsPopup()">
+    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between p-4 border-b border-gray-100">
+        <h2 class="text-lg font-bold text-forest-900">條款與條件</h2>
+        <button onclick="closeTermsPopup()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed">
+        <p class="text-xs text-gray-400 mb-4">Last updated: May 11, 2026</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">1. 條款接受</h3>
+        <p class="mb-4">使用 PlantGlow 即表示您同意這些條款與條件。如果您不同意，請勿使用我們的服務。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">2. 服務描述</h3>
+        <p class="mb-4">PlantGlow 提供線上植物資料庫和護理指南，幫助使用者成功種植植物。此服務由 <strong>Tradex Dev. Co.</strong> 提供。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">3. 使用者帳戶</h3>
+        <p class="mb-2"><strong>WhatsApp 登入：</strong>您可以使用 WhatsApp 電話號碼登入。驗證碼將發送到您的 WhatsApp 以驗證您的身份。您有責任確保帳戶憑證的安全。</p>
+        <p class="mb-4">您必須年滿 18 歲才能建立帳戶。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">4. 使用者回饋與資料使用</h3>
+        <p class="mb-2">我們重視您的回饋！您透過 PlantGlow 提供的任何資訊、建議或資料可能會被 <strong>Tradex Dev. Co.</strong> 用於：</p>
+        <ul class="list-disc pl-5 mb-4 space-y-1">
+          <li>改進和增強我們資料庫中的植物資訊</li>
+          <li>改進我們幫助使用者種植植物的方式</li>
+          <li>開發新功能和服務</li>
+        </ul>
+        <p class="mb-4">提交回饋即表示您授予我們出於這些目的使用您的意見的權利，無需補償。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">5. 可接受的使用</h3>
+        <p class="mb-4">您同意不濫用服務、不嘗試未經授權的訪問或不干擾平台。我們保留暫停違反這些條款之帳戶的權利。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">6. 免責聲明</h3>
+        <p class="mb-4">PlantGlow 提供植物護理資訊僅供參考。我們致力於保持準確性，但無法保證所有資訊完全無誤。護理植物時請自行判斷。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">7. 隱私權</h3>
+        <p class="mb-4">您使用 PlantGlow 也受我們的隱私權政策約束。請查閱以了解我們如何處理您的資料。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">8. 條款變更</h3>
+        <p class="mb-4">我們可能會不時更新這些條款。在更改後繼續使用服務即表示接受新條款。</p>
+        
+        <h3 class="font-semibold text-gray-900 mt-4 mb-2">9. 聯絡我們</h3>
+        <p>如對這些條款有疑問？請聯絡我們 <strong>hello@plantglow.com</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openTermsPopup() {
+      document.getElementById('terms-popup').classList.remove('hidden');
+      document.getElementById('terms-popup').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+    function closeTermsPopup() {
+      document.getElementById('terms-popup').classList.add('hidden');
+      document.getElementById('terms-popup').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  </script>
+
+  <!-- Cookie Consent Banner -->
+  <div id="cookie-consent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:white;border-top:1px solid #e5e7eb;box-shadow:0 -4px 20px rgba(0,0,0,0.1);transform:translateY(100%);opacity:0;transition:transform 0.4s ease-out,opacity 0.4s ease-out;">
+    <div style="max-width:1024px;margin:0 auto;padding:20px 16px;display:flex;flex-direction:column;gap:16px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:24px;">🍪</span>
+        <div>
+          <p style="font-size:14px;font-weight:500;color:#374151;margin:0 0 4px;">我們重視您的隱私</p>
+          <p style="font-size:12px;color:#6b7280;margin:0;">我們使用 cookies 來增強您的瀏覽體驗並分析流量。點擊「接受」即表示您同意我們使用 cookies。</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button id="cookie-decline-btn" style="padding:8px 16px;font-size:14px;font-weight:500;color:#6b7280;background:#f3f4f6;border:none;border-radius:8px;cursor:pointer;">拒絕</button>
+        <button id="cookie-accept-btn" style="padding:10px 20px;font-size:14px;font-weight:600;color:white;background:#16a34a;border:none;border-radius:12px;cursor:pointer;">接受</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Cookie consent logic
+    (function initCookieBanner() {
+      var COOKIE_KEY = 'plantglow_cookie_consent';
+      var banner = document.getElementById('cookie-consent');
+      var acceptBtn = document.getElementById('cookie-accept-btn');
+      var declineBtn = document.getElementById('cookie-decline-btn');
+
+      function showBanner() {
+        if (banner) {
+          // First make it visible but off-screen
+          banner.style.display = 'block';
+          banner.style.transform = 'translateY(100%)';
+          banner.style.opacity = '0';
+          // Force reflow so browser registers the initial position
+          banner.offsetHeight;
+          // Then animate in
+          requestAnimationFrame(function() {
+            banner.style.transform = 'translateY(0)';
+            banner.style.opacity = '1';
+          });
+        }
+      }
+
+      function hideBanner() {
+        if (banner) {
+          banner.style.transform = 'translateY(100%)';
+          banner.style.opacity = '0';
+          setTimeout(function() {
+            banner.style.display = 'none';
+          }, 400);
+        }
+      }
+
+      function handleAccept() {
+        localStorage.setItem(COOKIE_KEY, 'accepted');
+        hideBanner();
+      }
+
+      function handleDecline() {
+        localStorage.setItem(COOKIE_KEY, 'declined');
+        hideBanner();
+      }
+
+      if (acceptBtn) acceptBtn.addEventListener('click', handleAccept);
+      if (declineBtn) declineBtn.addEventListener('click', handleDecline);
+
+      var existingConsent = localStorage.getItem(COOKIE_KEY);
+      if (!existingConsent) {
+        setTimeout(showBanner, 5000);
+      }
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
+
