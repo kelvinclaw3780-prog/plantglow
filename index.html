@@ -5,15 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PlantGlow - Home Gardening Made Simple</title>
   <link rel="alternate" hreflang="en" href="https://plantglow.net/">
+  <link rel="alternate" hreflang="zh" href="https://plantglow.net/index-zh.html">
+  <link rel="alternate" hreflang="x-default" href="https://plantglow.net/">
   <meta name="description" content="All-in-one plant database with care guides and growing tips to help urban plant owners thrive.">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D7TWQTTMWM"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-D7TWQTTMWM');
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -149,7 +148,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://plantglow.net/">
   <meta property="og:title" content="PlantGlow - Home Gardening Made Simple">
-  <meta property="og:description" content="Browse 30+ house plants, get care guides, and get personalized plant care reminders. Your all-in-one plant care companion.">
+  <meta property="og:description" content="Browse 30+ house plants, get care guides, and growing tips to help your plants thrive. Your all-in-one home gardening companion.">
   <meta property="og:image" content="https://plantglow.net/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -159,8 +158,8 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://plantglow.net/">
-  <meta name="twitter:title" content="PlantGlow - Your Personal Plant Advisor">
-  <meta name="twitter:description" content="Browse 30+ house plants, get care guides, and get personalized plant care reminders. Your all-in-one plant care companion.">
+  <meta name="twitter:title" content="PlantGlow - Home Gardening Made Simple">
+  <meta name="twitter:description" content="Browse 30+ house plants, get care guides, and growing tips to help your plants thrive. Your all-in-one home gardening companion.">
   <meta name="twitter:image" content="https://plantglow.net/og-image.png">
 
   <!-- JSON-LD Structured Data -->
@@ -172,6 +171,8 @@
   "name": "PlantGlow Plant Database",
   "description": "Browse and discover 30+ house plants with detailed care guides including light, water, humidity, and temperature requirements.",
   "numberOfItems": 36,
+  "datePublished": "2026-04-27",
+  "dateModified": "2026-06-14",
   "itemListElement": [
     {
       "@type": "ListItem",
@@ -2112,11 +2113,11 @@ function handleBrowseAll() {
         <span style="font-size:24px;">🍪</span>
         <div>
           <p style="font-size:14px;font-weight:500;color:#374151;margin:0 0 4px;">We value your privacy</p>
-          <p style="font-size:12px;color:#6b7280;margin:0;">We use cookies to enhance your browsing experience and analyze our traffic. By clicking "Accept", you consent to our use of cookies.</p>
+          <p style="font-size:12px;color:#6b7280;margin:0;"><strong>Essential cookies</strong> are needed for the site to work. We also use <strong>analytics cookies</strong> to understand how visitors use PlantGlow. Declining analytics cookies will not affect the core functionality of the site.</p>
         </div>
       </div>
       <div style="display:flex;gap:8px;">
-        <button id="cookie-decline-btn" style="padding:8px 16px;font-size:14px;font-weight:500;color:#6b7280;background:#f3f4f6;border:none;border-radius:8px;cursor:pointer;">Decline</button>
+        <button id="cookie-decline-btn" style="padding:8px 16px;font-size:14px;font-weight:500;color:#6b7280;background:#f3f4f6;border:none;border-radius:8px;cursor:pointer;">Essential Only</button>
         <button id="cookie-accept-btn" style="padding:10px 20px;font-size:14px;font-weight:600;color:white;background:#16a34a;border:none;border-radius:12px;cursor:pointer;">Accept</button>
       </div>
     </div>
@@ -2159,6 +2160,15 @@ function handleBrowseAll() {
       function handleAccept() {
         localStorage.setItem(COOKIE_KEY, 'accepted');
         hideBanner();
+        // Load analytics (GA4)
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-D7TWQTTMWM';
+        document.head.appendChild(gtagScript);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function() { dataLayer.push(arguments); };
+        gtag('js', new Date());
+        gtag('config', 'G-D7TWQTTMWM');
       }
 
       function handleDecline() {
@@ -2170,8 +2180,21 @@ function handleBrowseAll() {
       if (declineBtn) declineBtn.addEventListener('click', handleDecline);
 
       var existingConsent = localStorage.getItem(COOKIE_KEY);
-      if (!existingConsent) {
+      if (existingConsent === 'accepted') {
+        // Re-load analytics on returning visits
+        hideBanner();
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-D7TWQTTMWM';
+        document.head.appendChild(gtagScript);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function() { dataLayer.push(arguments); };
+        gtag('js', new Date());
+        gtag('config', 'G-D7TWQTTMWM');
+      } else if (!existingConsent) {
         setTimeout(showBanner, 5000);
+      } else {
+        hideBanner();
       }
     })();
 

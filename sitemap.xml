@@ -25,24 +25,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://plantglow.net/login.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://plantglow.net/privacy.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://plantglow.net/terms.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
     <loc>https://plantglow.net/blog/5-signs-plant-needs-water.html</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
