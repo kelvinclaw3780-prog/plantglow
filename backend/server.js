@@ -496,8 +496,9 @@ app.post('/api/plants/:plantId/vote', async (req, res) => {
 
   if (existingVote) {
     if (existingVote.vote === vote) {
-      // Same vote — no change needed
-      return res.json({ success: true, message: 'Vote unchanged', vote });
+      // Same vote — no change needed, return current counts
+      const current = await dbGet('SELECT helpful_count, not_helpful_count FROM plant_votes WHERE plant_id = ?', [plantId]);
+      return res.json({ success: true, unchanged: true, vote, helpful: current ? current.helpful_count : 0, not_helpful: current ? current.not_helpful_count : 0 });
     }
     // Switching vote: decrement old, increment new
     const oldCol = existingVote.vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
@@ -505,8 +506,10 @@ app.post('/api/plants/:plantId/vote', async (req, res) => {
     await dbRun(`UPDATE plant_votes SET ${oldCol} = MAX(0, ${oldCol} - 1), ${newCol} = ${newCol} + 1 WHERE plant_id = ?`, [plantId]);
     await dbRun(`UPDATE plant_vote_records SET vote = ? WHERE plant_id = ? AND user_id = ?`, [vote, plantId, user.id]);
   } else {
-    // New vote
-    await dbRun(`INSERT INTO plant_votes (plant_id, ${vote === 'helpful' ? 'helpful_count' : 'not_helpful_count'}) VALUES (?, 1)`, [plantId]);
+    // New vote — insert row with both counts at 0, then increment the right one
+    await dbRun(`INSERT INTO plant_votes (plant_id, helpful_count, not_helpful_count) VALUES (?, 0, 0)`, [plantId]);
+    const col = vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
+    await dbRun(`UPDATE plant_votes SET ${col} = ${col} + 1 WHERE plant_id = ?`, [plantId]);
     await dbRun(`INSERT OR IGNORE INTO plant_vote_records (plant_id, user_id, vote) VALUES (?, ?, ?)`, [plantId, user.id, vote]);
   }
 

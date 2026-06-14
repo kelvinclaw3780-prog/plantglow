@@ -2310,7 +2310,11 @@ function handleBrowseAll() {
         .then(function(data) {
           if (data.success !== undefined) {
             updateVoteUI(data.helpful || 0, data.not_helpful || 0, data.vote || voteType);
-            showToast('Vote recorded!', 'success');
+            if (data.unchanged) {
+              showToast('You already voted this way', 'info');
+            } else {
+              showToast('Vote recorded!', 'success');
+            }
           } else {
             showToast(data.error || 'Failed to submit vote', 'error');
           }
