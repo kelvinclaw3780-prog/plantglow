@@ -39,7 +39,7 @@ const dbUrl = process.env.TURSO_DATABASE_URL || 'libsql://plantglow-kelvinclaw37
 const dbAuthToken = process.env.TURSO_AUTH_TOKEN || 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3Nzg1NTYwMzEsImlkIjoiMDE5ZTFhMzItYTQwMS03ZjQ1LTg1Y2EtNWYwZDAyNWI3NWQ1IiwicmlkIjoiMDg0NTcxY2YtZmEyOS00ZDcyLTlkMWEtODBlZGNlZmVlZDQzIn0.bUU8V207GHIdCZFVLGX0a2WAkT4dLSBNX7J3AY2QmSCnnvgRZFXS-oMbHQH0vDE8sH3OMl6esxGdl43fnNZYBg';
 let db;
 
-function initDb() {
+async function initDb() {
   db = createClient({ url: dbUrl, authToken: dbAuthToken });
   // Create tables if not exist
   db.executeMultiple(`
@@ -98,8 +98,36 @@ function initDb() {
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       UNIQUE(plant_id, user_id)
     );
+    CREATE TABLE IF NOT EXISTS tips (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      content TEXT NOT NULL,
+      author_name TEXT DEFAULT 'Plant Lover',
+      vote_count INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS tip_votes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      tip_id INTEGER NOT NULL,
+      user_id INTEGER NOT NULL,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(tip_id, user_id)
+    );
   `);
   console.log('📦 Turso connected:', dbUrl);
+  // Seed initial tips if table is empty
+  const existingTips = await dbAll('SELECT id FROM tips LIMIT 1');
+  if (existingTips.length === 0) {
+    const seedTips = [
+      { content: 'Water your plants early in the morning to reduce evaporation and give them time to absorb moisture before the heat of the day.', author_name: 'Maya' },
+      { content: 'Rotate your pots a quarter turn each week so all sides get equal light exposure — it prevents lopsided growth!', author_name: 'James' },
+      { content: 'Use gravel or pebbles in drainage plates to raise pots slightly — prevents roots sitting in water and avoids root rot.', author_name: 'Sophie' },
+      { content: 'Yellow leaves often mean overwatering. Stick your finger 2cm into the soil — if it feels damp, wait before watering again.', author_name: 'Carlos' },
+    ];
+    for (const tip of seedTips) {
+      await dbRun('INSERT INTO tips (content, author_name) VALUES (?, ?)', [tip.content, tip.author_name]);
+    }
+    console.log('🌱 Seeded', seedTips.length, 'community tips');
+  }
 }
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -513,6 +541,57 @@ app.post('/api/plants/:plantId/vote', async (req, res) => {
   });
 });
 
+// ─── Community Tips Routes ───────────────────────────────────────────────
+
+// GET /api/tips - Get all tips with vote counts (public)
+app.get('/api/tips', async (req, res) => {
+  const tips = await dbAll('SELECT id, content, author_name, vote_count, created_at FROM tips ORDER BY vote_count DESC, created_at DESC');
+  // If user is logged in, mark which tips they've voted on
+  const authHeader = req.headers.authorization;
+  let votedTipIds = [];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.slice(7);
+    const user = await dbGet('SELECT id FROM users WHERE token = ?', [token]);
+    if (user) {
+      const votes = await dbAll('SELECT tip_id FROM tip_votes WHERE user_id = ?', [user.id]);
+      votedTipIds = votes.map(v => v.tip_id);
+    }
+  }
+  res.json({ tips, voted_tip_ids: votedTipIds });
+});
+
+// POST /api/tips/:id/vote - Upvote a tip (requires login)
+app.post('/api/tips/:id/vote', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Login to vote' });
+  }
+  const token = authHeader.slice(7);
+  const user = await dbGet('SELECT id FROM users WHERE token = ?', [token]);
+  if (!user) return res.status(401).json({ error: 'Invalid session' });
+
+  const { id } = req.params;
+  const numId = parseInt(id, 10);
+  if (isNaN(numId)) return res.status(400).json({ error: 'Invalid tip ID' });
+
+  // Check if tip exists
+  const tip = await dbGet('SELECT id FROM tips WHERE id = ?', [numId]);
+  if (!tip) return res.status(404).json({ error: 'Tip not found' });
+
+  // Check if already voted
+  const existingVote = await dbGet('SELECT id FROM tip_votes WHERE tip_id = ? AND user_id = ?', [numId, user.id]);
+  if (existingVote) {
+    return res.status(400).json({ error: 'Already voted on this tip' });
+  }
+
+  // Record vote and increment count
+  await dbRun('INSERT INTO tip_votes (tip_id, user_id) VALUES (?, ?)', [numId, user.id]);
+  await dbRun('UPDATE tips SET vote_count = vote_count + 1 WHERE id = ?', [numId]);
+
+  const updated = await dbGet('SELECT vote_count FROM tips WHERE id = ?', [numId]);
+  res.json({ success: true, vote_count: updated ? updated.vote_count : 0 });
+});
+
 // ─── Admin Routes ──────────────────────────────────────────────────────────
 app.post('/api/admin/login', async (req, res) => {
   const { email, password } = req.body;
@@ -628,7 +707,7 @@ app.delete('/api/admin/users/:id', requireAdmin, async (req, res) => {
 });
 
 // ─── Start Server ───────────────────────────────────────────────────────────
-initDb();
+await initDb();
 
 app.listen(PORT, () => {
   console.log(`\n🚀 PlantGlow backend running at http://localhost:${PORT}`);

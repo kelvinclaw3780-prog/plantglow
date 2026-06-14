@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D7TWQTTMWM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-D7TWQTTMWM');
+  </script>
   <title>Login — PlantGlow</title>
+  <meta name="description" content="Sign in or create a free account to save plants, get personalized care guides, and receive WhatsApp plant care reminders.">
+  <link rel="canonical" href="https://plantglow.net/login.html">
+  <meta name="robots" content="noindex, follow">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -300,6 +310,7 @@
       document.getElementById('forgot-email-input').value = '';
       document.getElementById('forgot-code-input').value = '';
       document.getElementById('forgot-new-pass').value = '';
+      document.getElementById('forgot-error-step1').classList.add('hidden');
       document.getElementById('forgot-error').classList.add('hidden');
       document.getElementById('forgot-msg').textContent = "Enter your email and we'll send you a reset code.";
       document.body.style.overflow = 'hidden';
@@ -705,7 +716,7 @@
       document.getElementById('success-title').textContent = msg;
       document.getElementById('success-modal').classList.remove('hidden');
       document.getElementById('success-modal').classList.add('flex');
-      setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+      setTimeout(() => { window.location.href = 'index.html'; }, 800);
     }
 
     // ─── Auto-login if token exists ───

@@ -3,13 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PlantGlow — Gardening Made Simple</title>
+  <title>PlantGlow - Home Gardening Made Simple</title>
+  <link rel="alternate" hreflang="en" href="https://plantglow.net/">
   <meta name="description" content="All-in-one plant database with care guides and growing tips to help urban plant owners thrive.">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D7TWQTTMWM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-D7TWQTTMWM');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/favicon.png">
   <script>
     tailwind.config = {
       theme: {
@@ -44,6 +53,31 @@
     :root {
       --glow: 0 0 40px rgba(74, 222, 128, 0.35);
       --glow-strong: 0 0 60px rgba(74, 222, 128, 0.5);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    /* Cookie Consent Banner */
+    #cookie-consent {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+    }
+
+    .cookie-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 300ms ease;
+    }
+    .cookie-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     html { scroll-behavior: smooth; }
@@ -109,14 +143,14 @@
   <meta name="keywords" content="plant care, plant database, house plants, indoor plants, plant guide, gardening, plant health, water plants, sunlight plants, plant reminders">
   <meta name="author" content="PlantGlow">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://plantglow.com/">
-  
+  <link rel="canonical" href="https://plantglow.net/">
+
   <!-- Open Graph (Facebook, WhatsApp, Instagram) -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://plantglow.com/">
-  <meta property="og:title" content="PlantGlow — Your Personal Plant Advisor">
+  <meta property="og:url" content="https://plantglow.net/">
+  <meta property="og:title" content="PlantGlow - Home Gardening Made Simple">
   <meta property="og:description" content="Browse 30+ house plants, get care guides, and get personalized plant care reminders. Your all-in-one plant care companion.">
-  <meta property="og:image" content="https://plantglow.com/og-image.png">
+  <meta property="og:image" content="https://plantglow.net/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="PlantGlow">
@@ -124,44 +158,456 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://plantglow.com/">
-  <meta name="twitter:title" content="PlantGlow — Your Personal Plant Advisor">
+  <meta name="twitter:url" content="https://plantglow.net/">
+  <meta name="twitter:title" content="PlantGlow - Your Personal Plant Advisor">
   <meta name="twitter:description" content="Browse 30+ house plants, get care guides, and get personalized plant care reminders. Your all-in-one plant care companion.">
-  <meta name="twitter:image" content="https://plantglow.com/og-image.png">
+  <meta name="twitter:image" content="https://plantglow.net/og-image.png">
 
   <!-- JSON-LD Structured Data -->
+
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "PlantGlow",
-    "url": "https://plantglow.com/",
-    "description": "Your all-in-one plant care companion with a database of 30+ house plants, personalized care guides, and WhatsApp reminders.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "PlantGlow",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://plantglow.com/kelvin_logo_transparent.png"
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "PlantGlow Plant Database",
+  "description": "Browse and discover 30+ house plants with detailed care guides including light, water, humidity, and temperature requirements.",
+  "numberOfItems": 36,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Monstera Deliciosa",
+        "alternateName": "Monstera Deliciosa",
+        "description": "Prefers bright, indirect light - direct sun burns leaves. Water when top 2-3cm of soil is dry. Loves humidity - mist leaves or use a pebble tray. Feed monthly during spring and summer. Aerial roots are normal, not a problem",
+        "url": "https://plantglow.net/#monstera"
       }
     },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://plantglow.com/?search={search_term_string}",
-      "query-input": "required name=search_term_string"
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Snake Plant",
+        "alternateName": "Sansevieria Trifasciata",
+        "description": "Virtually indestructible - perfect for beginners. Let soil dry completely between waterings. Tolerates low light but grows faster in bright indirect light. Wipe leaves monthly to remove dust. Can survive months without watering",
+        "url": "https://plantglow.net/#snake"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Pothos",
+        "alternateName": "Epipremnum Aureum",
+        "description": "Heart-shaped leaves on trailing vines. Easy to propagate from stem cuttings. Tolerates low light better than most plants. Trim to encourage fuller, bushier growth. Great for hanging baskets or trained to climb",
+        "url": "https://plantglow.net/#pothos"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Fiddle Leaf Fig",
+        "alternateName": "Ficus Lyrata",
+        "description": "One of the most popular statement plants. Large violin-shaped leaves up to 12 inches wide. Hates being moved - pick the right spot and leave it. Wipe leaves monthly to remove dust. Dropping leaves usually means stress from relocation",
+        "url": "https://plantglow.net/#fiddle"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Peace Lily",
+        "alternateName": "Spathiphyllum",
+        "description": "Will dramatically droop when thirsty. Keep soil consistently moist but not soggy. Thrives in low light. Wipe leaves to remove dust. Flowers turn green as they age - normal",
+        "url": "https://plantglow.net/#peace"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Spider Plant",
+        "alternateName": "Chlorophytum Comosum",
+        "description": "Produces dangling babies. Easy to propagate - just pot the babies. Tolerates a range of conditions. Brown tips from fluoride - use filtered water. Great air purifier (NASA study)",
+        "url": "https://plantglow.net/#spider"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "ZZ Plant",
+        "alternateName": "Zamioculcas Zamiifolia",
+        "description": "Extremely drought tolerant - err on the side of underwatering. Wipe leaves monthly to keep them shiny. Slow growing but virtually indestructible. Toxic if ingested - keep away from pets and children. Yellow leaves usually mean overwatering",
+        "url": "https://plantglow.net/#zz"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Aloe Vera",
+        "alternateName": "Aloe Barbadensis",
+        "description": "Loves bright, direct sunlight - perfect for sunny windowsills. Let soil dry COMPLETELY between waterings. Gel inside leaves soothes burns and skin irritation. Produces pups (baby plants) that can be separated. Use terracotta pots for better drainage",
+        "url": "https://plantglow.net/#aloe"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Jade Plant",
+        "alternateName": "Crassula Ovata",
+        "description": "Symbol of good luck and prosperity in many cultures. Can live for decades with proper care. Prune to maintain compact shape. Leaves should be firm and plump when healthy. Red edges develop with bright light exposure",
+        "url": "https://plantglow.net/#jade"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Calathea",
+        "alternateName": "Calathea Ornata",
+        "description": "Leaves move throughout the day following light. Use filtered or rainwater to avoid fluoride. Keep soil consistently moist but not soggy. Loves humidity - perfect for bathrooms. Leaves fold up at night",
+        "url": "https://plantglow.net/#calathea"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Bird of Paradise",
+        "alternateName": "Strelitzia Reginae",
+        "description": "Needs several years before producing flowers. Split leaves are normal, not a problem. Grows large - needs space to spread. Outdoor plants can reach 6-10 feet. Feed monthly during growing season",
+        "url": "https://plantglow.net/#birdOfParadise"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Rubber Plant",
+        "alternateName": "Ficus Elastica",
+        "description": "Wipe leaves regularly to keep them shiny. Start with dark green variety if new to plant care. Can grow 6-8 feet indoors with good care. Milky sap can irritate skin - wear gloves when pruning. Rotate quarterly for even growth",
+        "url": "https://plantglow.net/#rubberPlant"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Orchid",
+        "alternateName": "Phalaenopsis",
+        "description": "Water with ice cubes for easy, measured watering. Roots turn silver when dry, green when moist. After flowers fall, cut stem above a node to rebloom. Transparent pots help you monitor root health. Never let water sit in the crown (center)",
+        "url": "https://plantglow.net/#orchid"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Philodendron",
+        "alternateName": "Philodendron Hederaceum",
+        "description": "Heart-shaped leaves on trailing vines. Easy to propagate from stem cuttings. Tolerates low light better than most plants. Trim to encourage fuller, bushier growth. Aerial roots are normal, not a problem",
+        "url": "https://plantglow.net/#philodendron"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 15,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Chinese Evergreen",
+        "alternateName": "Aglaonema",
+        "description": "One of the best low-light plants available. Allow soil to dry between waterings. Variegated types need more light. Excellent air purifier (NASA study). Slow growing but very long-lived",
+        "url": "https://plantglow.net/#chineseEvergreen"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 16,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Dracaena",
+        "alternateName": "Dracaena Marginata",
+        "description": "Tall, dramatic plant with spiky leaves. Sensitive to fluoride - use filtered water. Brown tips are common and usually harmless. Can grow 6 feet or more indoors. Leaves have red or pink margins on some varieties",
+        "url": "https://plantglow.net/#dracaena"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 17,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Mint",
+        "alternateName": "Mentha",
+        "description": "Grows vigorously - great for beginners. Harvest regularly to prevent flowering. Loves moist soil but hates waterlogged roots. Can be grown in water alone indefinitely. Spearmint and peppermint are easiest varieties",
+        "url": "https://plantglow.net/#mint"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 18,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Basil",
+        "alternateName": "Ocimum Basilicum",
+        "description": "Needs at least 6 hours of direct sunlight. Pinch off flowers to keep leaves growing. Harvest from the top to encourage bushiness. Loves heat - wait until nights are warm to transplant. Genovese basil is best for pesto",
+        "url": "https://plantglow.net/#basil"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 19,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Lavender",
+        "alternateName": "Lavandula Angustifolia",
+        "description": "Needs at least 6 hours of direct sunlight. Prefers well-drained soil. Prune after flowering to maintain shape. Rosemary thrives in similar conditions. Great for aromatic gardens",
+        "url": "https://plantglow.net/#lavender"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 20,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "String of Hearts",
+        "alternateName": "Ceropegia Woodii",
+        "description": "Delicate trailing succulent with heart-shaped leaves. Let soil dry completely between waterings. Beautiful in hanging baskets. Easily propagated from stem cuttings. Goes semi-dormant in winter - water less",
+        "url": "https://plantglow.net/#stringOfHearts"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 21,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Chinese Money Plant",
+        "alternateName": "Pilea Peperomioides",
+        "description": "Pancake-shaped leaves on long petioles. Rotate regularly for even growth. Produces many babies you can propagate. Fun, quirky plant perfect for Instagram. Loves a humid environment but adaptable",
+        "url": "https://plantglow.net/#pilea"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 22,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Boston Fern",
+        "alternateName": "Nephrolepis Exaltata",
+        "description": "Classic Victorian-era houseplant. Mist daily or use a pebble tray. Perfect for bathrooms with high humidity. Fronds can grow up to 3 feet long. Brown fronds at the base are normal - trim them",
+        "url": "https://plantglow.net/#bostonFern"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 23,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "English Ivy",
+        "alternateName": "Hedera Helix",
+        "description": "Versatile trailing or climbing plant. Great for topiaries and hanging baskets. Prefers cooler temperatures. Keep soil evenly moist. Excellent air purifier",
+        "url": "https://plantglow.net/#englishIvy"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 24,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "African Violet",
+        "alternateName": "Saintpaulia Ionantha",
+        "description": "Compact blooming plant for small spaces. Water from the bottom to avoid leaf spots. Deadhead spent flowers to encourage more blooms. Tolerates lower light better than most bloomers. Available in purple, pink, white, and variegated",
+        "url": "https://plantglow.net/#africanViolet"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 25,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Majesty Palm",
+        "alternateName": "Ravenea Rivularis",
+        "description": "Elegant palm perfect for corner spots. Loves humidity - mist daily or use a humidifier. Keep soil consistently moist. Difficult but rewarding indoor palm. Fronds turn yellow when thirsty",
+        "url": "https://plantglow.net/#majestyPalm"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 26,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Ponytail Palm",
+        "alternateName": "Beaucarnea Recurvata",
+        "description": "Not a true palm - succulent related to yucca. Bulbous trunk stores water. Let soil dry completely between waterings. Needs as much light as possible. Can live for decades with proper care",
+        "url": "https://plantglow.net/#ponytailPalm"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 27,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Dieffenbachia",
+        "alternateName": "Dieffenbachia Seguine",
+        "description": "Also called Dumb Cane - sap is irritating. Large patterned leaves add tropical vibes. Easy beginner-friendly houseplant. Keep soil moderately moist. Wipe leaves to keep them dust-free",
+        "url": "https://plantglow.net/#dieffenbachia"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 28,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Croton",
+        "alternateName": "Codiaeum Variegatum",
+        "description": "Vivid red, orange, and yellow foliage. Needs lots of light to maintain color. Loves humidity - mist regularly. Keep soil consistently moist. Dropping leaves usually means temperature change",
+        "url": "https://plantglow.net/#croton"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 29,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Prayer Plant",
+        "alternateName": "Maranta Leuconeura",
+        "description": "Leaves fold up at night like praying hands. Intricate patterned foliage in green and red. Use filtered water to avoid fluoride. Loves humidity - perfect for kitchens and bathrooms. Non-toxic - safe for pets",
+        "url": "https://plantglow.net/#prayerPlant"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 30,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Snake Cactus",
+        "alternateName": "Gasteria Batesiana",
+        "description": "Striking snake-shaped leaves with white bumps. Easy to care for - great for beginners. Let soil dry completely between waterings. Can tolerate lower light than most succulents. Produces offsets that can be propagated",
+        "url": "https://plantglow.net/#snakeCactus"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 31,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Cast Iron Plant",
+        "alternateName": "Aspidistra Elatior",
+        "description": "Nearly impossible to kill - true to its name. Tolerates neglect, low light, and irregular watering. Dark green strap-like leaves. Perfect for offices and low-light spots. Very slow growing but extremely long-lived",
+        "url": "https://plantglow.net/#castIronPlant"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 32,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Peperomia",
+        "alternateName": "Peperomia Obtusifolia",
+        "description": "Compact plant with fleshy, glossy leaves. Perfect for small spaces and desks. Let top soil dry before watering. Non-toxic and pet-safe. Varieties include solid green, variegated, and ripple",
+        "url": "https://plantglow.net/#peperomia"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 33,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Money Tree",
+        "alternateName": "Pachira Aquatica",
+        "description": "Symbol of good luck and prosperity. Trunk often braided for decorative appeal. Likes consistent moisture but not soggy soil. Can grow quite tall indoors. Keep away from cold drafts and heating vents",
+        "url": "https://plantglow.net/#moneyTree"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 34,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Umbrella Plant",
+        "alternateName": "Schefflera Arboricola",
+        "description": "Palmate leaves spread like an umbrella. Easy growing - great for beginners. Can be trained as a tree or bushy shrub. Trim to control height and encourage fullness. Drooping usually means it needs water",
+        "url": "https://plantglow.net/#schefflera"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 35,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Anthurium",
+        "alternateName": "Anthurium Andraeanum",
+        "description": "Glossy heart-shaped flowers in red, pink, or white. Flowers last for weeks. Loves humidity - mist regularly. Keep soil evenly moist. Wipe leaves to keep them shiny and dust-free",
+        "url": "https://plantglow.net/#anthurium"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 36,
+      "item": {
+        "@context": "https://schema.org",
+        "@type": "Thing",
+        "name": "Christmas Cactus",
+        "alternateName": "Schlumbergera Bridgesii",
+        "description": "Blooms beautiful flowers around Christmas time. Segmented stems cascade beautifully. Keep in a dark room for 6 weeks to trigger blooming. Avoid moving once buds form - they fall easily. Easy to propagate from stem segments",
+        "url": "https://plantglow.net/#christmasCactus"
+      }
     }
-  }
+  ]
+}
   </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "PlantGlow Plant Database",
-    "description": "Browse and discover 30+ house plants with detailed care guides including light, water, humidity, and temperature requirements.",
-    "url": "https://plantglow.com/#plants"
-  }
-  </script>
-
 </head>
 <body class="font-sans bg-white text-gray-900 antialiased">
 
@@ -172,9 +618,14 @@
         <img src="kelvin_logo_transparent.png" alt="PlantGlow" class="h-16 w-16 object-contain glow-leaf">
         <span class="font-bold text-base text-forest-800">PlantGlow</span>
       </a>
-      <div class="flex items-center gap-3">
+      <!-- Search bar in nav -->
+    <div class="relative hidden md:block">
+      <input type="text" id="search-input" placeholder="Search plants..." oninput="handleSearch(this.value)" class="w-48 lg:w-64 pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-full bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-transparent transition">
+      <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+    </div>
+    <div class="flex items-center gap-3">
         <!-- Logged out state -->
-        <div id="nav-logged-out">
+        <div id="nav-logged-out" class="flex items-center gap-3">
           <a href="login.html" class="text-sm font-medium text-forest-600 hover:text-forest-700 transition">Login</a>
         </div>
         <!-- Logged in state -->
@@ -193,7 +644,7 @@
         </button>
       </div>
     </div>
-    
+
   </nav>
 
   <!-- Mobile Overlay -->
@@ -205,9 +656,9 @@
       <button onclick="closeMobileMenu()" style="padding:8px 12px;border-radius:6px;background:#f3f4f6;font-weight:500;">Close</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:4px;">
-      
-      <a href="#features" onclick="closeMobileMenu()" style="padding:12px 0;color:#374151;text-decoration:none;font-size:16px;">Features</a>
+
       <a href="#plants" onclick="closeMobileMenu()" style="padding:12px 0;color:#374151;text-decoration:none;font-size:16px;">Popular Plants</a>
+      <a href="#blog" onclick="closeMobileMenu()" style="padding:12px 0;color:#374151;text-decoration:none;font-size:16px;">Blog</a>
       <a href="#how-it-works" onclick="closeMobileMenu()" style="padding:12px 0;color:#374151;text-decoration:none;font-size:16px;">How It Works</a>
     </div>
     <div id="mobile-nav-logged-out" style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;">
@@ -224,87 +675,56 @@
       <img src="kelvin_logo_transparent.png" alt="PlantGlow" class="w-[350px] h-[350px] object-contain glow-leaf mx-auto mt-[20px]">
     </div>
     <h1 class="fade-up -mt-8 text-4xl sm:text-5xl font-extrabold text-forest-900 leading-tight">
-      Gardening Made Simple
+      Home Gardening Made Simple
     </h1>
     <p class="fade-up delay-100 mt-4 text-lg text-gray-600 max-w-sm">
-      All-in-one plant database with care guides and growing tips — so you spend less time researching and more time enjoying your plants.
+      All-in-one plant database with care guides and growing tips - so you spend less time researching and more time enjoying your plants.
     </p>
-    
-    
+
+
   </section>
 
-  <!-- FEATURES -->
-  <section id="features" class="py-16 px-4">
-    <div class="max-w-5xl mx-auto">
-      <h2 class="text-center text-2xl sm:text-3xl font-bold text-forest-900 mb-2">Everything you need to grow thriving plants</h2>
-      <p class="text-center text-gray-500 mb-12">All-in-one plant database — no more searching everywhere</p>
-
-      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-
-        <!-- Card 1 -->
-        <div class="feature-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-          <div class="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center mb-4">
-            <i data-lucide="leaf" class="w-6 h-6 text-forest-600"></i>
-          </div>
-          <h3 class="font-semibold text-gray-900 mb-1">Plant Database</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">20 plants with detailed care guides, all in one place. No more searching everywhere.</p>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="feature-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-          <div class="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center mb-4">
-            <i data-lucide="heart" class="w-6 h-6 text-forest-600"></i>
-          </div>
-          <h3 class="font-semibold text-gray-900 mb-1">Save Favourites</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Save your favourite plants and access them anytime. Build your personal plant collection.</p>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="feature-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-          <div class="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center mb-4">
-            <i data-lucide="book-open" class="w-6 h-6 text-forest-600"></i>
-          </div>
-          <h3 class="font-semibold text-gray-900 mb-1">Care Guides</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Clear, actionable tips for watering, light, humidity, and more — all in one place.</p>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="feature-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-          <div class="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center mb-4">
-            <i data-lucide="sparkles" class="w-6 h-6 text-forest-600"></i>
-          </div>
-          <h3 class="font-semibold text-gray-900 mb-1">Grow with Confidence</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Stop guessing. Get clear guidance on exactly what your plants need to thrive.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
+  <!-- FEATURES REMOVED PER KELVIN REQUEST -->
 
   <!-- POPULAR PLANTS -->
   <section id="plants" class="py-16 px-4 bg-forest-50">
     <div class="max-w-5xl mx-auto">
       <h2 class="text-center text-2xl sm:text-3xl font-bold text-forest-900 mb-2">Popular Plants</h2>
-      <p class="text-center text-gray-500 mb-8">Explore our database of plants with detailed care guides</p>
+      <p class="text-center text-gray-500 mb-4">Tap any plant below to discover care tips, growing guides & more ✨</p>
+
+      <!-- Search Bar -->
+      <div class="mb-0 sticky z-10 bg-forest-50 py-2 px-4" style="display:none; top:64px;" id="mobile-search-container">
+        <div class="relative max-w-md mx-auto">
+          <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+          <input type="text" id="mobile-plant-search" placeholder="Search plants..." oninput="handleSearch(this.value)" class="w-full pl-12 pr-4 py-3 text-base border border-forest-200 rounded-2xl bg-white focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-transparent shadow-sm">
+        </div>
+      </div>
+      <script>
+        (function() {
+          var container = document.getElementById('mobile-search-container');
+          function update() {
+            if (window.innerWidth < 768) {
+              container.style.display = 'block';
+            } else {
+              container.style.display = 'none';
+            }
+          }
+          update();
+          window.addEventListener('resize', update);
+        })();
+      </script>
 
       <!-- Dynamic plant grid -->
       <div class="mb-6 p-4 bg-forest-50 border border-forest-200 rounded-xl">
           <div class="flex items-center justify-center gap-3 flex-wrap">
-            <button onclick="showAllPlantsView()" id="btn-all-plants" class="inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm">
+            <button onclick="console.log('All Plants clicked, showingAll=' + showingAll); showAllPlantsView();" id="btn-all-plants" class="inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm">
               <i data-lucide="layout-grid" class="w-4 h-4"></i>
               All Plants
             </button>
-            <button onclick="showFavoritesView()" id="btn-favorites" class="inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm">
+            <button onclick="console.log('Favorites clicked, showingAll=' + showingAll); showFavoritesView();" id="btn-favorites" class="inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm">
               <i data-lucide="heart" class="w-4 h-4"></i>
               My Favorites
             </button>
-          </div>
-        </div>
-        <div class="mb-6">
-          <div class="relative max-w-md mx-auto">
-            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
-            <input type="text" id="plant-search" placeholder="Search plants..." oninput="handlePlantSearch()"
-              class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-forest-400 text-gray-900">
           </div>
         </div>
       <div id="plant-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -314,13 +734,102 @@
       <!-- Browse All Button (hidden when logged in and all plants shown) -->
       <div id="browse-all-section" class="text-center mt-10 flex justify-center gap-3 flex-wrap">
         <button onclick="handleBrowseAll()" id="browse-btn" class="inline-flex items-center gap-2 bg-white border-2 border-forest-600 text-forest-600 font-semibold px-6 py-3 rounded-xl hover:bg-forest-50 transition shadow-sm">
-          <span id="browse-all-text">Browse all 20 plants</span>
+          <span id="browse-all-text">Browse all 50 plants</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
         <button onclick="handleShowLess()" id="show-less-btn" class="hidden items-center gap-2 bg-white border-2 border-gray-300 text-gray-600 font-semibold px-6 py-3 rounded-xl hover:bg-gray-50 transition shadow-sm">
           <i data-lucide="chevron-up" class="w-4 h-4"></i>
           <span>Show Less</span>
         </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG SECTION -->
+  <section id="blog" class="py-16 px-4 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-2xl sm:text-3xl font-bold text-forest-900 mb-3">Plant Care Tips & Guides</h2>
+        <p class="text-forest-600">Practical advice to keep your plants thriving</p>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-3">
+        <!-- Blog Post (Random 1) -->
+        <a href="blog/repot-monstera-step-by-step.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/repot-monstera-step-by-step.jpg" alt="How to Repot Your Monstera" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 5, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">Repot Your Monstera</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">Your Monstera outgrowing its pot? Learn how to repot it correctly with this simple step-by-step guide.</p>
+          </div>
+        </a>
+
+        <!-- Blog Post (Random 2) -->
+        <a href="blog/propagate-pothos-from-cuttings.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/propagate-pothos-from-cuttings.jpg" alt="How to Propagate Pothos from Cuttings" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 6, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">Propagate Pothos from Cuttings</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">Pothos is one of the easiest plants to propagate. Learn how to grow new plants from cuttings for free.</p>
+          </div>
+        </a>
+
+        <!-- Blog Post (Random 3) -->
+        <a href="blog/common-plant-problems-solutions.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/common-plant-problems-solutions.jpg" alt="Common Plant Problems & How to Fix Them" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 6, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">Common Plant Problems & Fixes</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">Yellow leaves, brown tips, pests - every plant parent faces these issues. Learn what's causing them and how to fix each one.</p>
+          </div>
+        </a>
+
+        <!-- Blog Post (Random 4) -->
+        <a href="blog/best-air-purifying-plants.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/best-air-purifying-plants.jpg" alt="Best Air-Purifying Plants" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 6, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">Best Air-Purifying Plants</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">NASA studies show certain plants remove toxins from indoor air. These are the best air-purifying houseplants.</p>
+          </div>
+        </a>
+
+        <!-- Blog Post (Random 5) -->
+        <a href="blog/why-plant-leaves-turning-yellow.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/why-plant-leaves-turning-yellow.jpg" alt="Why Are My Plant Leaves Turning Yellow?" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 6, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">Why Plant Leaves Turn Yellow</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">Yellow leaves are the most common plant problem. Learn 8 causes and exactly how to fix each one.</p>
+          </div>
+        </a>
+
+        <!-- Blog Post (Random 6) -->
+        <a href="blog/5-signs-plant-needs-water.html" class="group bg-forest-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div class="h-48 overflow-hidden">
+            <img src="blog/images/5-signs-plant-needs-water.jpg" alt="5 Signs Your Plant Needs Water" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5">
+            <p class="text-xs text-forest-500 mb-2">June 1, 2026</p>
+            <h3 class="font-bold text-forest-900 mb-2 group-hover:text-forest-700">5 Signs Your Plant Needs Water</h3>
+            <p class="text-sm text-forest-600 line-clamp-3">Wilting leaves? Dry soil? Drooping stems? Learn the 5 clear signs that your houseplant is thirsty.</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- View All Button -->
+      <div class="text-center mt-10">
+        <a href="blog/" class="inline-block bg-forest-600 text-white font-semibold px-8 py-3 rounded-xl hover:bg-forest-700 transition">View All Blog Posts →</a>
       </div>
     </div>
   </section>
@@ -336,7 +845,7 @@
           <div class="flex-shrink-0 w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center font-bold text-lime-400">1</div>
           <div>
             <h3 class="font-semibold text-lg mb-1">Browse plants</h3>
-            <p class="text-forest-200 text-sm">Explore 20 plants with detailed care guides. Search by name or filter to find what you need.</p>
+            <p class="text-forest-200 text-sm">Explore 50 plants with detailed care guides. Search by name or filter to find what you need.</p>
           </div>
         </div>
 
@@ -352,7 +861,7 @@
           <div class="flex-shrink-0 w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center font-bold text-lime-400">3</div>
           <div>
             <h3 class="font-semibold text-lg mb-1">Follow care guides</h3>
-            <p class="text-forest-200 text-sm">Get clear tips on watering, light, humidity, and more — all in one place.</p>
+            <p class="text-forest-200 text-sm">Get clear tips on watering, light, humidity, and more - all in one place.</p>
           </div>
         </div>
 
@@ -385,6 +894,55 @@
     </div>
   </section>
 
+  <!-- INSTAGRAM SECTION -->
+  <section class="py-8 px-4 bg-gradient-to-b from-white to-forest-50">
+    <div class="max-w-4xl mx-auto text-center">
+      <a href="https://instagram.com/plantglownet" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 text-white px-4 py-1.5 rounded-full text-sm font-medium mb-6 hover:scale-105 transition-transform">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Follow Us on Instagram
+      </a>
+      <h2 class="text-2xl sm:text-3xl font-bold text-forest-900 mb-3">Stay Inspired</h2>
+      <p class="text-gray-500 mb-8 max-w-md mx-auto">Follow <strong>@plantglow</strong> for daily plant tips, care hacks, and greenery inspiration.</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY CORNER -->
+  <section id="community" class="py-16 px-4 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-2 bg-lime-100 text-forest-700 px-3 py-1 rounded-full text-sm font-medium mb-3">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Community
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-forest-900 mb-2">Gardening Tips From Real Growers</h2>
+        <p class="text-gray-500 max-w-md mx-auto">Wisdom from plant lovers who've been there. Vote for the ones that help you most!</p>
+      </div>
+
+      <!-- Tips Grid -->
+      <div id="community-tips" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+        <!-- Loading skeleton -->
+        <div class="bg-forest-50 rounded-2xl p-5 animate-pulse h-32"></div>
+        <div class="bg-forest-50 rounded-2xl p-5 animate-pulse h-32"></div>
+        <div class="bg-forest-50 rounded-2xl p-5 animate-pulse h-32"></div>
+      </div>
+
+      <!-- Share Experience -->
+      <div class="bg-gradient-to-r from-forest-600 to-forest-700 rounded-2xl p-8 text-center">
+        <div class="w-12 h-12 bg-lime-400 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-6 h-6 text-forest-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Share Your Gardening Experience</h3>
+        <p class="text-forest-100 text-sm mb-5 max-w-sm mx-auto">Have a tip, trick, or story to share? We'd love to hear it from fellow plant parents!</p>
+        <a href="mailto:plantglownet@gmail.com?subject=My%20Plant%20Tip%20%E2%80%94%20PlantGlow&body=Hi%20PlantGlow%20team%2C%0A%0AI%27d%20like%20to%20share%20my%20gardening%20experience%3A%0A%0A%5BYour%20tip%20or%20story%20here%5D%0A%0ABest%2C%0A%5BYour%20name%5D" class="inline-flex items-center gap-2 bg-lime-400 text-forest-900 font-bold px-6 py-3 rounded-xl hover:bg-lime-300 transition text-sm">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Share Your Experience
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer id="contact" class="bg-forest-950 text-forest-300 py-12 px-4">
     <div class="max-w-4xl mx-auto">
@@ -409,7 +967,7 @@
     </div>
   </footer>
 
-  
+
 <script>
     // ============================================================
     // INIT (wrapped in DOMContentLoaded to ensure plantData is defined first)
@@ -419,23 +977,28 @@
       var urlParams = new URLSearchParams(window.location.search);
       var fresh = urlParams.get('fresh');
       if (fresh === '1') {
-        // Force reset showingAll and clear any stale state
-        showingAll = false;
-        // Also reset localStorage flags if any
+        // Force reset and clear any stale state
         localStorage.removeItem('plantglow_showingAll');
         // Remove the ?fresh=1 from URL without reloading
         window.history.replaceState({}, '', window.location.pathname);
-      } else {
-        // Normal load - also ensure showingAll is false
-        showingAll = false;
       }
       lucide.createIcons();
       updateNav();
       showLoginToast();
+      // Sync button styles on page load based on current showingAll state
+      var btnAll = document.getElementById('btn-all-plants');
+      var btnFav = document.getElementById('btn-favorites');
+      if (showingAll) {
+        if (btnAll) btnAll.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+        if (btnFav) btnFav.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+      } else {
+        if (btnAll) btnAll.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+        if (btnFav) btnFav.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+      }
       setTimeout(function() { renderPlants(); }, 100);
     });
     // ============================================================
-    
+
     // LOGIN STATE
     // ============================================================
     function isLoggedIn() {
@@ -453,7 +1016,7 @@
       if (typeof firebase !== 'undefined' && firebase.auth) {
         firebase.auth().signOut().catch(() => {});
       }
-      showingAll = false;
+      showingAll = true;
       updateNav();
       showAllPlantsView();
       renderPlants();
@@ -485,7 +1048,7 @@
     }
 
     // ============================================================
-    
+
 
     function handleShowLess() {
       showingAll = false;
@@ -512,7 +1075,7 @@
     // PLANT GRID
     // ============================================================
     var VISIBLE_COUNT = 10;
-    var showingAll = false;
+    var showingAll = true;
     var currentModalPlantId = null;
 
     function renderPlantCard(id, plant) {
@@ -524,11 +1087,11 @@
       var heartSvg = (isLoggedIn && isFavorite)
         ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2" class="w-5 h-5 cursor-pointer"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>'
         : '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" class="w-5 h-5 cursor-pointer"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
-      var onclick = isLoggedIn ? 'toggleFavorite(\'' + id + '\', event)' : 'showToast(\'Please login to save favorites\', \'info\')';
-      return '<div class="plant-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="handlePlantClick(\'' + id + '\')" data-plant-id="' + id + '" data-name="' + plant.name.toLowerCase() + '" data-scientific="' + plant.scientific.toLowerCase() + '">' +
+      var onclick = isLoggedIn ? 'toggleFavorite(\'' + id + '\', event)' : 'openLoginRequiredModal()';
+      return '<div class="plant-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="handlePlantCardClick(\'' + id + '\')" data-plant-id="' + id + '" data-name="' + plant.name.toLowerCase() + '" data-scientific="' + plant.scientific.toLowerCase() + '">' +
         '<div class="relative">' +
         '<img src="' + plant.img + '" alt="' + plant.name + '" class="w-full aspect-square object-cover" onerror="this.src=\'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=400&fit=crop\'">' +
-        '<button onclick="' + onclick + '" class="absolute top-2 right-2 p-1.5 bg-white/80 rounded-full hover:bg-white transition shadow-sm" title="' + (isLoggedIn ? (isFavorite ? 'Remove from favorites' : 'Add to favorites') : 'Login to save') + '">' +
+        '<button onclick="' + onclick + '; event.stopPropagation();" class="absolute top-2 right-2 p-1.5 bg-white/80 rounded-full hover:bg-white transition shadow-sm" title="' + (isLoggedIn ? (isFavorite ? 'Remove from favorites' : 'Add to favorites') : 'Login to save') + '">' +
         heartSvg +
         '</button>' +
         '</div>' +
@@ -537,8 +1100,10 @@
         '<p class="text-xs text-gray-500">' + plant.scientific + '</p>' +
         '<div class="mt-2 flex items-center gap-1 flex-wrap">' +
         '<span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full" title="Light level needed">☀️ ' + plant.light.split(' ')[0] + '</span>' +
-        '<span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full" title="How often to water">💧 ' + plant.water + '</span>' +
-        '</div></div></div>';
+'<span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full" title="How often to water">💧 ' + plant.water + '</span>' +
+'</div>' +
+'<a href="/plants/' + plant.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.html" class="text-xs text-forest-600 mt-2 font-medium hover:text-forest-800 transition">Tap picture for care tips</a>' +
+'</div></div></div>';
     }
 
     function renderPlants() {
@@ -547,16 +1112,17 @@
       var browseSection = document.getElementById('browse-all-section');
       var browseText = document.getElementById('browse-all-text');
       var loggedIn = isLoggedIn();
-      var plantIds = Object.keys(plantData);
+      var favorites = JSON.parse(localStorage.getItem('plantglow_favorites') || '[]');
+      var plantIds = showingAll ? Object.keys(plantData) : favorites;
       var showCount = showingAll ? plantIds.length : VISIBLE_COUNT;
       var plantsToShow = plantIds.slice(0, showCount);
       if (plantsToShow.length === 0) { plantsToShow = plantIds; showCount = plantIds.length; }
       grid.innerHTML = plantsToShow.map(function(id) { return renderPlantCard(id, plantData[id]); }).join('');
-      browseSection.style.display = '';
-      browseText.textContent = 'Browse all ' + plantIds.length + ' plants';
+      browseSection.style.display = 'none';
+      browseText.textContent = 'Browse all ' + Object.keys(plantData).length + ' plants';
       var browseBtn = document.getElementById('browse-btn');
       var showLessBtn = document.getElementById('show-less-btn');
-      if (browseBtn) { browseBtn.style.display = ''; }
+      if (browseBtn) { browseBtn.style.display = showingAll ? 'none' : ''; }
       if (showLessBtn) { showLessBtn.style.display = showingAll ? 'flex' : 'none'; }
       lucide.createIcons();
     }
@@ -573,7 +1139,7 @@
         var cardId = card.getAttribute('data-plant-id') || '';
         var isFavorite = favorites.includes(cardId);
         var matchesQuery = query === '' || name.includes(query) || scientific.includes(query);
-        var isVisible = isFavoritesView ? (isFavorite && matchesQuery) : (matchesQuery || !isFavoritesView);
+        var isVisible = isFavoritesView ? (isFavorite && matchesQuery) : matchesQuery;
         card.style.display = isVisible ? '' : 'none';
       });
       var browseSection = document.getElementById('browse-all-section');
@@ -582,7 +1148,7 @@
       }
     }
 
-    
+
 
     function toggleFavorite(plantId, event) {
       event.stopPropagation();
@@ -597,11 +1163,17 @@
       }
       localStorage.setItem('plantglow_favorites', JSON.stringify(favorites));
       renderPlants();
-      // Re-apply current view after re-render so state isn't lost
+      // Restore button active states based on showingAll flag, not button DOM state
+      var btnAll = document.getElementById('btn-all-plants');
       var btnFav = document.getElementById('btn-favorites');
-      if (btnFav && btnFav.classList.contains('bg-forest-600')) {
-        showFavoritesView();
+      if (showingAll) {
+        if (btnAll) btnAll.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
+        if (btnFav) btnFav.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+      } else {
+        if (btnAll) btnAll.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
+        if (btnFav) btnFav.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
       }
+      lucide.createIcons();
     }
 
     function showFavorites() {
@@ -609,28 +1181,38 @@
     }
 
     function showAllPlantsView() {
+      showingAll = true;
+      console.log('[DEBUG] showAllPlantsView called, showingAll=' + showingAll);
       var grid = document.getElementById('plant-grid');
       var cards = grid.getElementsByClassName('plant-card');
       Array.from(cards).forEach(function(card) {
         card.style.display = '';
       });
       var browseSection = document.getElementById('browse-all-section');
-      if (browseSection) browseSection.style.display = '';
-      var searchSection = document.getElementById('plant-search').parentElement.parentElement;
-      if (searchSection) searchSection.style.display = '';
+      if (browseSection) browseSection.style.display = 'none';
+      var searchSectionEl = document.getElementById('plant-search');
+      if (searchSectionEl && searchSectionEl.parentElement) {
+        searchSectionEl.parentElement.parentElement.style.display = 'none';
+      }
       // Update button styles
       var btnAll = document.getElementById('btn-all-plants');
       var btnFav = document.getElementById('btn-favorites');
+      console.log('[DEBUG] Before: btn-all-plants class=' + (btnAll ? btnAll.className : 'null'));
+      console.log('[DEBUG] Before: btn-favorites class=' + (btnFav ? btnFav.className : 'null'));
       if (btnAll) {
         btnAll.className = 'inline-flex items-center gap-2 bg-forest-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-forest-700 transition text-sm';
       }
       if (btnFav) {
         btnFav.className = 'inline-flex items-center gap-2 bg-white text-forest-600 font-medium px-5 py-2 rounded-lg hover:bg-forest-100 transition border border-forest-300 text-sm';
       }
+      console.log('[DEBUG] After: btn-all-plants class=' + (btnAll ? btnAll.className : 'null'));
+      console.log('[DEBUG] After: btn-favorites class=' + (btnFav ? btnFav.className : 'null'));
+      renderPlants();
       lucide.createIcons();
     }
 
     function showFavoritesView() {
+      showingAll = false;
       if (!isLoggedIn()) {
         openLoginRequiredModal();
         return;
@@ -658,6 +1240,21 @@
 
     function showAllPlants() {
       showAllPlantsView();
+    }
+
+    function handleSearch(query) {
+      query = query.toLowerCase().trim();
+      var cards = document.getElementsByClassName('plant-card');
+      for (var i = 0; i < cards.length; i++) {
+        var card = cards[i];
+        var name = card.getAttribute('data-name') || '';
+        var scientific = card.getAttribute('data-scientific') || '';
+        if (name.includes(query) || scientific.includes(query)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      }
     }
 
 function handleBrowseAll() {
@@ -777,13 +1374,14 @@ function handleBrowseAll() {
       });
       // Update favorite button
       updateModalFavoriteBtn();
+      fetchVoteCounts(plantId);
       document.getElementById('plant-modal').classList.remove('hidden');
       document.getElementById('plant-modal').classList.add('flex');
       document.body.style.overflow = 'hidden';
       lucide.createIcons();
     }
 
-    
+
     function updateModalFavoriteBtn() {
       var btn = document.getElementById('modal-favorite-btn');
       var icon = document.getElementById('modal-favorite-icon');
@@ -796,7 +1394,7 @@ function handleBrowseAll() {
         btn.className = 'mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-gray-200 hover:border-forest-400 hover:bg-forest-50 transition text-sm font-medium text-gray-600';
         icon.textContent = '♡';
         text.textContent = 'Login to Save';
-        btn.onclick = function() { showToast('Please login to save favorites', 'info'); };
+        btn.onclick = function() { openLoginRequiredModal(); };
       } else if (isFavorite) {
         btn.className = 'mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-red-400 bg-red-50 transition text-sm font-medium text-red-500';
         icon.textContent = '♥';
@@ -837,11 +1435,11 @@ function handleBrowseAll() {
       document.body.style.overflow = '';
     }
 
+    function handlePlantCardClick(plantId) {
+      openPlantModal(plantId);
+    }
+
     function handlePlantClick(plantId) {
-      if (!isLoggedIn()) {
-        openLoginRequiredModal();
-        return;
-      }
       openPlantModal(plantId);
     }
 
@@ -851,21 +1449,21 @@ function handleBrowseAll() {
     var plantData = {
       monstera: {
         name: 'Monstera Deliciosa', scientific: 'Monstera Deliciosa',
-        img: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=800&h=600&fit=crop',
+        img: 'plant_monstera.jpg',
         light: 'Medium Light', water: 'Weekly', humidity: 'High (60-80%)', temp: '18-27C',
         tips: ['Prefers bright, indirect light - direct sun burns leaves', 'Water when top 2-3cm of soil is dry', 'Loves humidity - mist leaves or use a pebble tray', 'Feed monthly during spring and summer', 'Aerial roots are normal, not a problem'],
         problems: ['Yellow leaves = overwatering', 'No splits = needs more light', 'Brown edges = dry air or fluoride'],
       },
       snake: {
         name: 'Snake Plant', scientific: 'Sansevieria Trifasciata',
-        img: 'plant_snake.jpg',
+        img: 'plant_snake.jpg?v=sp1',
         light: 'Low to Bright', water: 'Every 2-3 weeks', humidity: 'Low to Average', temp: '15-27C',
         tips: ['Virtually indestructible - perfect for beginners', 'Let soil dry completely between waterings', 'Tolerates low light but grows faster in bright indirect light', 'Wipe leaves monthly to remove dust', 'Can survive months without watering'],
         problems: ['Mushy leaves = overwatering / root rot', 'Drooping = needs water', 'Brown tips = fluoride in water'],
       },
       pothos: {
         name: 'Pothos', scientific: 'Epipremnum Aureum',
-        img: 'https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?w=800&h=600&fit=crop',
+        img: 'plant_pothos.jpg',
         light: 'Low to Medium', water: 'Weekly', humidity: 'Average to High', temp: '18-27C',
         tips: ['Heart-shaped leaves on trailing vines', 'Easy to propagate from stem cuttings', 'Tolerates low light better than most plants', 'Trim to encourage fuller, bushier growth', 'Great for hanging baskets or trained to climb'],
         problems: ['Yellow leaves = overwatering', 'Leggy stems = needs more light', 'Brown tips = underwatering or low humidity'],
@@ -886,66 +1484,59 @@ function handleBrowseAll() {
       },
       spider: {
         name: 'Spider Plant', scientific: 'Chlorophytum Comosum',
-        img: 'https://images.unsplash.com/photo-1572688484438-313a6e50c333?w=800&h=600&fit=crop',
+        img: 'plant_spider.jpg',
         light: 'Medium to Bright', water: 'Weekly', humidity: 'Average', temp: '13-27C',
         tips: ['Produces dangling babies', 'Easy to propagate - just pot the babies', 'Tolerates a range of conditions', 'Brown tips from fluoride - use filtered water', 'Great air purifier (NASA study)'],
         problems: ['Brown tips = fluoride/chlorine', 'Pale leaves = needs more light', 'No babies = plant is too young'],
       },
       zz: {
         name: 'ZZ Plant', scientific: 'Zamioculcas Zamiifolia',
-        img: 'https://images.unsplash.com/photo-1632207691143-643e2a9a9361?w=800&h=600&fit=crop',
+        img: 'plant_zz_new.jpg?v=zz2',
         light: 'Low to Medium', water: 'Monthly', humidity: 'Low', temp: '18-26C',
         tips: ['Extremely drought tolerant - err on the side of underwatering', 'Wipe leaves monthly to keep them shiny', 'Slow growing but virtually indestructible', 'Toxic if ingested - keep away from pets and children', 'Yellow leaves usually mean overwatering'],
         problems: ['Yellow leaves = overwatering', 'Drooping stems = root rot', 'Slow growth = normal, not a problem'],
       },
       aloe: {
         name: 'Aloe Vera', scientific: 'Aloe Barbadensis',
-        img: 'https://images.unsplash.com/photo-1567331711402-509c12c41959?w=800&h=600&fit=crop',
+        img: 'plant_aloe_vera.jpg?v=av2',
         light: 'Bright Direct', water: 'Every 2-3 weeks', humidity: 'Low', temp: '13-27C',
         tips: ['Loves bright, direct sunlight - perfect for sunny windowsills', 'Let soil dry COMPLETELY between waterings', 'Gel inside leaves soothes burns and skin irritation', 'Produces pups (baby plants) that can be separated', 'Use terracotta pots for better drainage'],
         problems: ['Brown tips = too much direct sun or fluoride', 'Mushy leaves = overwatered', 'Flat, curled leaves = needs water'],
       },
       jade: {
         name: 'Jade Plant', scientific: 'Crassula Ovata',
-        img: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=800&h=600&fit=crop',
+        img: 'plant_jade.jpg',
         light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-24C',
         tips: ['Symbol of good luck and prosperity in many cultures', 'Can live for decades with proper care', 'Prune to maintain compact shape', 'Leaves should be firm and plump when healthy', 'Red edges develop with bright light exposure'],
         problems: ['Dropping leaves = overwatering or sudden cold', 'Soft mushy stem = root rot', 'Leggy growth = needs more light'],
       },
       calathea: {
         name: 'Calathea', scientific: 'Calathea Ornata',
-        img: 'https://images.unsplash.com/photo-1637967886160-fd78dc3ce3f5?w=800&h=600&fit=crop',
+        img: 'plant_calathea.jpg',
         light: 'Low to Medium', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-26C',
         tips: ['Leaves move throughout the day following light', 'Use filtered or rainwater to avoid fluoride', 'Keep soil consistently moist but not soggy', 'Loves humidity - perfect for bathrooms', 'Leaves fold up at night'],
         problems: ['Brown crispy edges = low humidity or fluoride', 'Curling leaves = too dry or too cold', 'Faded patterns = too much direct light'],
       },
       birdOfParadise: {
         name: 'Bird of Paradise', scientific: 'Strelitzia Reginae',
-        img: 'https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?w=800&h=600&fit=crop',
+        img: 'plant_bird_of_paradise.jpg',
         light: 'Bright Direct', water: 'Weekly', humidity: 'Average', temp: '18-30C',
         tips: ['Needs several years before producing flowers', 'Split leaves are normal, not a problem', 'Grows large - needs space to spread', 'Outdoor plants can reach 6-10 feet', 'Feed monthly during growing season'],
         problems: ['No flowers = needs more light or is too young', 'Split leaves = natural, not preventable', 'Drooping = needs water'],
       },
       rubberPlant: {
         name: 'Rubber Plant', scientific: 'Ficus Elastica',
-        img: 'plant_rubber.jpg',
+        img: 'plant_rubber.jpg?v=rubber4',
         light: 'Medium to Bright', water: 'Weekly', humidity: 'Average', temp: '16-27C',
         tips: ['Wipe leaves regularly to keep them shiny', 'Start with dark green variety if new to plant care', 'Can grow 6-8 feet indoors with good care', 'Milky sap can irritate skin - wear gloves when pruning', 'Rotate quarterly for even growth'],
         problems: ['Yellow leaves = overwatering', 'Dropping leaves = sudden temperature change', 'Leggy growth = needs more light'],
       },
       orchid: {
         name: 'Orchid', scientific: 'Phalaenopsis',
-        img: 'https://images.unsplash.com/photo-1567748157439-651aca2ff064?w=800&h=600&fit=crop',
+        img: 'plant_orchid.jpg',
         light: 'Bright Indirect', water: 'Weekly', humidity: 'Medium (50%)', temp: '18-26C',
         tips: ['Water with ice cubes for easy, measured watering', 'Roots turn silver when dry, green when moist', 'After flowers fall, cut stem above a node to rebloom', 'Transparent pots help you monitor root health', 'Never let water sit in the crown (center)'],
         problems: ['Yellow leaves = too much water or direct sun', 'Bud blast = sudden temperature or humidity change', 'No rebloom = needs more light or a rest period'],
-      },
-      fern: {
-        name: 'Boston Fern', scientific: 'Nephrolepis Exaltata',
-        img: 'plant_fern.jpg',
-        light: 'Medium Indirect', water: 'Keep moist', humidity: 'High (60%+)', temp: '16-24C',
-        tips: ['Loves bathrooms where humidity is naturally high', 'Mist daily or use a pebble tray with water', 'Never let soil dry out completely', 'Dropping leaves usually means low humidity', 'Perfect for hanging baskets'],
-        problems: ['Brown crispy fronds = dry air or inconsistent watering', 'Yellow leaves = overwatering', 'Pale fronds = needs more light'],
       },
       philodendron: {
         name: 'Philodendron', scientific: 'Philodendron Hederaceum',
@@ -985,7 +1576,7 @@ function handleBrowseAll() {
 
       lavender: {
         name: 'Lavender', scientific: 'Lavandula Angustifolia',
-        img: 'https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=800&h=600&fit=crop',
+        img: 'plant_lavender.jpg',
         light: 'Bright Direct', water: 'Weekly', humidity: 'Low', temp: '15-25C',
         tips: ['Needs at least 6 hours of direct sunlight', 'Prefers well-drained soil', 'Prune after flowering to maintain shape', 'Rosemary thrives in similar conditions', 'Great for aromatic gardens'],
         problems: ['Root rot = overwatering', 'Leggy growth = not enough light', 'No flowers = too much fertilizer'],
@@ -993,7 +1584,7 @@ function handleBrowseAll() {
 
       stringOfHearts: {
         name: 'String of Hearts', scientific: 'Ceropegia Woodii',
-        img: 'https://images.unsplash.com/photo-1632321077081-2b8631c0f7e0?w=800&h=600&fit=crop',
+        img: 'plant_string_of_hearts.jpg?v=soh6',
         light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-26C',
         tips: ['Delicate trailing succulent with heart-shaped leaves', 'Let soil dry completely between waterings', 'Beautiful in hanging baskets', 'Easily propagated from stem cuttings', 'Goes semi-dormant in winter - water less'],
         problems: ['Mushy stems = overwatering', 'Dull color = needs more light', 'Leggy growth = not enough brightness'],
@@ -1001,7 +1592,7 @@ function handleBrowseAll() {
 
       pilea: {
         name: 'Chinese Money Plant', scientific: 'Pilea Peperomioides',
-        img: 'https://images.unsplash.com/photo-1593691509543-c55fb32e7355?w=800&h=600&fit=crop',
+        img: 'plant_pilea.jpg',
         light: 'Bright Indirect', water: 'Weekly', humidity: 'Average', temp: '16-26C',
         tips: ['Pancake-shaped leaves on long petioles', 'Rotate regularly for even growth', 'Produces many babies you can propagate', 'Fun, quirky plant perfect for Instagram', 'Loves a humid environment but adaptable'],
         problems: ['Drooping leaves = needs water', 'Pale leaves = not enough light', 'No babies = plant is mature enough'],
@@ -1009,7 +1600,7 @@ function handleBrowseAll() {
 
       bostonFern: {
         name: 'Boston Fern', scientific: 'Nephrolepis Exaltata',
-        img: 'https://images.unsplash.com/photo-1597052825846-bf7c78e5b1d7?w=800&h=600&fit=crop',
+        img: 'plant_fern.jpg',
         light: 'Medium Indirect', water: 'Keep moist', humidity: 'High (60%+)', temp: '16-24C',
         tips: ['Classic Victorian-era houseplant', 'Mist daily or use a pebble tray', 'Perfect for bathrooms with high humidity', 'Fronds can grow up to 3 feet long', 'Brown fronds at the base are normal - trim them'],
         problems: ['Dropping fronds = too dry or cold', 'Yellow fronds = overwatering', 'Crispy edges = low humidity'],
@@ -1017,7 +1608,7 @@ function handleBrowseAll() {
 
       englishIvy: {
         name: 'English Ivy', scientific: 'Hedera Helix',
-        img: 'https://images.unsplash.com/photo-1600411833196-7c1f6b1a8b90?w=800&h=600&fit=crop',
+        img: 'plant_english_ivy.jpg',
         light: 'Medium to Bright', water: 'Weekly', humidity: 'Average to High', temp: '10-20C',
         tips: ['Versatile trailing or climbing plant', 'Great for topiaries and hanging baskets', 'Prefers cooler temperatures', 'Keep soil evenly moist', 'Excellent air purifier'],
         problems: ['Yellow leaves = overwatering', 'Leggy growth = needs more light', 'Spider mites = too dry'],
@@ -1025,7 +1616,7 @@ function handleBrowseAll() {
 
       africanViolet: {
         name: 'African Violet', scientific: 'Saintpaulia Ionantha',
-        img: 'https://images.unsplash.com/photo-1530103862676-de8c5db5472a?w=800&h=600&fit=crop',
+        img: 'plant_african_violet.jpg?v=av2',
         light: 'Bright Indirect', water: 'Weekly', humidity: 'Average', temp: '18-24C',
         tips: ['Compact blooming plant for small spaces', 'Water from the bottom to avoid leaf spots', 'Deadhead spent flowers to encourage more blooms', 'Tolerates lower light better than most bloomers', 'Available in purple, pink, white, and variegated'],
         problems: ['Hairy leaves = water on foliage', 'No blooms = not enough light', 'Soft leaves = overwatering'],
@@ -1033,7 +1624,7 @@ function handleBrowseAll() {
 
       majestyPalm: {
         name: 'Majesty Palm', scientific: 'Ravenea Rivularis',
-        img: 'https://images.unsplash.com/photo-1598880940080-ff9a29891b85?w=800&h=600&fit=crop',
+        img: 'plant_majesty_palm.jpg',
         light: 'Bright Indirect', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-30C',
         tips: ['Elegant palm perfect for corner spots', 'Loves humidity - mist daily or use a humidifier', 'Keep soil consistently moist', 'Difficult but rewarding indoor palm', 'Fronds turn yellow when thirsty'],
         problems: ['Yellow fronds = needs more water or fertilizer', 'Brown tips = dry air or underwatering', 'Slow growth = normal for this species'],
@@ -1041,7 +1632,7 @@ function handleBrowseAll() {
 
       ponytailPalm: {
         name: 'Ponytail Palm', scientific: 'Beaucarnea Recurvata',
-        img: 'https://images.unsplash.com/photo-1558293842-c0fd8db569c7?w=800&h=600&fit=crop',
+        img: 'plant_ponytail_palm.jpg',
         light: 'Bright Direct', water: 'Monthly', humidity: 'Low', temp: '18-26C',
         tips: ['Not a true palm - succulent related to yucca', 'Bulbous trunk stores water', 'Let soil dry completely between waterings', 'Needs as much light as possible', 'Can live for decades with proper care'],
         problems: ['Soft trunk = overwatering', 'Brown tips = underwatering or low humidity', 'Leggy growth = not enough light'],
@@ -1049,7 +1640,7 @@ function handleBrowseAll() {
 
       dieffenbachia: {
         name: 'Dieffenbachia', scientific: 'Dieffenbachia Seguine',
-        img: 'https://images.unsplash.com/photo-1617773747744-363ee4d1d3e8?w=800&h=600&fit=crop',
+        img: 'plant_dieffenbachia.jpg',
         light: 'Low to Medium', water: 'Weekly', humidity: 'Average to High', temp: '18-27C',
         tips: ['Also called Dumb Cane - sap is irritating', 'Large patterned leaves add tropical vibes', 'Easy beginner-friendly houseplant', 'Keep soil moderately moist', 'Wipe leaves to keep them dust-free'],
         problems: ['Yellow leaves = overwatering', 'Drooping = needs water', 'Brown edges = dry air or cold drafts'],
@@ -1057,7 +1648,7 @@ function handleBrowseAll() {
 
       croton: {
         name: 'Croton', scientific: 'Codiaeum Variegatum',
-        img: 'https://images.unsplash.com/photo-1594623274890-6b6f3e91e4e0?w=800&h=600&fit=crop',
+        img: 'plant_croton.jpg',
         light: 'Bright Direct', water: 'Weekly', humidity: 'High (60%+)', temp: '18-27C',
         tips: ['Vivid red, orange, and yellow foliage', 'Needs lots of light to maintain color', 'Loves humidity - mist regularly', 'Keep soil consistently moist', 'Dropping leaves usually means temperature change'],
         problems: ['Faded leaves = not enough light', 'Dropping leaves = cold drafts or sudden change', 'Brown tips = dry air or underwatering'],
@@ -1065,10 +1656,178 @@ function handleBrowseAll() {
 
       prayerPlant: {
         name: 'Prayer Plant', scientific: 'Maranta Leuconeura',
-        img: 'https://images.unsplash.com/photo-1622543925906-977f01d232e5?w=800&h=600&fit=crop',
+        img: 'plant_prayer_plant.jpg?v=pp2',
         light: 'Low to Medium', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-26C',
         tips: ['Leaves fold up at night like praying hands', 'Intricate patterned foliage in green and red', 'Use filtered water to avoid fluoride', 'Loves humidity - perfect for kitchens and bathrooms', 'Non-toxic - safe for pets'],
         problems: ['Brown crispy edges = low humidity or fluoride', 'Faded patterns = too much light', 'Curling leaves = underwatering or dry air'],
+      },
+
+      snakeCactus: {
+        name: 'Snake Cactus', scientific: 'Gasteria Batesiana',
+        img: 'plant_snake_cactus.jpg?v=ssc5',
+        light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-26C',
+        tips: ['Striking snake-shaped leaves with white bumps', 'Easy to care for - great for beginners', 'Let soil dry completely between waterings', 'Can tolerate lower light than most succulents', 'Produces offsets that can be propagated'],
+        problems: ['Mushy leaves = overwatering', 'Dull color = not enough light', 'Brown tips = underwatering'],
+      },
+
+      castIronPlant: {
+        name: 'Cast Iron Plant', scientific: 'Aspidistra Elatior',
+        img: 'plant_cast_iron.jpg?v=cip1',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average', temp: '15-26C',
+        tips: ['Nearly impossible to kill - true to its name', 'Tolerates neglect, low light, and irregular watering', 'Dark green strap-like leaves', 'Perfect for offices and low-light spots', 'Very slow growing but extremely long-lived'],
+        problems: ['Yellow leaves = overwatering', 'Drooping = needs water', 'Crispy tips = too much direct light'],
+      },
+
+      peperomia: {
+        name: 'Peperomia', scientific: 'Peperomia Obtusifolia',
+        img: 'plant_peperomia.jpg',
+        light: 'Medium Indirect', water: 'Weekly', humidity: 'Average', temp: '18-26C',
+        tips: ['Compact plant with fleshy, glossy leaves', 'Perfect for small spaces and desks', 'Let top soil dry before watering', 'Non-toxic and pet-safe', 'Varieties include solid green, variegated, and ripple'],
+        problems: ['Yellow leaves = overwatering', 'Wilting = needs water', 'Dropping leaves = cold drafts'],
+      },
+
+      moneyTree: {
+        name: 'Money Tree', scientific: 'Pachira Aquatica',
+        img: 'plant_money_tree.jpg?v=mt1',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Average to High', temp: '18-26C',
+        tips: ['Symbol of good luck and prosperity', 'Trunk often braided for decorative appeal', 'Likes consistent moisture but not soggy soil', 'Can grow quite tall indoors', 'Keep away from cold drafts and heating vents'],
+        problems: ['Yellow leaves = overwatering', 'Dropping leaves = sudden temperature change', 'Brown tips = dry air or inconsistent watering'],
+      },
+
+      schefflera: {
+        name: 'Umbrella Plant', scientific: 'Schefflera Arboricola',
+        img: 'plant_schefflera.jpg?v=up1',
+        light: 'Medium to Bright', water: 'Weekly', humidity: 'Average', temp: '18-26C',
+        tips: ['Palmate leaves spread like an umbrella', 'Easy growing - great for beginners', 'Can be trained as a tree or bushy shrub', 'Trim to control height and encourage fullness', 'Drooping usually means it needs water'],
+        problems: ['Drooping leaves = needs water', 'Yellow leaves = overwatering', 'Leggy growth = not enough light'],
+      },
+
+      anthurium: {
+        name: 'Anthurium', scientific: 'Anthurium Andraeanum',
+        img: 'plant_anthurium.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'High (60%+)', temp: '18-27C',
+        tips: ['Glossy heart-shaped flowers in red, pink, or white', 'Flowers last for weeks', 'Loves humidity - mist regularly', 'Keep soil evenly moist', 'Wipe leaves to keep them shiny and dust-free'],
+        problems: ['Brown edges = low humidity or fluoride', 'No blooms = not enough light', 'Yellow leaves = overwatering'],
+      },
+
+      christmasCactus: {
+        name: 'Christmas Cactus', scientific: 'Schlumbergera Bridgesii',
+        img: 'plant_christmas_cactus.jpg?v=cc1',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Average to High', temp: '18-24C',
+        tips: ['Blooms beautiful flowers around Christmas time', 'Segmented stems cascade beautifully', 'Keep in a dark room for 6 weeks to trigger blooming', 'Avoid moving once buds form - they fall easily', 'Easy to propagate from stem segments'],
+        problems: ['Bud drop = moved too much or dry air', 'Wilting = needs water', 'No blooms = needs dark period or cooler temps'],
+      },
+
+      coffee: {
+        name: 'Coffee Plant', scientific: 'Coffea Arabica',
+        img: 'plant_coffee.jpg',
+        light: 'Bright Indirect', water: 'Keep Moist', humidity: 'High (60%+)', temp: '18-27C',
+        tips: ['Prefers bright, indirect light - direct sun scorches leaves', 'Keep soil consistently moist but never waterlogged', 'Loves humidity - mist regularly or use a pebble tray', 'Feed monthly during spring and summer growing season', 'Wipe leaves monthly to keep them glossy and dust-free'],
+        problems: ['Brown leaf edges = low humidity or fluoride in water', 'Yellow leaves = overwatering or too much direct sun', 'Leaf drop = sudden temperature change or draft'],
+      },
+
+      stringOfPearls: {
+        name: 'String of Pearls', scientific: 'Senecio Rowleyanus',
+        img: 'plant_string_of_pearls.jpg',
+        light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-26C',
+        tips: ['Unique trailing succulent with pea-shaped leaves', 'Let soil dry completely between waterings', 'Beautiful in hanging baskets', 'Avoid direct afternoon sun', 'Goes semi-dormant in winter - water sparingly'],
+        problems: ['Mushy pearls = overwatering', 'Shriveling = needs water', 'Leggy growth = not enough light'],
+      },
+
+      hoya: {
+        name: 'Hoya', scientific: 'Hoya Carnosa',
+        img: 'plant_hoya.jpg?v=hc1',
+        light: 'Bright Indirect', water: 'Every 1-2 weeks', humidity: 'Average', temp: '18-27C',
+        tips: ['Also called Wax Plant for its waxy leaves', 'Produces stunning ball-shaped flower clusters', 'Allow soil to dry between waterings', 'Easy to propagate from stem cuttings', 'Can live for decades with proper care'],
+        problems: ['Yellow leaves = overwatering', 'No flowers = needs more light or maturity', 'Dropping leaves = sudden temperature change'],
+      },
+
+      hypestes: {
+        name: 'Polka Dot Plant', scientific: 'Hypoestes Phyllostachya',
+        img: 'plant_polka_dot.jpg?v=pdp1',
+        light: 'Bright Indirect', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-27C',
+        tips: ['Vibrant pink, red, or white spotted leaves', 'Loves humidity - perfect for terrariums', 'Pinch to encourage bushier growth', 'Can be grown outdoors in shade', 'Nipping flowers helps leaves stay colorful'],
+        problems: ['Fade = not enough light', 'Leggy growth = needs more light', 'Wilting = needs water'],
+      },
+
+      chamaedorea: {
+        name: 'Parlor Palm', scientific: 'Chamaedorea Elegans',
+        img: 'plant_parlor_palm.jpg',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average', temp: '18-27C',
+        tips: ['Victorian-era favorite, popular since the 1800s', 'Tolerates low light better than most palms', 'Keep soil moderately moist', 'Non-toxic and pet-safe', 'Fronds grow in clusters from the base'],
+        problems: ['Brown tips = dry air or underwatering', 'Yellow fronds = overwatering', 'Slow growth = normal for this species'],
+      },
+
+      tradescantia: {
+        name: 'Tradescantia', scientific: 'Tradescantia Zebrina',
+        img: 'plant_tradescantia.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Average', temp: '18-26C',
+        tips: ['Silver and purple striped leaves', 'Fast growing and easy to propagate', 'Pinch stems to encourage fuller growth', 'Great for hanging baskets or as ground cover', 'Can be moved outdoors for summer'],
+        problems: ['Leggy growth = needs more light', 'Dull color = not enough light', 'Yellow leaves = overwatering'],
+      },
+
+      fittonia: {
+        name: 'Nerve Plant', scientific: 'Fittonia Albivenis',
+        img: 'plant_nerve_plant.jpg?v=np1',
+        light: 'Low to Medium', water: 'Keep moist', humidity: 'High (60%+)', temp: '18-26C',
+        tips: ['Stunning veined leaves in pink, white, or red', 'Dramatic fainting when thirsty - bounces back with water', 'Perfect for closed terrariums', 'Loves humidity - mist regularly', 'Compact size great for desks and shelves'],
+        problems: ['Dramatic wilting = too dry', 'Brown edges = low humidity', 'Crispy leaves = too much direct light'],
+      },
+
+      syngonium: {
+        name: 'Arrowhead Plant', scientific: 'Syngonium Podophyllum',
+        img: 'plant_arrowhead.jpg?v=ash1',
+        light: 'Low to Medium', water: 'Weekly', humidity: 'Average to High', temp: '16-26C',
+        tips: ['Arrow-shaped leaves that mature over time', 'Easy to grow and very adaptable', 'Can trail or climb with support', 'Pinch to encourage bushier growth', 'Many variegated varieties available'],
+        problems: ['Yellow leaves = overwatering', 'Leggy growth = needs more light', 'Brown tips = dry air or underwatering'],
+      },
+
+      sedum: {
+        name: "Burro's Tail", scientific: 'Sedum Morganianum',
+        img: 'plant_burro_tail.jpg?v=bt1',
+        light: 'Bright Indirect', water: 'Every 2-3 weeks', humidity: 'Low', temp: '18-26C',
+        tips: ['Trailing succulent with plump, blue-green leaves', 'Let soil dry completely between waterings', 'Handle gently - leaves fall off easily', 'Beautiful in hanging baskets', 'Needs bright light to maintain compact shape'],
+        problems: ['Leaf drop = handling too roughly', 'Mushy leaves = overwatering', 'Leggy growth = not enough light'],
+      },
+
+      dizygotheca: {
+        name: 'Spider Aralia', scientific: 'Dizygotheca Elegantissima',
+        img: 'plant_spider_aralia.jpg?v=spa1',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'High (60%+)', temp: '18-26C',
+        tips: ['Delicate, dark burgundy serrated leaves', 'Elegant architectural plant', 'Keep away from cold drafts', 'Loves humidity - mist regularly', 'Slow growing but stunning specimen plant'],
+        problems: ['Dropping leaves = cold drafts or dry air', 'Faded leaves = too much direct light', 'Brown edges = low humidity'],
+      },
+
+      cyclamen: {
+        name: 'Cyclamen', scientific: 'Cyclamen Persicum',
+        img: 'plant_cyclamen.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'Average', temp: '10-20C',
+        tips: ['Beautiful winter-flowering plant', 'Cool temperatures extend blooming period', 'Water from the bottom to avoid crown rot', 'Goes dormant in summer - reduce water', 'Flowers in pink, red, white, and purple'],
+        problems: ['Yellow leaves = too warm', 'Bud blast = dry air or temperature stress', 'Mushy stems = overwatering'],
+      },
+
+      monsteraAdansonii: {
+        name: 'Swiss Cheese Plant', scientific: 'Monstera Adansonii',
+        img: 'plant_swiss_cheese.jpg',
+        light: 'Bright Indirect', water: 'Weekly', humidity: 'High (60%+)', temp: '18-27C',
+        tips: ['Holes in leaves give it the Swiss cheese nickname', 'More delicate than Monstera Deliciosa', 'Trailing or climbing habit', 'Loves humidity - mist regularly', 'Fenestrations develop with age and light'],
+        problems: ['No holes = needs more light', 'Yellow leaves = overwatering', 'Brown edges = low humidity'],
+      },
+
+      cactus: {
+        name: 'Barrel Cactus', scientific: 'Ferocactus',
+        img: 'plant_barrel_cactus.jpg',
+        light: 'Bright Direct', water: 'Monthly', humidity: 'Low', temp: '18-35C',
+        tips: ['Classic round cactus with fierce spines', 'Let soil dry completely between waterings', 'Needs as much sun as possible', 'Can live for over 100 years', 'Yellow or orange flowers bloom at the top'],
+        problems: ['Mushy base = overwatering/root rot', 'Etiolation = not enough light', 'Shriveling = needs water'],
+      },
+
+      aralia: {
+        name: 'Japanese Aralia', scientific: 'Fatsia Japonica',
+        img: 'plant_japanese_aralia.jpg?v=ja1',
+        light: 'Medium to Bright', water: 'Weekly', humidity: 'High (60%+)', temp: '10-24C',
+        tips: ['Large, dramatic palmate leaves', 'Perfect for adding tropical drama indoors', 'Tolerates low light better than most tropicals', 'Keep soil consistently moist', 'Can be grown outdoors in mild climates'],
+        problems: ['Yellow leaves = overwatering', 'Brown edges = dry air', 'Drooping = needs water'],
       }
     };
 
@@ -1121,6 +1880,35 @@ function handleBrowseAll() {
           </h3>
           <ul id="plant-modal-problems" class="space-y-2"></ul>
         </div>
+
+        <!-- Vote Section -->
+        <div id="vote-section" class="mt-6">
+          <h3 class="font-semibold text-forest-800 mb-3 flex items-center gap-2">
+            <span>🌱</span> Rate these tips
+          </h3>
+          <div id="vote-bar-container" class="mb-3">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium text-gray-500">Accurate</span>
+              <div class="flex-1 bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div id="vote-bar-fill" class="h-full bg-forest-500 rounded-full transition-all duration-500" style="width: 50%"></div>
+              </div>
+              <span class="text-xs font-medium text-gray-500">Needs work</span>
+            </div>
+            <p id="vote-summary" class="text-xs text-gray-500 text-center"></p>
+          </div>
+          <div class="flex gap-3">
+            <button id="vote-accurate-btn" onclick="submitVote('helpful')" class="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border-2 border-gray-200 hover:border-green-400 hover:bg-green-50 transition text-sm font-medium text-gray-600">
+              <span id="vote-accurate-icon">👍</span>
+              <span id="vote-accurate-text">Accurate</span>
+            </button>
+            <button id="vote-needswork-btn" onclick="submitVote('not_helpful')" class="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border-2 border-gray-200 hover:border-red-400 hover:bg-red-50 transition text-sm font-medium text-gray-600">
+              <span id="vote-needswork-icon">👎</span>
+              <span id="vote-needswork-text">Needs work</span>
+            </button>
+          </div>
+          <p id="vote-login-hint" class="hidden text-xs text-center text-gray-400 mt-2">Login to vote</p>
+        </div>
+
         <!-- Premium Section (only for paid users) -->
         <div id="plant-modal-premium" class="hidden mt-6">
           <div class="bg-gradient-to-r from-forest-600 to-lime-500 rounded-2xl p-4 text-white">
@@ -1147,8 +1935,8 @@ function handleBrowseAll() {
     <div class="bg-white rounded-3xl max-w-sm w-full overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
       <div class="p-8 text-center">
         <div class="text-8xl mb-4">🌿</div>
-        <h2 class="text-xl font-bold text-forest-900 mb-2">Login to View Plants</h2>
-        <p class="text-gray-500 text-sm mb-6">Create a free account or login to see detailed plant care guides.</p>
+        <h2 class="text-xl font-bold text-forest-900 mb-2">Login to Save Favorites</h2>
+        <p class="text-gray-500 text-sm mb-6">Create a free account or login to save your favorite plants.</p>
         <a href="login.html" class="block w-full bg-forest-600 text-white font-semibold py-3 rounded-xl hover:bg-forest-700 transition shadow-lg mb-3">
           Login / Register
         </a>
@@ -1171,18 +1959,18 @@ function handleBrowseAll() {
       <div class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed">
         <p class="text-xs text-gray-400 mb-4">Last updated: May 11, 2026</p>
         <p class="mb-4">PlantGlow is operated by <strong>Tradex Dev. Co.</strong> ("we", "our", or "us"). We are committed to protecting your privacy.</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">1. Information We Collect</h3>
-        <p class="mb-2"><strong>WhatsApp Login:</strong> Your WhatsApp phone number is used solely for login authentication. We send a <strong>verification code</strong> via WhatsApp — no password required.</p>
+        <p class="mb-2"><strong>WhatsApp Login:</strong> Your WhatsApp phone number is used solely for login authentication. We send a <strong>verification code</strong> via WhatsApp - no password required.</p>
         <p class="mb-4"><strong>Email (Optional):</strong> If you register for our newsletter, we collect your email to send service updates and promotions.</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">2. How We Use Your Information</h3>
         <ul class="list-disc pl-5 mb-4 space-y-1">
           <li>Login authentication via email or Google</li>
           <li>Service updates about PlantGlow</li>
           <li>Promotions about Tradex Dev. Co.</li>
         </ul>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">3. Data Sharing</h3>
         <p class="mb-2">We <strong>DO NOT</strong>:</p>
         <ul class="list-disc pl-5 mb-4 space-y-1 text-red-600">
@@ -1190,10 +1978,10 @@ function handleBrowseAll() {
           <li>Share your email with any third party</li>
           <li>Sell or rent your contact information</li>
         </ul>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">4. Your Rights</h3>
         <p class="mb-4">You can request access, correction, or deletion of your data at any time. To unsubscribe from emails, contact <strong>hello@plantglow.com</strong>.</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">5. Contact</h3>
         <p>Questions? Email us at <strong>hello@plantglow.com</strong></p>
       </div>
@@ -1225,17 +2013,17 @@ function handleBrowseAll() {
       </div>
       <div class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed">
         <p class="text-xs text-gray-400 mb-4">Last updated: May 11, 2026</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">1. Acceptance of Terms</h3>
         <p class="mb-4">By using PlantGlow, you agree to these Terms and Conditions. If you do not agree, please do not use our service.</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">2. Description of Service</h3>
         <p class="mb-4">PlantGlow provides an online plant database and care guides to help users grow plants successfully. The service is provided by <strong>Tradex Dev. Co.</strong></p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">3. User Accounts</h3>
         <p class="mb-2"><strong>WhatsApp Login:</strong> You may log in using your WhatsApp phone number. A verification code will be sent to your WhatsApp to verify your identity. You are responsible for keeping your account credentials secure.</p>
         <p class="mb-4">You must be at least 18 years old to create an account.</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">4. User Feedback and Data Usage</h3>
         <p class="mb-2">We value your feedback! Any information, suggestions, or data you provide through PlantGlow may be used by <strong>Tradex Dev. Co.</strong> to:</p>
         <ul class="list-disc pl-5 mb-4 space-y-1">
@@ -1244,19 +2032,19 @@ function handleBrowseAll() {
           <li>Develop new features and services</li>
         </ul>
         <p class="mb-4">By submitting feedback, you grant us permission to use your input for these purposes without compensation.</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">5. Acceptable Use</h3>
         <p class="mb-4">You agree not to misuse the service, attempt unauthorized access, or disrupt the platform. We reserve the right to suspend accounts that violate these terms.</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">6. Disclaimer</h3>
         <p class="mb-4">PlantGlow provides plant care information for reference purposes. While we strive for accuracy, we cannot guarantee that all information is completely error-free. Use your own judgment when caring for your plants.</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">7. Privacy</h3>
         <p class="mb-4">Your use of PlantGlow is also governed by our Privacy Policy. Please review it to understand how we handle your data.</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">8. Changes to Terms</h3>
         <p class="mb-4">We may update these terms from time to time. Continued use of the service after changes constitutes acceptance of the new terms.</p>
-        
+
         <h3 class="font-semibold text-gray-900 mt-4 mb-2">9. Contact</h3>
         <p>Questions about these terms? Contact us at <strong>hello@plantglow.com</strong></p>
       </div>
@@ -1275,6 +2063,291 @@ function handleBrowseAll() {
       document.getElementById('terms-popup').classList.remove('flex');
       document.body.style.overflow = '';
     }
+  </script>
+
+  <!-- Cookie Consent Banner -->
+  <div id="cookie-consent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:white;border-top:1px solid #e5e7eb;box-shadow:0 -4px 20px rgba(0,0,0,0.1);transform:translateY(100%);opacity:0;transition:transform 0.4s ease-out,opacity 0.4s ease-out;">
+    <div style="max-width:1024px;margin:0 auto;padding:20px 16px;display:flex;flex-direction:column;gap:16px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:24px;">🍪</span>
+        <div>
+          <p style="font-size:14px;font-weight:500;color:#374151;margin:0 0 4px;">We value your privacy</p>
+          <p style="font-size:12px;color:#6b7280;margin:0;">We use cookies to enhance your browsing experience and analyze our traffic. By clicking "Accept", you consent to our use of cookies.</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button id="cookie-decline-btn" style="padding:8px 16px;font-size:14px;font-weight:500;color:#6b7280;background:#f3f4f6;border:none;border-radius:8px;cursor:pointer;">Decline</button>
+        <button id="cookie-accept-btn" style="padding:10px 20px;font-size:14px;font-weight:600;color:white;background:#16a34a;border:none;border-radius:12px;cursor:pointer;">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Cookie consent logic
+    (function initCookieBanner() {
+      var COOKIE_KEY = 'plantglow_cookie_consent';
+      var banner = document.getElementById('cookie-consent');
+      var acceptBtn = document.getElementById('cookie-accept-btn');
+      var declineBtn = document.getElementById('cookie-decline-btn');
+
+      function showBanner() {
+        if (banner) {
+          // First make it visible but off-screen
+          banner.style.display = 'block';
+          banner.style.transform = 'translateY(100%)';
+          banner.style.opacity = '0';
+          // Force reflow so browser registers the initial position
+          banner.offsetHeight;
+          // Then animate in
+          requestAnimationFrame(function() {
+            banner.style.transform = 'translateY(0)';
+            banner.style.opacity = '1';
+          });
+        }
+      }
+
+      function hideBanner() {
+        if (banner) {
+          banner.style.transform = 'translateY(100%)';
+          banner.style.opacity = '0';
+          setTimeout(function() {
+            banner.style.display = 'none';
+          }, 400);
+        }
+      }
+
+      function handleAccept() {
+        localStorage.setItem(COOKIE_KEY, 'accepted');
+        hideBanner();
+      }
+
+      function handleDecline() {
+        localStorage.setItem(COOKIE_KEY, 'declined');
+        hideBanner();
+      }
+
+      if (acceptBtn) acceptBtn.addEventListener('click', handleAccept);
+      if (declineBtn) declineBtn.addEventListener('click', handleDecline);
+
+      var existingConsent = localStorage.getItem(COOKIE_KEY);
+      if (!existingConsent) {
+        setTimeout(showBanner, 5000);
+      }
+    })();
+
+    // ─── Vote Functions ───────────────────────────────────────────────────
+    var currentVote = null; // 'helpful' | 'not_helpful' | null
+
+    function updateVoteUI(helpful, notHelpful, myVote) {
+      currentVote = myVote || null;
+      var total = helpful + notHelpful;
+      var fillEl = document.getElementById('vote-bar-fill');
+      var summaryEl = document.getElementById('vote-summary');
+      var accurateBtn = document.getElementById('vote-accurate-btn');
+      var needsworkBtn = document.getElementById('vote-needswork-btn');
+      var accurateIcon = document.getElementById('vote-accurate-icon');
+      var accurateText = document.getElementById('vote-accurate-text');
+      var needsworkIcon = document.getElementById('vote-needswork-icon');
+      var needsworkText = document.getElementById('vote-needswork-text');
+      var loginHint = document.getElementById('vote-login-hint');
+      var isLoggedIn = !!localStorage.getItem('plantglow_token');
+
+      if (total === 0) {
+        fillEl.style.width = '50%';
+        fillEl.className = 'h-full bg-gray-400 rounded-full transition-all duration-500';
+        summaryEl.textContent = 'Be the first to vote!';
+      } else {
+        var pct = Math.round((helpful / total) * 100);
+        fillEl.style.width = pct + '%';
+        fillEl.className = 'h-full bg-forest-500 rounded-full transition-all duration-500';
+        summaryEl.textContent = helpful + ' accurate, ' + notHelpful + ' needs work';
+      }
+
+      if (!isLoggedIn) {
+        loginHint.classList.remove('hidden');
+        accurateBtn.disabled = false;
+        needsworkBtn.disabled = false;
+        accurateBtn.className = 'flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border-2 border-gray-200 hover:border-forest-400 hover:bg-forest-50 transition text-sm font-medium text-gray-600';
+        needsworkBtn.className = 'flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border-2 border-gray-200 hover:border-forest-400 hover:bg-forest-50 transition text-sm font-medium text-gray-600';
+        accurateText.textContent = 'Login to vote';
+        needsworkText.textContent = 'Login to vote';
+        accurateIcon.textContent = '👍';
+        needsworkIcon.textContent = '👎';
+        accurateBtn.onclick = function() { openLoginRequiredModal(); };
+        needsworkBtn.onclick = function() { openLoginRequiredModal(); };
+      } else {
+        loginHint.classList.add('hidden');
+        accurateBtn.disabled = false;
+        needsworkBtn.disabled = false;
+        if (myVote === 'helpful') {
+          accurateBtn.className = 'flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border-2 border-green-400 bg-green-50 transition text-sm font-medium text-green-600';
+          accurateIcon.textContent = '✅';
+          accurateText.textContent = 'Accurate';
+          needsworkBtn.className = 'flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border-2 border-gray-200 hover:border-red-400 hover:bg-red-50 transition text-sm font-medium text-gray-600';
+          needsworkIcon.textContent = '👎';
+          needsworkText.textContent = 'Needs work';
+          accurateBtn.onclick = function() { submitVote('helpful'); };
+          needsworkBtn.onclick = function() { submitVote('not_helpful'); };
+        } else if (myVote === 'not_helpful') {
+          needsworkBtn.className = 'flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border-2 border-red-400 bg-red-50 transition text-sm font-medium text-red-500';
+          needsworkIcon.textContent = '✅';
+          needsworkText.textContent = 'Needs work';
+          accurateBtn.className = 'flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border-2 border-gray-200 hover:border-green-400 hover:bg-green-50 transition text-sm font-medium text-gray-600';
+          accurateIcon.textContent = '👍';
+          accurateText.textContent = 'Accurate';
+          accurateBtn.onclick = function() { submitVote('helpful'); };
+          needsworkBtn.onclick = function() { submitVote('not_helpful'); };
+        } else {
+          accurateBtn.className = 'flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border-2 border-gray-200 hover:border-green-400 hover:bg-green-50 transition text-sm font-medium text-gray-600';
+          accurateIcon.textContent = '👍';
+          accurateText.textContent = 'Accurate';
+          needsworkBtn.className = 'flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border-2 border-gray-200 hover:border-red-400 hover:bg-red-50 transition text-sm font-medium text-gray-600';
+          needsworkIcon.textContent = '👎';
+          needsworkText.textContent = 'Needs work';
+          accurateBtn.onclick = function() { submitVote('helpful'); };
+          needsworkBtn.onclick = function() { submitVote('not_helpful'); };
+        }
+      }
+    }
+
+    function toSlug(camelCase) {
+      return camelCase.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').toLowerCase();
+    }
+
+    function fetchVoteCounts(plantId) {
+      var token = localStorage.getItem('plantglow_token');
+      var headers = {};
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      var slug = toSlug(plantId);
+      fetch('https://plantglow-production.up.railway.app/api/plants/' + slug + '/votes', { headers: headers })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          updateVoteUI(data.helpful || 0, data.not_helpful || 0, data.my_vote || null);
+        })
+        .catch(function() {
+          updateVoteUI(0, 0, null);
+        });
+    }
+
+    function submitVote(voteType) {
+      if (!currentModalPlantId) return;
+      var isLoggedIn = !!localStorage.getItem('plantglow_token');
+      if (!isLoggedIn) {
+        openLoginRequiredModal();
+        return;
+      }
+      var token = localStorage.getItem('plantglow_token');
+      var slug = toSlug(currentModalPlantId);
+      fetch('https://plantglow-production.up.railway.app/api/plants/' + slug + '/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ vote: voteType })
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.success !== undefined) {
+            updateVoteUI(data.helpful || 0, data.not_helpful || 0, data.vote || voteType);
+            showToast('Vote recorded!', 'success');
+          }
+        })
+        .catch(function() {
+          showToast('Failed to submit vote', 'error');
+        });
+    }
+
+    // ============================================================
+    // COMMUNITY TIPS
+    // ============================================================
+    var communityTipsLoaded = false;
+
+    function loadCommunityTips() {
+      var token = localStorage.getItem('plantglow_token');
+      var headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+
+      fetch('https://plantglow-production.up.railway.app/api/tips', { headers: headers })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.tips) return;
+          renderCommunityTips(data.tips, data.voted_tip_ids || []);
+          communityTipsLoaded = true;
+        })
+        .catch(function() {
+          document.getElementById('community-tips').innerHTML = '<p class="text-gray-400 text-sm col-span-3 text-center">Could not load tips right now.</p>';
+        });
+    }
+
+    function renderCommunityTips(tips, votedTipIds) {
+      var container = document.getElementById('community-tips');
+      if (!container) return;
+      container.innerHTML = '';
+
+      tips.forEach(function(tip) {
+        var hasVoted = votedTipIds.indexOf(tip.id) !== -1;
+        var card = document.createElement('div');
+        card.className = 'bg-forest-50 rounded-2xl p-5 flex flex-col justify-between gap-4';
+        card.innerHTML = [
+          '<div>',
+          '  <p class="text-forest-800 text-sm leading-relaxed mb-3">' + escapeHtml(tip.content) + '</p>',
+          '  <p class="text-forest-400 text-xs">— ' + escapeHtml(tip.author_name || 'Plant Lover') + '</p>',
+          '</div>',
+          '<div class="flex items-center justify-between">',
+          '  <div class="flex items-center gap-1.5 text-forest-500 text-sm">',
+          '    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>',
+          '    <span>' + tip.vote_count + ' helpful</span>',
+          '  </div>',
+          '  <button ' + (hasVoted ? 'disabled' : '') + ' onclick="voteTip(' + tip.id + ', this)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition ' + (hasVoted ? 'bg-forest-200 text-forest-400 cursor-default' : 'bg-forest-600 text-white hover:bg-forest-700') + '">',
+          '    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>',
+          hasVoted ? 'Voted' : 'Helpful',
+          '  </button>',
+          '</div>'
+        ].join('');
+        container.appendChild(card);
+      });
+    }
+
+    function voteTip(tipId, btn) {
+      var isLoggedIn = !!localStorage.getItem('plantglow_token');
+      if (!isLoggedIn) {
+        openLoginRequiredModal();
+        return;
+      }
+      var token = localStorage.getItem('plantglow_token');
+      btn.disabled = true;
+      fetch('https://plantglow-production.up.railway.app/api/tips/' + tipId + '/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.success) {
+            btn.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition bg-forest-200 text-forest-400 cursor-default';
+            btn.innerHTML = '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg> Voted';
+            // Update the vote count display
+            var countEl = btn.parentElement.querySelector('span');
+            if (countEl) countEl.textContent = (data.vote_count || 0) + ' helpful';
+            showToast('Thanks for voting!', 'success');
+          } else if (data.error === 'Already voted on this tip') {
+            showToast('You already voted on this tip', 'info');
+            btn.disabled = false;
+          }
+        })
+        .catch(function() {
+          btn.disabled = false;
+          showToast('Failed to submit vote', 'error');
+        });
+    }
+
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Load community tips on page init (after DOMContentLoaded)
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(loadCommunityTips, 300);
+    });
   </script>
 </body>
 </html>

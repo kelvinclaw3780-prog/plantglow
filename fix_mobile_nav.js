@@ -1,20 +1,26 @@
 const fs = require('fs');
-let c = fs.readFileSync('C:/Users/kelvi/.openclaw/workspace-appcreator/plantglow/index.html', 'utf8');
+let h = fs.readFileSync('plantglow/index-zh.html', 'utf8');
 
-// Update updateNav to also handle mobile menu nav items
-const oldUpdateNav = `document.getElementById('mobile-nav-logged-out').style.display = loggedIn ? 'none' : '';
-      document.getElementById('mobile-nav-logged-in').style.display = loggedIn ? '' : 'none';`;
+// Fix mobile nav Blog link
+// Find the pattern: <a href="#blog" ...>Blog</a> in mobile nav
+const blogIdx = h.indexOf('>Blog</a>');
+console.log('Blog in mobile nav at:', blogIdx);
+if (blogIdx >= 0) {
+  console.log('Context:', JSON.stringify(h.substring(blogIdx - 80, blogIdx + 30)));
+}
 
-const newUpdateNav = `document.getElementById('mobile-nav-logged-out').style.display = loggedIn ? 'none' : '';
-      document.getElementById('mobile-nav-logged-in').style.display = loggedIn ? '' : 'none';
-      // Also update mobile menu nav items
-      var mobileLoggedOut = document.getElementById('mobile-nav-logged-out');
-      var mobileLoggedIn = document.getElementById('mobile-nav-logged-in');
-      if (mobileLoggedOut) mobileLoggedOut.style.display = loggedIn ? 'none' : '';
-      if (mobileLoggedIn) mobileLoggedIn.style.display = loggedIn ? '' : 'none';`;
+// The mobile nav has "Blog" as a link text
+// Replace in context of mobile nav
+h = h.split('>Blog</a>').join('>部落格</a>');
 
-c = c.replace(oldUpdateNav, newUpdateNav);
-console.log('Updated updateNav function');
+// Fix mobile nav "How It Works"
+h = h.split('>How It Works</a>').join('>如何運作</a>');
 
-fs.writeFileSync('C:/Users/kelvi/.openclaw/workspace-appcreator/plantglow/index.html', c, 'utf8');
-console.log('Done');
+fs.writeFileSync('plantglow/index-zh.html', h, 'utf8');
+console.log('\nFixes applied');
+
+// Verify
+console.log('Has 部落格?', h.includes('部落格'));
+console.log('Has 如何運作 in nav?', h.includes('>如何運作</a>'));
+console.log('Has Blog in nav?', h.includes('>Blog</a>'));
+console.log('Has How It Works in nav?', h.includes('>How It Works</a>'));
