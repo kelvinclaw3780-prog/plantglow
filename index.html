@@ -2300,14 +2300,24 @@ function handleBrowseAll() {
         return;
       }
       var token = localStorage.getItem('plantglow_token');
+      console.log('[submitVote] token:', token, 'plantId:', currentModalPlantId, 'slug:', toSlug(currentModalPlantId), 'voteType:', voteType);
       var slug = toSlug(currentModalPlantId);
       fetch('https://plantglow-production.up.railway.app/api/plants/' + slug + '/vote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify({ vote: voteType })
       })
-        .then(function(r) { return r.json(); })
+        .then(function(r) {
+          if (!r.ok) {
+            return r.text().then(function(text) {
+              console.error('[submitVote] HTTP error:', r.status, text);
+              try { return JSON.parse(text); } catch { return { error: 'Server error (' + r.status + '): ' + text.substring(0, 100) }; }
+            });
+          }
+          return r.json();
+        })
         .then(function(data) {
+          console.log('[submitVote] response:', JSON.stringify(data));
           if (data.success !== undefined) {
             updateVoteUI(data.helpful || 0, data.not_helpful || 0, data.vote || voteType);
             if (data.unchanged) {
@@ -2319,8 +2329,9 @@ function handleBrowseAll() {
             showToast(data.error || 'Failed to submit vote', 'error');
           }
         })
-        .catch(function() {
-          showToast('Failed to submit vote', 'error');
+        .catch(function(err) {
+          console.error('[submitVote] network error:', err.message);
+          showToast('Failed to submit vote: ' + (err.message || 'network error'), 'error');
         });
     }
 

@@ -474,53 +474,68 @@ app.get('/api/plants/:plantId/votes', async (req, res) => {
 
 // POST /api/plants/:plantId/vote - Submit or switch a vote (logged-in users only)
 app.post('/api/plants/:plantId/vote', async (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Login to vote' });
-  }
-
-  const token = authHeader.slice(7);
-  const user = await dbGet('SELECT id FROM users WHERE token = ?', [token]);
-  if (!user) return res.status(401).json({ error: 'Invalid session' });
-
-  const { plantId } = req.params;
-  const { vote } = req.body;
-  if (!plantId) return res.status(400).json({ error: 'Plant ID required' });
-  if (!vote || !['helpful', 'not_helpful'].includes(vote)) {
-    return res.status(400).json({ error: 'Invalid vote value. Use "helpful" or "not_helpful"' });
-  }
-
-  // Check existing vote
-  const existingVote = await dbGet('SELECT vote FROM plant_vote_records WHERE plant_id = ? AND user_id = ?', [plantId, user.id]);
-
-
-  if (existingVote) {
-    if (existingVote.vote === vote) {
-      // Same vote — no change needed, return current counts
-      const current = await dbGet('SELECT helpful_count, not_helpful_count FROM plant_votes WHERE plant_id = ?', [plantId]);
-      return res.json({ success: true, unchanged: true, vote, helpful: current ? current.helpful_count : 0, not_helpful: current ? current.not_helpful_count : 0 });
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Login to vote' });
     }
-    // Switching vote: decrement old, increment new
-    const oldCol = existingVote.vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
-    const newCol = vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
-    await dbRun(`UPDATE plant_votes SET ${oldCol} = MAX(0, ${oldCol} - 1), ${newCol} = ${newCol} + 1 WHERE plant_id = ?`, [plantId]);
-    await dbRun(`UPDATE plant_vote_records SET vote = ? WHERE plant_id = ? AND user_id = ?`, [vote, plantId, user.id]);
-  } else {
-    // New vote — insert row with both counts at 0, then increment the right one
-    await dbRun(`INSERT INTO plant_votes (plant_id, helpful_count, not_helpful_count) VALUES (?, 0, 0)`, [plantId]);
-    const col = vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
-    await dbRun(`UPDATE plant_votes SET ${col} = ${col} + 1 WHERE plant_id = ?`, [plantId]);
-    await dbRun(`INSERT OR IGNORE INTO plant_vote_records (plant_id, user_id, vote) VALUES (?, ?, ?)`, [plantId, user.id, vote]);
-  }
 
-  // Return updated counts
-  const updated = await dbGet('SELECT helpful_count, not_helpful_count FROM plant_votes WHERE plant_id = ?', [plantId]);
-  res.json({
-    success: true,
-    vote,
-    helpful: updated ? updated.helpful_count : 0,
-    not_helpful: updated ? updated.not_helpful_count : 0
-  });
+    const token = authHeader.slice(7);
+    const user = await dbGet('SELECT id FROM users WHERE token = ?', [token]);
+    if (!user) return res.status(401).json({ error: 'Invalid session' });
+
+    const { plantId } = req.params;
+    const { vote } = req.body;
+    if (!plantId) return res.status(400).json({ error: 'Plant ID required' });
+    if (!vote || !['helpful', 'not_helpful'].includes(vote)) {
+      return res.status(400).json({ error: 'Invalid vote value. Use "helpful" or "not_helpful"' });
+    }
+
+    // Check existing vote
+    const existingVote = await dbGet('SELECT vote FROM plant_vote_records WHERE plant_id = ? AND user_id = ?', [plantId, user.id]);
+
+
+
+    if (existingVote) {
+      if (existingVote.vote === vote) {
+        // Same vote — no change needed, return current counts
+        const current = await dbGet('SELECT helpful_count, not_helpful_count FROM plant_votes WHERE plant_id = ?', [plantId]);
+        return res.json({ success: true, unchanged: true, vote, helpful: (current ? current.helpful_count : 0) || 0, not_helpful: (current ? current.not_helpful_count : 0) || 0 });
+      }
+      // Switching vote: decrement old, increment new (use COALESCE for NULL safety from old buggy rows)
+      const oldCol = existingVote.vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
+      const newCol = vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
+      await dbRun(`UPDATE plant_votes SET ${oldCol} = MAX(0, COALESCE(${oldCol}, 0) - 1), ${newCol} = COALESCE(${newCol}, 0) + 1 WHERE plant_id = ?`, [plantId]);
+      await dbRun(`UPDATE plant_vote_records SET vote = ? WHERE plant_id = ? AND user_id = ?`, [vote, plantId, user.id]);
+    } else {
+      // New vote — check if plant_votes row already exists (from old buggy INSERTs that left one count NULL)
+      const existingRow = await dbGet('SELECT helpful_count, not_helpful_count FROM plant_votes WHERE plant_id = ?', [plantId]);
+      if (existingRow) {
+        // Row exists — normalize any NULL counts to 0, then increment
+        await dbRun(`UPDATE plant_votes SET helpful_count = COALESCE(helpful_count, 0), not_helpful_count = COALESCE(not_helpful_count, 0) WHERE plant_id = ?`, [plantId]);
+        const col = vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
+        await dbRun(`UPDATE plant_votes SET ${col} = ${col} + 1 WHERE plant_id = ?`, [plantId]);
+      } else {
+        // No row yet — insert fresh with both counts at 0, then increment
+        await dbRun(`INSERT INTO plant_votes (plant_id, helpful_count, not_helpful_count) VALUES (?, 0, 0)`, [plantId]);
+        const col = vote === 'helpful' ? 'helpful_count' : 'not_helpful_count';
+        await dbRun(`UPDATE plant_votes SET ${col} = ${col} + 1 WHERE plant_id = ?`, [plantId]);
+      }
+      await dbRun(`INSERT OR IGNORE INTO plant_vote_records (plant_id, user_id, vote) VALUES (?, ?, ?)`, [plantId, user.id, vote]);
+    }
+
+    // Return updated counts
+    const updated = await dbGet('SELECT helpful_count, not_helpful_count FROM plant_votes WHERE plant_id = ?', [plantId]);
+    res.json({
+      success: true,
+      vote,
+      helpful: (updated ? updated.helpful_count : 0) || 0,
+      not_helpful: (updated ? updated.not_helpful_count : 0) || 0
+    });
+  } catch (err) {
+    console.error('[/api/plants/:plantId/vote] Error:', err.message);
+    res.status(500).json({ error: 'Server error: ' + err.message });
+  }
 });
 
 // ─── Favorites Routes ─────────────────────────────────────────────────────
